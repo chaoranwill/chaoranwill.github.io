@@ -31,6 +31,7 @@ tags:
   10. v-once  只渲染元素和组件一次，随后的重新渲染,元素/组件及其所有的子节点将被视为静态内容并跳过
 
   ```html
+    <!-- example -->
     <p v-if="seen">超然haha</p>
     <p v-else></p>
 
@@ -207,21 +208,26 @@ document.write('url: ' + vm.url);
   ```html
   <div v-bind:class="{ active: isActive }"></div>
   ```
+
   * v-bind:class 数组绑定
+
     ```html
     <div v-bind:class="[activeClass, errorClass]"></div>
     ```
+
 #### 5.2 style(内联样式)
   * v-bind:style
 
   ```html
     <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">超然haha</div>
   ```
+
   * v-bind:style (将多个样式绑定到一个元素)
 
   ```html
   <div v-bind:style="[baseStyles, overridingStyles]">超然haha</div>
   ```
+
   *当 v-bind:style 使用需要特定前缀的 CSS 属性时，如 transform ，Vue.js 会自动侦测并添加相应的前缀。*
 
 ## 6. vue事件处理器
@@ -231,11 +237,13 @@ document.write('url: ' + vm.url);
   ```html
   <button v-on:click="greet">Greet</button>
   ```
+
   * 内联js语句
 
   ```html
   <button v-on:click="say('hi')">Say hi</button>
   ```
+
   * 事件修饰符
     * .stop    阻止单击事件冒泡
     * .prevent 不再重载页面
