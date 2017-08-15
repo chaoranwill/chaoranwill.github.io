@@ -29,6 +29,7 @@ tags:
   8. v-model (内置的双向数据绑定，用在表单控件，绑定的value通常是静态字符串)
   9. v-cloak 关于vuejs页面闪烁{{message}}
   10. v-once  只渲染元素和组件一次，随后的重新渲染,元素/组件及其所有的子节点将被视为静态内容并跳过
+
   ```html
     <p v-if="seen">超然haha</p>
     <p v-else></p>
@@ -81,11 +82,13 @@ tags:
   提供了JavaScript表达式支持
 
 #### 2.3 参数——指令后以冒号声明
+
 ```html
   <a v-bind:href="url">超然haha</a>
 ```
 
 #### 2.4 过滤器
+
 ```html
 <div id="app">
   {{ message | capitalize }}
@@ -111,6 +114,7 @@ new Vue({
 #### 2.5 缩写
   1. v-bind
   2. v-on
+
   ```html
   <!-- 完整语法 -->
   <a v-bind:href="url"></a>
@@ -124,7 +128,8 @@ new Vue({
   ```
 
 ## 3. 计算属性computed
-computed 属性默认只有 getter ，不过在需要时你也可以提供一个 setter 
+computed 属性默认只有 getter ，不过在需要时你也可以提供一个 setter
+
 ```javascript
  var vm = new Vue({
   el: '#app',
@@ -198,6 +203,7 @@ document.write('url: ' + vm.url);
 ## 5. vue 样式绑定
 #### 5.1 class属性
   * v-bind:class
+
   ```html
   <div v-bind:class="{ active: isActive }"></div>
   ```
@@ -206,11 +212,13 @@ document.write('url: ' + vm.url);
     <div v-bind:class="[activeClass, errorClass]"></div>
     ```
 #### 5.2 style(内联样式)
-  * v-bind:style 
+  * v-bind:style
+
   ```html
     <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">超然haha</div>
   ```
   * v-bind:style (将多个样式绑定到一个元素)
+
   ```html
   <div v-bind:style="[baseStyles, overridingStyles]">超然haha</div>
   ```
@@ -219,10 +227,12 @@ document.write('url: ' + vm.url);
 ## 6. vue事件处理器
 #### 6.1 v-on
   * 接收方法
+
   ```html
   <button v-on:click="greet">Greet</button>
   ```
   * 内联js语句
+
   ```html
   <button v-on:click="say('hi')">Say hi</button>
   ```
@@ -257,6 +267,7 @@ document.write('url: ' + vm.url);
   * 复选框
   * 单选按钮
   * 选择列表
+
   ```html
   <!-- 文本 -->
   <input v-model="message" placeholder="edit me">
@@ -316,6 +327,7 @@ Vue.component('child', {
 #### 8.2.1 on/emit  (子-->父)
 *父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件*
 **不能用 $on 侦听子组件抛出的事件，而必须在模板里直接用 v-on 绑定**
+
 ```html
 <button-counter v-on:increment="incrementTotal"></button-counter>
 ```
@@ -338,7 +350,8 @@ Vue.component('button-counter', {
 ```
 
 #### 8.3.1 子组件索引
-* JavaScript 中直接访问子组件。为此可以使用 ref 为子组件指定一个索引 ID*
+*JavaScript 中直接访问子组件。为此可以使用 ref 为子组件指定一个索引 ID*
+
 ```html
 <div id="parent">
   <user-profile ref="profile"></user-profile>
@@ -361,6 +374,7 @@ var child = parent.$refs.profile
   * v-show
   * 动态组件
   * 组件根节点
+
   ```html
   <div id="demo">
     <button v-on:click="show = !show">
@@ -404,6 +418,7 @@ var child = parent.$refs.profile
 * v-leave-to              离开过渡结束状态
 
 *v- 是这些类名的前缀。使用 <transition name="my-transition"> 可以重置前缀，比如 v-enter 替换为 my-transition-enter。*
+
 ```html
 <div id="example-3">
   <button @click="show = !show">
