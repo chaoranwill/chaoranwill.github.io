@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Welcome to Hux Blog"
+title:      "Vue Notes"
 subtitle:   " \" \""
 date:       2017-08-15 19:55:00
 author:     "Hux"
@@ -12,7 +12,6 @@ tags:
 > “Yeah It's on. ”
 
 
-[TOC]
 ## 1. 属性与方法
 不要在实例属性或者回调函数中（例如,`vm.$watch('a', newVal => this.myMethod())`使用箭头函数。因为箭头函数会绑定父级上下文，所以 `this` 不会按照预期指向 Vue 实例，然后 `this.myMethod` 将是未定义。
 
