@@ -204,13 +204,11 @@ document.write('url: ' + vm.url);
 ## 5. vue 样式绑定
 #### 5.1 class属性
   * v-bind:class
-
-  ```html
-  <div v-bind:class="{ active: isActive }"></div>
-  ```
+    ```html
+    <div v-bind:class="{ active: isActive }"></div>
+    ```
 
   * v-bind:class 数组绑定
-
     ```html
     <div v-bind:class="[activeClass, errorClass]"></div>
     ```
@@ -218,15 +216,15 @@ document.write('url: ' + vm.url);
 #### 5.2 style(内联样式)
   * v-bind:style
 
-  ```html
+    ```html
     <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">超然haha</div>
-  ```
+    ```
 
   * v-bind:style (将多个样式绑定到一个元素)
 
-  ```html
-  <div v-bind:style="[baseStyles, overridingStyles]">超然haha</div>
-  ```
+    ```html
+    <div v-bind:style="[baseStyles, overridingStyles]">超然haha</div>
+    ```
 
   *当 v-bind:style 使用需要特定前缀的 CSS 属性时，如 transform ，Vue.js 会自动侦测并添加相应的前缀。*
 
@@ -234,15 +232,15 @@ document.write('url: ' + vm.url);
 #### 6.1 v-on
   * 接收方法
 
-  ```html
-  <button v-on:click="greet">Greet</button>
-  ```
+    ```html
+    <button v-on:click="greet">Greet</button>
+    ```
 
   * 内联js语句
 
-  ```html
-  <button v-on:click="say('hi')">Say hi</button>
-  ```
+    ```html
+    <button v-on:click="say('hi')">Say hi</button>
+    ```
 
   * 事件修饰符
     * .stop    阻止单击事件冒泡
