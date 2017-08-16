@@ -11,7 +11,9 @@ layout: default
     header.intro-header{
         background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')
     }
-
+    article {
+        overflow-y: hidden;
+    }
     #toc {
         width: 260px; overflow: auto; position: fixed; z-index: 2147483647; border: 0px none; left: 0px; top: 0px;height: 100%;min-height: 200px;BORDER-RIGHT: #999999 1px dashed;background-color: #FFFFFF;
     }
@@ -181,13 +183,16 @@ layout: default
     var nScrollTop = 0;  //滚动到的当前位置
     var nDivHight = $("body").height();
     var heightLimit = $('.intro-header').height();
-    $("body").scroll(function(){
+    $('body').scroll(function () {
+        console.log('333');
+    })
+    /*$("body").scroll(function(){
         console.log($(this)[0].scrollHeight);
      nScrollHight = $(this)[0].scrollHeight;
      nScrollTop = $(this)[0].scrollTop;
      if(nScrollTop + nDivHight >= heightLimit)
       alert("滚动条到底部了");
-     });
+     });*/
 });
 </script>
 <style>
