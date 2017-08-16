@@ -183,9 +183,13 @@ layout: default
     var nScrollTop = 0;  //滚动到的当前位置
     var nDivHight = $("body").height();
     var heightLimit = $('.intro-header').height();
-    $('body').scroll(function () {
-        console.log('333');
-    })
+    window.onscroll = function () {
+        console.log($(this)[0].scrollHeight);
+     nScrollHight = $(this)[0].scrollHeight;
+     nScrollTop = $(this)[0].scrollTop;
+     if(nScrollTop + nDivHight >= heightLimit)
+      alert("滚动条到底部了");
+    }
     /*$("body").scroll(function(){
         console.log($(this)[0].scrollHeight);
      nScrollHight = $(this)[0].scrollHeight;
