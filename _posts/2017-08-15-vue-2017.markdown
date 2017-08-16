@@ -21,7 +21,8 @@ tags:
 
 ## 2. 语法
 
-#### 2.1 v-  指令是带有v-的特殊属性
+#### 2.1 v-指令
+  是带有v-的特殊属性
   1. v-if 条件渲染
   2. v-show
   2. v-else   (必须在v-if/v-else-if/v-show指令后)
@@ -375,7 +376,31 @@ var child = parent.$refs.profile
 ```
 
 ### 8.3 非父子组件通信
-#### 8.3.1 使用一个空的vue实例作为中央事件总线
+#### 8.3.1 使用一个空的vue实例
+  使用一个空的vue实例作为中央事件总线
+
+```javascript
+<!-- bus.js -->
+import Vue from 'vue'
+export var bus = new Vue()
+
+<!-- Timer.vue emit  -->
+import { bus } from './bus'
+
+methods: {
+  run: function () {
+    bus.$emit('isPublish-change', this.change)
+  }
+}
+
+<!-- Index.vue 监听 -->
+import { bus } from './bus'
+
+mounted () {
+  bus.$on('isPublish-change', this.change)
+}
+```
+
 
 ## 9. 过渡效果
 *插入、更新或者移除 DOM 时*

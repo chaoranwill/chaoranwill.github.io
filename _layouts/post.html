@@ -8,6 +8,11 @@ layout: default
 
 <!-- Post Header -->
 <style type="text/css">
+    @media only screen and (min-width: 1200px){
+        #toc {
+            display: block!important;
+        }
+    }
     header.intro-header{
         background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')
     }
@@ -15,7 +20,7 @@ layout: default
         overflow-y: hidden;
     }
     #toc {
-        width: 260px; overflow: auto; position: fixed; z-index: 2147483647; border: 0px none; left: 0px; height: 100%;min-height: 200px;BORDER-RIGHT: #999999 1px dashed;background-color: #FFFFFF;padding-left: 20px; padding-top: 20px;
+        width: 260px; overflow: auto; position: fixed; z-index: 2147483647; border: 0px none; left: 0px; height: 100%;min-height: 200px;BORDER-RIGHT: #999999 1px dashed;background-color: #FFFFFF;padding-left: 25px; padding-top: 20px;display: none;
     }
     #toc li {
         padding: 0;
@@ -28,6 +33,9 @@ layout: default
         outline: 0;
         font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
     }
+    .post-container {
+        padding-right: 0;
+    }
     .post-container a {
         color: #333!important;
     }
@@ -39,7 +47,7 @@ layout: default
 <header id="intro-header" class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10">
+            <div class="col-lg-9 col-lg-offset-2 col-md-10">
                 <div class="post-heading">
                     <div class="tags">
                         {% for tag in page.tags %}
