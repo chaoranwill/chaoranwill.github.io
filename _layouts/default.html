@@ -26,7 +26,9 @@
     var $leftBar = document.getElementById('toc');
     console.log(t+','+topHeight);
     //var top_div = document.getElementById( "top_div" );
-    if( t >= topHeight ) {
+    if ( t>0 && t<topHeight ) {
+      $leftBar.style.top=(topHeight - t) + 'px';
+    }else if( t >= topHeight ) {
         console.log('300');
         $leftBar.style.top=0;
         //top_div.style.display = "inline";
