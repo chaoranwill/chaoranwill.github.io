@@ -471,3 +471,7 @@ mounted () {
   </transition>
 </div>
 ```
+
+##过渡demo##
+
+[查看code猛戳这里]('https://github.com/chaoranwill/chaoran-home/tree/master/vue')
