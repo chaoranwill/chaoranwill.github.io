@@ -145,8 +145,13 @@ layout: default
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
-                    console.log(bodyTop);
+        $(window).scroll(function(){     
+                    var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
+                    console.log(bodyTop);             
+                    //当滚动条滚到一定距离时，执行代码    
+                    if(bodyTop>100){         
+                    alert(bodyTop);    
+                    } 
     })();
 </script>
 <!-- disqus 公共JS代码 end -->
