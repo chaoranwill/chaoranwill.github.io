@@ -1,10 +1,10 @@
 # Site settings
 title: 超然漫漫途
-SEOTitle: 超然 | My Blog
+SEOTitle: 超然的博客 | Chaoran Blog
 header-img: img/home-banner.jpg
 email: 1293441598@qq.com
 description: "学习、生活、工作"
-keyword: ""
+keyword: "javascript, 前端, 前端开发， "
 url: "http://chaoranwill.github.io"              # your host, for absolute URL
 
 
@@ -58,7 +58,7 @@ ga_domain: https://chaoranwill.github.io
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写写代码，画幅画。世界那么大，等待我去耍。"
+sidebar-about-description: "永远年轻，永远热泪盈眶。"
 sidebar-avatar: /img/my-pic.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
