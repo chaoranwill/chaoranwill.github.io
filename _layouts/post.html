@@ -29,6 +29,7 @@ layout: default
         color: #333;
         font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
     }
+    
 </style>
 <header class="intro-header" >
     <div class="container">
@@ -175,20 +176,7 @@ layout: default
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })
 </script>
-<!-- toc -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 
-<script type="text/javascript">
-    $(function(){ 
-                    $(window).scroll(function(){     
-                    var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
-                    console.log(bodyTop);             
-                    //当滚动条滚到一定距离时，执行代码    
-                    if(bodyTop>100){         
-                    alert(bodyTop);    
-                    } 
-});
-</script>
 <style>
     /* place left on bigger screen */
     @media all and (min-width: 800px) {

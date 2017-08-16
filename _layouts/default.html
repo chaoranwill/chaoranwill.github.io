@@ -20,15 +20,19 @@
 </body>
 <script type="text/javascript">
   window.onscroll = function(){ 
-    var t = document.documentElement.scrollTop || document.body.scrollTop;  
+    var t = document.documentElement.scrollTop || document.body.scrollTop;
     console.log('11');
-    //var top_div = document.getElementById( "top_div" ); 
-    if( t >= 300 ) { 
+    var topHeight = document.getElementsByTagName('intro-header').height;
+    var $leftBar = document.getElementById('toc');
+    //var top_div = document.getElementById( "top_div" );
+    if( t >= topHeight ) {
         console.log('300');
-        //top_div.style.display = "inline"; 
-    } else { 
-        //top_div.style.display = "none"; 
-    } 
-} 
+        $leftBar.style.top=0;
+        //top_div.style.display = "inline";
+    } else {
+      $leftBar.style.top=topHeight+'px';
+        //top_div.style.display = "none";
+    }
+}
 </script>
 </html>
