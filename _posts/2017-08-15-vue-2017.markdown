@@ -17,7 +17,7 @@ tags:
 {:toc #toc}
 
 ## 1. 属性与方法
-不要在实例属性或者回调函数中（例如,`vm.$watch('a', newVal => this.myMethod())`使用箭头函数。因为箭头函数会绑定父级上下文，所以 `this` 不会按照预期指向 Vue 实例，然后 `this.myMethod` 将是未定义。
+不要在实例属性或者回调函数中（例如,`vm.$watch('a', newVal => this.myMethod())`使用箭头函数。**因为箭头函数会绑定父级上下文**，所以 `this` 不会按照预期指向 Vue 实例，然后 `this.myMethod` 将是未定义。
 
 ## 2. 语法
 
@@ -337,13 +337,16 @@ Vue.component('child', {
 ### 8.2 子父组件通信
 #### 8.2.1 on/emit  (子-->父)
 *父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件*
+
 **不能用 $on 侦听子组件抛出的事件，而必须在模板里直接用 v-on 绑定**
 
 ```html
+<!-- 父组件 -->
 <button-counter v-on:increment="incrementTotal"></button-counter>
 ```
 
 ```javascript
+//子组件
 Vue.component('button-counter', {
   template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
   data: function () {
@@ -380,7 +383,7 @@ var child = parent.$refs.profile
   使用一个空的vue实例作为中央事件总线
 
 ```javascript
-<!-- bus.js -->
+//bus.js
 import Vue from 'vue'
 export var bus = new Vue()
 
