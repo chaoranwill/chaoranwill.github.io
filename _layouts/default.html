@@ -18,5 +18,17 @@
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
-
+<script type="text/javascript">
+  window.onscroll = function(){ 
+    var t = document.documentElement.scrollTop || document.body.scrollTop;  
+    console.log('11');
+    //var top_div = document.getElementById( "top_div" ); 
+    if( t >= 300 ) { 
+        console.log('300');
+        //top_div.style.display = "inline"; 
+    } else { 
+        //top_div.style.display = "none"; 
+    } 
+} 
+</script>
 </html>

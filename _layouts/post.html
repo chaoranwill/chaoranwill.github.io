@@ -140,17 +140,7 @@ layout: default
     var disqus_shortname = "{{site.disqus_username}}";
     var disqus_identifier = "{{page.id}}";
     var disqus_url = "{{site.url}}{{page.url}}";
-    window.onscroll = function(){ 
-    var t = document.documentElement.scrollTop || document.body.scrollTop;  
-    console.log('11');
-    //var top_div = document.getElementById( "top_div" ); 
-    if( t >= 300 ) { 
-        console.log('300');
-        //top_div.style.display = "inline"; 
-    } else { 
-        //top_div.style.display = "none"; 
-    } 
-} 
+
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
