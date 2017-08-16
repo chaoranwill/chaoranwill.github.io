@@ -19,9 +19,15 @@
 
 </body>
 <script type="text/javascript">
-var defaultHeight = document.getElementById('intro-header').offsetHeight  ;
-document.getElementById('toc').style.top=defaultHeight+'px';
-  window.onscroll = function(){ 
+//var defaultHeight = document.getElementById('intro-header').offsetHeight  ;
+
+// document.getElementById('toc').style.top=defaultHeight+'px';
+setPosition();
+window.onscroll = function(){ 
+    setPosition()
+}
+
+function setPosition() {
     var t = document.documentElement.scrollTop || document.body.scrollTop;
     
     var topHeight = document.getElementById('intro-header').offsetHeight  ;
