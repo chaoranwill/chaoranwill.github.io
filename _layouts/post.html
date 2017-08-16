@@ -179,6 +179,7 @@ layout: default
     var nDivHight = $("body").height();
     var heightLimit = $('.intro-header').height();
     $("body").scroll(function(){
+        console.log($(this)[0].scrollHeight);
      nScrollHight = $(this)[0].scrollHeight;
      nScrollTop = $(this)[0].scrollTop;
      if(nScrollTop + nDivHight >= heightLimit)
