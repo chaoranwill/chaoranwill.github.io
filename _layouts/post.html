@@ -180,7 +180,8 @@ layout: default
 <script type="text/javascript">
     $(function(){ 
                     $(window).scroll(function(){     
-                    var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;             
+                    var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
+                    console.log(bodyTop);             
                     //当滚动条滚到一定距离时，执行代码    
                     if(bodyTop>100){         
                     alert(bodyTop);    
