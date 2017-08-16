@@ -177,7 +177,15 @@ layout: default
 <!-- toc -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 
-
+<script type="text/javascript">
+    $(function(){ 
+                    $(window).scroll(function(){     
+                    var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;             
+                    //当滚动条滚到一定距离时，执行代码    
+                    if(bodyTop>100){         
+                    alert(bodyTop);    
+                    } 
+});
 </script>
 <style>
     /* place left on bigger screen */
