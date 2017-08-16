@@ -22,7 +22,7 @@
   window.onscroll = function(){ 
     var t = document.documentElement.scrollTop || document.body.scrollTop;
     
-    var topHeight = document.getElementsByTagName('intro-header').offsetHeight ;
+    var topHeight = document.getElementsById('intro-header').height ;
     var $leftBar = document.getElementById('toc');
     console.log(t+','+topHeight);
     //var top_div = document.getElementById( "top_div" );
