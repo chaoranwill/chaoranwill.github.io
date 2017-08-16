@@ -11,8 +11,19 @@ layout: default
     header.intro-header{
         background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')
     }
+    #toc {
+        width: 260px; overflow: auto; position: fixed; z-index: 2147483647; border: 0px none; left: 0px; top: 0px;height: 100%;min-height: 200px;BORDER-RIGHT: #999999 1px dashed;
+    }
+    #toc li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        line-height: 14px;
+        text-align: left;
+        white-space: nowrap;
+        outline: 0;
+    }
 </style>
-<link rel="stylesheet" type="text/css" href="../css/toc.css">
 <header class="intro-header" >
     <div class="container">
         <div class="row">
