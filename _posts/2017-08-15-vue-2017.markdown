@@ -5,6 +5,7 @@ subtitle:   " \" \""
 date:       2017-08-15 19:55:00
 author:     "Hux"
 header-img: "img/post-bg-vue.jpg"
+noToc:      true
 tags:
     - 前端开发
 ---

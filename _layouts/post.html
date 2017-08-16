@@ -12,6 +12,7 @@ layout: default
         background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')
     }
 </style>
+<link rel="stylesheet" type="text/css" href="../css/toc.css">
 <header class="intro-header" >
     <div class="container">
         <div class="row">
@@ -212,6 +213,14 @@ layout: default
         };
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })
+</script>
+<!-- toc -->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.tocLight.js"></script>
+<script type="text/javascript">
+    $(function() {
+      $.toc.clickHideButton();
+    });
 </script>
 <style>
     /* place left on bigger screen */
