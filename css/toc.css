@@ -21,14 +21,14 @@
 }
 
 
-#toc ul, .toc ul {
+#toc {
     list-style-image: none;
     list-style-type: none;
     margin:0 8px 7px 14px;
     padding-left: 0;
     text-align: left;
 }
-#toc ul ul, .toc ul ul {
+#toc {
     margin: 0 0 0 2em;
 }
 #toc .toctoggle, .toc .toctoggle {
@@ -43,3 +43,4 @@
 #toc-container {
 	margin-bottom: 10px;
 }
+
