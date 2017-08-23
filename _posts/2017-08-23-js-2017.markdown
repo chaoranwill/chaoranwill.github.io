@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "You Don't Know JS"
-subtitle:   "Here vue comes"
+subtitle:   "The secret of js"
 date:       2017-08-23 23:00:00
 author:     "Chaoran"
 header-img: "img/post-bg-js.jpg"
@@ -31,7 +31,7 @@ tags:
 2. 解析/语法分析（Parsing）
     * 这个过程是将词法单元流（数组） 转换成一个由元素逐级嵌套所组成的代表了程序语法
 结构的树。 这个树被称为“抽象语法树”（Abstract Syntax Tree， AST）。
-    ![pic](./static/img/1.jpg)
+    ![pic](img/in-post/post-js01.jpg)
 
 3. 代码生成
     * 将 AST 转换为可执行代码的过程称被称为代码生成。 
@@ -42,7 +42,7 @@ tags:
 域中无法找到某个变量时， 引擎就会在外层嵌套的作用域中继续查找， 直到找到该变量，
 或抵达最外层的作用域（也就是全局作用域） 为止。
 将作用域处理的过程可视化，如下面的建筑：
-![pic2](./static/img/2.png)
+![pic2](img/in-post/post-js02.png)
 
 **作用域是一套规则， 用于确定在何处以及如何查找变量（标识符）。**
 
@@ -73,7 +73,7 @@ foo( 2 ); // 2, 4, 12
 ```
 
 可以将以上代码想象成几个逐级包含的气泡
-![context](./static/img/3.jpg)
+![context](img/in-post/post-js03.jpg)
 ① 包含着整个全局作用域， 其中只有一个标识符： foo。
 ② 包含着 foo 所创建的作用域， 其中有三个标识符： a、 bar 和 b。
 ③ 包含着 bar 所创建的作用域， 其中只有一个标识符： c。
