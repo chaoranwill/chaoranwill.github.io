@@ -31,7 +31,7 @@ tags:
 2. 解析/语法分析（Parsing）
     * 这个过程是将词法单元流（数组） 转换成一个由元素逐级嵌套所组成的代表了程序语法
 结构的树。 这个树被称为“抽象语法树”（Abstract Syntax Tree， AST）。
-    ![pic](../img/in-post/post-js01/1.jpg)
+    ![pic1](/img/in-post/post-js01/1.jpg)
 
 3. 代码生成
     * 将 AST 转换为可执行代码的过程称被称为代码生成。 
@@ -73,7 +73,7 @@ foo( 2 ); // 2, 4, 12
 ```
 
 可以将以上代码想象成几个逐级包含的气泡
-![context](/img/in-post/post-js01/3.jpg)
+![pic3](/img/in-post/post-js01/3.jpg)
 ① 包含着整个全局作用域， 其中只有一个标识符： foo。
 ② 包含着 foo 所创建的作用域， 其中有三个标识符： a、 bar 和 b。
 ③ 包含着 bar 所创建的作用域， 其中只有一个标识符： c。
