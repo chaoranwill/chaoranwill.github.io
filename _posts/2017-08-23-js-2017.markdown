@@ -500,5 +500,4 @@ var obj = {
 obj.cool(); // 更酷了。
 ```
 
-
-<font color=#F86B0A size=34>欢迎留言交流 (＾ω＾)</font>
+'<font color="#F86B0A" size=16>欢迎留言交流 (＾ω＾)</font>'
