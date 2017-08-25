@@ -109,7 +109,7 @@ JavaScript 中有两个机制可以“欺骗”词法作用域：eval(..)和with
 > 指在软件设计中，应该最小限度地暴露必要内容，而将其他内容都“隐藏”起来，比如某个模块或对象的API设计。——可延伸到如何选择作用域来包含变量和函数
 
 如：
-```js
+```javascript
 function doSomething(a) {
     b = a + doSomethingElse(a * 2);
     console.log(b * 3);
@@ -499,3 +499,6 @@ var obj = {
 };
 obj.cool(); // 更酷了。
 ```
+
+
+<font color=#F86B0A size=34>欢迎留言交流 (＾ω＾)</font>
