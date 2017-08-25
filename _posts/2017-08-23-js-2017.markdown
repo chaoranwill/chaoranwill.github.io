@@ -458,8 +458,8 @@ JavaScript并不具有动态作用域。它只有词法作用域
 
 ## 6. this词法
 
-#### 6.1. self
-常见this绑定丢失解决方案： 'var self = this'
+#### 6.1. _self
+常见this绑定丢失解决方案： 'var _self = this'
 
 #### 6.2. 箭头函数
 ES6 中的箭头函数引入了一个叫作 this 词法的行为
