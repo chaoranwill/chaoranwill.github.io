@@ -501,4 +501,4 @@ obj.cool(); // 更酷了。
 ```
 
 
-<font color="#F86B0A" size=16>欢迎留言交流 (＾ω＾)</font>
+<p style='color:"#F86B0A"; font-size: 24px;' >欢迎留言交流 (＾ω＾)</p>
