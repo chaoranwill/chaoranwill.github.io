@@ -173,38 +173,44 @@ isinstance('abc', Iterable) # str是否可迭代 true
 2. reduce
     reduce把一个函数作用在一个序列[x1, x2, x3...]上
     必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算
-```py
-reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
 
-# 比方说对一个序列求和，就可以用reduce实现：
->>> def add(x, y):
-...     return x + y
-...
->>> reduce(add, [1, 3, 5, 7, 9])
-25
-```    
-* filter
+	```py
+	reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
+
+	# 比方说对一个序列求和，就可以用reduce实现：
+	>>> def add(x, y):
+	...     return x + y
+	...
+	>>> reduce(add, [1, 3, 5, 7, 9])
+	25
+	```    
+3. filter
     与map
     类似：接收参数：一个函数、一个序列
     不同：依次作用于每个元素，根据返回值true/false决定是否保留
-```py
-def not_empty(s):
-    return s and s.strip()
+			
+	```py
+	def not_empty(s):
+			return s and s.strip()
 
-filter(not_empty, ['A', '', 'B', None, 'C', '  '])
-# 结果: ['A', 'B', 'C']
-```
+	filter(not_empty, ['A', '', 'B', None, 'C', '  '])
+	# 结果: ['A', 'B', 'C']
+	```
+
 3. sorted
 4. lambda
-    限制：只能有一个表达式，不用写return，返回值就是该表达式的结果
-```py
-lambda x: x * x
-# 相当于
-def f(x):
-    return x * x
-```
+		限制：只能有一个表达式，不用写return，返回值就是该表达式的结果
+
+	```py
+	lambda x: x * x
+	# 相当于
+	def f(x):
+			return x * x
+	```
 #### 9. 模块
+
 ##### 9.1. 模块格式
+
 ```py
 #!/usr/bin/env python    ——标准注释：该注释可以让此文件直接在Unix/Linux/Mac上运行
 # -*- coding: utf-8 -*-  ——标准注释：表示此文件本身使用标准UTF-8编码
@@ -235,6 +241,7 @@ if __name__=='__main__':
     - public: abc,x123
     - 特殊变量: __xxx__  可被直接引用（特殊用途如：__author__,__name__）,
     - private: _xxx/__xxx，不应该直接引用
+
 ```py
 def _private_1(name):
     return 'Hello, %s' % name
@@ -250,9 +257,12 @@ def greeting(name):
 # 模块公开greeting函数，内部逻辑用private隐藏
 # 外部不需要引用的函数全部定义成private，只有需要引用的函数public
 ```
+
 #### 10. 面向对象编程
 >私有变量/方法（惯例）：至少两个前导下划线&至多尾随一个下划线（__spam）
+
 ##### 10.1 与面向过程
+
 ```py
 # 面向过程
     # 成绩表示
@@ -261,8 +271,8 @@ std2 = { 'name': 'Bob', 'score': 81 }
     # 成绩处理
 def print_score(std):
     print '%s: %s' % (std['name'], std['score'])
-# 面向对象
 
+# 面向对象
 class Student(object):  # class 类名（-大写开头） （object-继承哪个类）
     def __init__(self, name, score): # 创建实例时绑定必要属性
         self.name = name     # self：创建的实例本身
@@ -290,21 +300,22 @@ self.__score = score
 # 给Student类增加get_name和get_score
 class Student(object):
     ...
-
     def get_name(self):
         return self.__name
     
     def set_score(self, score):  # 修改
         self.__score = score
-
 ```
+
 ##### 10.2. 与普通函数
     第一个参数永远是实例变量self，调用时不用传递该参数
 特点
     - 类是创建实例的模板，而实例则是一个个具体对象，各个实例拥有的数据都互相独立
     - 方法就是与实例绑定的函数，可以直接访问实例的数据
     - 允许对实例变量绑定任何数据，不同实例变量可能不同
+
 ##### 10.3. 多态
+
 ```py
 class Animal(object):
     def run(self):
@@ -318,7 +329,9 @@ dog = Dog()
 >>> dog.run()
 >>> Dog is running...
 ```
+
 ##### 10.4. 判断变量类型
+
 ```py
 # 判断一个变量是否是某个类型可以用isinstance()判断：
 a = list() # a是list类型
@@ -330,8 +343,10 @@ True
 True
 ```
 #### 11. 获取对象信息
+
 ##### 11.1. type()
 >判断基本类型
+
 ```py
 >>> type(123)
 <type 'int'>
@@ -356,6 +371,7 @@ True
 ```
 ##### 11.2. isinstance（）
 >判断class类型
+
 ```py
 h = Husky()
 
@@ -371,17 +387,18 @@ True
 ```
 ##### 11.3. dir()
 >获取对象的所有属性和方法
+
 ```py
 dir('abc')
 ```
 配合getattr()、setattr()以及hasattr()，可以直接操作一个对象的状态：
 ```py
 >>> class MyObject(object):
-...     def __init__(self):
-...         self.x = 9
-...     def power(self):
-...         return self.x * self.x
-...
+	     def __init__(self):
+         self.x = 9
+	     def power(self):
+	         return self.x * self.x
+
 >>> obj = MyObject()
 紧接着，可以测试该对象的属性：
 
