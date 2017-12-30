@@ -1,0 +1,394 @@
+---
+layout:     post
+title:      "Python Basis"
+subtitle:   "Start learning python"
+date:       2017-08-15 19:55:00
+author:     "Chaoran"
+header-img: "img/post-bg-python.jpg"
+noToc:      true
+tags:
+    - python
+---
+
+> “Yeah It's on. ”
+
+* 目录
+{:toc #toc}
+
+# python
+#### 1. 语言特性：
+	强类型（大小写敏感）
+	面向对象（一切皆为对象）
+#### 2. 获取帮助
+	help（<object>）
+	dir()显示该对象的所有方法
+	<object>._d显示其文档
+#### 3. 语法
+	无强制语句终止字符，缩进指示（开始和结束）
+	声明：并开启一个缩进级别
+	单行注释 #
+	多行注释 """ a = 1 """
+#### 4. 数据类型
+>列表（list）、元组（tuple）、字典（dictionaries）三种基本数据结构
+常量：大写
+1. List： 内置数据类型，有序集合，元素类型可不同，可随时添加和删除元素：.insert(i) .pop（i）
+2. Tuple: 初始化后不能修改 
+#### 5. dict 和 set
+1. dict的key必须是不可变对象
+2. set和dict类似，也是一组key的集合，但不存储value,无重复元素（两个set可以做数学意义上的交集、并集等操作）
+
+
+**和list比较，dict有以下几个特点：**
+* 查找和插入的速度极快，不会随着key*的增加而增加；
+* 需要占用大量的内存，内存浪费多。
+
+而list相反：
+* 查找和插入的时间随着元素的增加而增加；
+* 占用空间小，浪费内存很少。
+所以，dict是用空间来换取时间的一种方法。
+	
+#### 6. 流程控制
+	if for while range(<number>)——生成一个有数字组成的列表
+#### 7. 函数
+def声明
+参数通过引用传递，但对于不可变类型（元组、整数、字符串）不改变
+##### 7.1. 默认参数
+指向不变对象（str，None）
+##### 7.2. 可变参数
+```py
+def calc(*num)
+```
+##### 7.3. 关键字参数
+>可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict
+```py
+    def person(name, age, **kw):
+        print 'name:', name, 'age:', age, 'other:', kw
+    
+    >>> person('Bob', 35, city='Beijing')
+        name: Bob age: 35 other: {'city': 'Beijing'}
+```
+##### 7.4. 参数组合
+>参数定义的顺序必须是：必选参数、默认参数、可变参数和关键字参数。
+```py
+    def func(a, b, c=0, *args, **kw):
+        print 'a =', a, 'b =', b, 'c =', c, 'args =', args, 'kw =', kw
+    # *args是可变参数，args接收的是一个tuple；
+    # **kw是关键字参数，kw接收的是一个dict。
+```
+##### 7.5. 递归函数
+尾递归优化
+```py
+def fact_iter(num, product):
+    if num == 1:
+        return product
+    return fact_iter(num - 1, num * product)
+```
+##### 7.6. 切片
+>L[0:3]（表示从索引0开始到索引3为止，0，1，2）
+```py
+L = range(100)
+L[:10]      # 前10个数
+L[-10:]     # 后10个数
+L[:10:2]    #前10个数，每两个取一个
+L[::5]      #所有数，每5个取一个
+L[:]        #复制一个list
+
+```
+##### 7.7. 迭代 for ... in
+```py
+d = {'a': 1, 'b': 2, 'c': 3}
+for key in d            # 迭代key
+for value in d.itervalues()  # 迭代value
+for k, v in d.iteritems()    # 迭代key，value
+
+# 判断是否为可迭代对象-通过collections模块的iterable类型判断
+from collections import Iterable
+isinstance('abc', Iterable) # str是否可迭代 true
+
+```
+##### 7.8. 列表生成式
+```py
+>>> [x * x for x in range(1, 11)]
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+# 还可以加上if判断
+>>> [x * x for x in range(1, 11) if x % 2 == 0]
+[4, 16, 36, 64, 100]
+
+>>> [m + n for m in 'ABC' for n in 'XYZ']
+['AX', 'AY', 'AZ', 'BX', 'BY', 'BZ', 'CX', 'CY', 'CZ']
+```
+##### 7.9. 生成器
+    列表元素可以按照某种算法推算出来，节省空间
+```py
+# 将[]直接换成()
+>>> L = [x * x for x in range(10)]
+>>> L
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+>>> g = (x * x for x in range(10))
+>>> g
+<generator object <genexpr> at 0x104feab40>
+
+# 可用next（）或for循环
+>>> g.next()
+0
+>>> g.next()
+1
+```
+#### 8. 函数式编程
+##### 8.1. 高阶函数
+1. map
+    接受两个参数（函数，序列）
+    将传入的函数依次作用到序列的每个元素，并把结果作为新的list返回。
+```py
+>>> def f(x):
+...     return x * x
+...
+>>> map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+[1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+2. reduce
+    reduce把一个函数作用在一个序列[x1, x2, x3...]上
+    必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算
+```py
+reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
+
+# 比方说对一个序列求和，就可以用reduce实现：
+>>> def add(x, y):
+...     return x + y
+...
+>>> reduce(add, [1, 3, 5, 7, 9])
+25
+```    
+* filter
+    与map
+    类似：接收参数：一个函数、一个序列
+    不同：依次作用于每个元素，根据返回值true/false决定是否保留
+```py
+def not_empty(s):
+    return s and s.strip()
+
+filter(not_empty, ['A', '', 'B', None, 'C', '  '])
+# 结果: ['A', 'B', 'C']
+```
+3. sorted
+4. lambda
+    限制：只能有一个表达式，不用写return，返回值就是该表达式的结果
+```py
+lambda x: x * x
+# 相当于
+def f(x):
+    return x * x
+```
+#### 9. 模块
+##### 9.1. 模块格式
+```py
+#!/usr/bin/env python    ——标准注释：该注释可以让此文件直接在Unix/Linux/Mac上运行
+# -*- coding: utf-8 -*-  ——标准注释：表示此文件本身使用标准UTF-8编码
+
+' a test module '   # 模块的文档注释——任何模块代码的第一个字符串都被视为模块的文档注释
+
+__author__ = 'Michael Liao'  # 作者名字
+
+import sys   # 导入模块，模块argv变量用list存储了命令行所有参数
+# 运行python hello.py获得的sys.argv就是['hello.py']；
+
+# 运行python hello.py Michael获得的sys.argv就是['hello.py', 'Michael]。
+
+def test():
+    args = sys.argv
+    if len(args)==1:
+        print 'Hello, world!'
+    elif len(args)==2:
+        print 'Hello, %s!' % args[1]
+    else:
+        print 'Too many arguments!'
+
+if __name__=='__main__':
+    test()
+```
+
+##### 9.2 作用域
+    - public: abc,x123
+    - 特殊变量: __xxx__  可被直接引用（特殊用途如：__author__,__name__）,
+    - private: _xxx/__xxx，不应该直接引用
+```py
+def _private_1(name):
+    return 'Hello, %s' % name
+
+def _private_2(name):
+    return 'Hi, %s' % name
+
+def greeting(name):
+    if len(name) > 3:
+        return _private_1(name)
+    else:
+        return _private_2(name)
+# 模块公开greeting函数，内部逻辑用private隐藏
+# 外部不需要引用的函数全部定义成private，只有需要引用的函数public
+```
+#### 10. 面向对象编程
+>私有变量/方法（惯例）：至少两个前导下划线&至多尾随一个下划线（__spam）
+##### 10.1 与面向过程
+```py
+# 面向过程
+    # 成绩表示
+std1 = { 'name': 'Michael', 'score': 98 }
+std2 = { 'name': 'Bob', 'score': 81 }
+    # 成绩处理
+def print_score(std):
+    print '%s: %s' % (std['name'], std['score'])
+# 面向对象
+
+class Student(object):  # class 类名（-大写开头） （object-继承哪个类）
+    def __init__(self, name, score): # 创建实例时绑定必要属性
+        self.name = name     # self：创建的实例本身
+        self.score = score
+
+    def print_score(self):
+        print '%s: %s' % (self.name, self.score)
+
+# 对象操作
+bart = Student('Bart Simpson', 59)  # 类名+（） 创建实例
+lisa = Student('Lisa Simpson', 87)
+lisa.school = 'huagong'          # 可自由绑定属性
+bart.print_score()
+lisa.print_score()
+
+# 访问限制
+# 之前还能访问name，score属性，若限制保护内部变量
+self.__name = name
+self.__score = score
+# 原因：Python解释器对外把__name变量改成了_Student__name
+>>> bart._Student__name
+'Bart Simpson'
+
+# 获取方法 
+# 给Student类增加get_name和get_score
+class Student(object):
+    ...
+
+    def get_name(self):
+        return self.__name
+    
+    def set_score(self, score):  # 修改
+        self.__score = score
+
+```
+##### 10.2. 与普通函数
+    第一个参数永远是实例变量self，调用时不用传递该参数
+特点
+    - 类是创建实例的模板，而实例则是一个个具体对象，各个实例拥有的数据都互相独立
+    - 方法就是与实例绑定的函数，可以直接访问实例的数据
+    - 允许对实例变量绑定任何数据，不同实例变量可能不同
+##### 10.3. 多态
+```py
+class Animal(object):
+    def run(self):
+        print 'Animal is running...'
+
+class Dog(Animal):
+    def run(self):
+        print 'Dog is running...'
+
+dog = Dog()
+>>> dog.run()
+>>> Dog is running...
+```
+##### 10.4. 判断变量类型
+```py
+# 判断一个变量是否是某个类型可以用isinstance()判断：
+a = list() # a是list类型
+b = Animal() # b是Animal类型
+
+>>> isinstance(a, list)
+True
+>>> isinstance(b, Animal)
+True
+```
+#### 11. 获取对象信息
+##### 11.1. type()
+>判断基本类型
+```py
+>>> type(123)
+<type 'int'>
+>>> type('str')
+<type 'str'>
+>>> type(None)
+<type 'NoneType'>
+# 函数或类
+>>> type(abs)
+<type 'builtin_function_or_method'>
+>>> type(a)
+<class '__main__.Animal'>
+
+# types模块
+>>> import types
+>>> type('abc')==types.StringType
+True
+>>> type([])==types.ListType
+True
+>>> type(str)==types.TypeType  # 所有类型本身的类型就是TypeType
+True
+```
+##### 11.2. isinstance（）
+>判断class类型
+```py
+h = Husky()
+
+>>> isinstance(h, Husky) # 父类也可以
+True
+
+# 基本类型也可以
+>>> isinstance('a', str)
+True
+# 判断是否属于一种
+>>> isinstance('a', (str, unicode))
+True
+```
+##### 11.3. dir()
+>获取对象的所有属性和方法
+```py
+dir('abc')
+```
+配合getattr()、setattr()以及hasattr()，可以直接操作一个对象的状态：
+```py
+>>> class MyObject(object):
+...     def __init__(self):
+...         self.x = 9
+...     def power(self):
+...         return self.x * self.x
+...
+>>> obj = MyObject()
+紧接着，可以测试该对象的属性：
+
+>>> hasattr(obj, 'x') # 有属性'x'吗？
+True
+>>> obj.x
+9
+>>> hasattr(obj, 'y') # 有属性'y'吗？
+False
+>>> setattr(obj, 'y', 19) # 设置一个属性'y'
+>>> hasattr(obj, 'y') # 有属性'y'吗？
+True
+>>> getattr(obj, 'y') # 获取属性'y'  
+19
+>>> obj.y # 获取属性'y'
+19
+# 若不存在，返回默认值
+>>> getattr(obj, 'z', 404)
+404
+```
+
+
+
+
+
+#### 异常
+	try-except[exceptionname]
+#### 导入
+	外部库 import [libname]
+	导入函数 from [libname] import [funcname]
+
+
+
