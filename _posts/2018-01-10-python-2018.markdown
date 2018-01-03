@@ -512,6 +512,7 @@ END
 #### 13. 调试
 1. print
 2. assert
+
   ```py
   # err.py
   def foo(s):
