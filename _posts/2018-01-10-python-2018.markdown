@@ -207,6 +207,7 @@ isinstance('abc', Iterable) # str是否可迭代 true
 	def f(x):
 			return x * x
 	```
+
 #### 9. 模块
 
 ##### 9.1. 模块格式
@@ -259,7 +260,8 @@ def greeting(name):
 ```
 
 #### 10. 面向对象编程
->私有变量/方法（惯例）：至少两个前导下划线&至多尾随一个下划线（__spam）
+>数据封装、继承和多态只是面向对象程序设计中最基础的3个概念
+私有变量/方法（惯例）：至少两个前导下划线&至多尾随一个下划线（__spam）
 
 ##### 10.1 与面向过程
 
@@ -419,16 +421,181 @@ True
 >>> getattr(obj, 'z', 404)
 404
 ```
+#### 11. 面向对象高级编程
+##### 11.1. __slots__
+>限制class属性，仅对当前类起作用，对继承的子类不起作用
+
+```py
+class Student(object):
+  __slots__ = ('name', 'age') # 用tuple定义允许绑定的属性名称
+
+s = Student() # 创建新的实例
+s.score = 99 # 绑定属性'score'
+# 由于'score'没有被放到__slots__中，所以不能绑定score属性，试图绑定score将得到AttributeError的错误。
+```
+
+##### 11.2. @property
+>用在类定义中，将方法转化为属性，代码简短，调用简单
+
+```py
+class Student(object):
+  def get_score(self):
+    return self._score
+
+  def set_score(self, value):
+    if not isinstance(value, int):
+        raise ValueError('score must be an integer!')
+    if value < 0 or value > 100:
+        raise ValueError('score must between 0 ~ 100!')
+    self._score = value
+
+>>> s = Student()
+>>> s.set_score(60) # ok!
+>>> s.get_score()
+60
+
+# 转化为可直接调用的属性
+class Student(object):
+
+  @property
+  def score(self):
+    return self._score
+
+  @score.setter
+  def score(self, value):
+    if not isinstance(value, int):
+      raise ValueError('score must be an integer!')
+    if value < 0 or value > 100:
+      raise ValueError('score must between 0 ~ 100!')
+    self._score = value
+
+>>> s = Student()
+>>> s.score = 60 # OK，实际转化为s.set_score(60)
+>>> s.score # OK，实际转化为s.get_score()
+60
+```
+
+##### 11.3. 多重继承
+>子类同时获得多个父类的所有功能
+
+```py
+class Dog(Mammal, Runnable):
+  pass
+
+# mixin
+# python自带功能库
+```
+
+#### 12. 异常
+>try-except[exceptionname]
+
+```py
+try:
+  print 'try...'
+  r = 10 / 0
+  print 'result:', r
+except ZeroDivisionError, e:
+  print 'except:', e
+else: 
+  print 'no error!'
+finally:
+  print 'finally...'
+print 'END'
+
+# 结果
+try...
+except: integer division or modulo by zero
+finally...
+END
+```
+
+#### 13. 调试
+1. print
+2. assert
+  ```py
+  # err.py
+  def foo(s):
+      n = int(s)
+      assert n != 0, 'n is zero!'
+      return 10 / n
+
+  def main():
+      foo('0')
+
+  # 若断言失败
+  $ python err.py
+  Traceback (most recent call last):
+    ...
+  AssertionError: n is zero!
+
+  # 关闭断言
+  $ python -O err.py
+  ```
+
+3. logging
+
+#### 14. IO
+##### 14.1. 文件读写
+
+1. 读文件
+
+```py
+# open()函数，传入文件名和标示符
+f = open('/Users/michael/test.txt', 'r')
+# read()方法一次读取文件的全部内容，把内容读到内存，用一个str对象表示
+f.read()   # 'Hello, world!'
+
+# close()方法关闭文件(以防占用操作系统的资源)
+f.close()
+
+# IOError，一旦出错，后面的f.close()不会调用
+# 为了保证无论是否出错都能正确地关闭文件，使用try ... finally
+try:
+    f = open('/path/to/file', 'r')
+    print f.read()
+finally:
+    if f:
+        f.close()
+
+# with语句： 自动调用close
+with open('/path/to/file', 'r') as f:
+    print f.read()
+```
+
+其他读取方式
+```py
+read()      # 一次性读取文件的全部内容
+readline()  # 每次读取一行内容
+readlines() # 一次读取所有内容并按行返回list
+```
+
+其他文件
+```py
+# file-like object
+# 像open()函数返回的这种有个read()方法的对象，在Python中统称为file-like Object
+# 二进制文件（图片、视频等等）
+f = open('/Users/michael/test.jpg', 'rb')
+f.read()
+```
+
+2. 写文件
+>区别：调用open()函数时，传入标识符'w'或者'wb'表示写文本文件或写二进制文件
+
+```py
+f = open('/Users/michael/test.txt', 'w')
+f.write('Hello, world!')
+f.close()
+
+# 写文件时，操作系统往往不会立刻把数据写入磁盘，而是放到内存缓存起来，空闲的时候再慢慢写入。只有调用close()方法时，操作系统才保证把没有写入的数据全部写入磁盘
+# with 保险方法
+with open('/Users/michael/test.txt', 'w') as f:
+    f.write('Hello, world!')
+```
 
 
 
 
 
-#### 异常
-	try-except[exceptionname]
-#### 导入
-	外部库 import [libname]
-	导入函数 from [libname] import [funcname]
 
 
 
