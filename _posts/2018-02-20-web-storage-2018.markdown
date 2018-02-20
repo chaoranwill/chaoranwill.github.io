@@ -52,7 +52,8 @@ chrome浏览器，查看resources
 ![resources_cookie](/img/in-post/post-js-storage/resources_cookie.png)
 
 1. domain 和 path 共同决定了cookie的共享页面
-    *例如cookie设置为"domain=.google.com.hk; path=/webhp"，那么只有".google.com.hk/webhp"及"/webhp"下的任一子目录如"/webhp/aaa"或"/webhp/bbb"会发送cookie信息，而".google.com.hk"就不会发送，即使它们来自同一个域。*
+
+     *例如cookie设置为"domain=.google.com.hk; path=/webhp"，那么只有".google.com.hk/webhp"及"/webhp"下的任一子目录如"/webhp/aaa"或"/webhp/bbb"会发送cookie信息，而".google.com.hk"就不会发送，即使它们来自同一个域。*
 2. expries 和 max-age 是用来决定cookie的生命周期
 3. secure cookie的安全标志
     cookie中唯一一个非名值对儿的部分，默认为空，不论是 http 请求还是 https 请求，均会发送cookie。
