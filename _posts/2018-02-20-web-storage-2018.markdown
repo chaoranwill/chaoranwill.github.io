@@ -1,0 +1,168 @@
+---
+layout:     post
+title:      "Web Storage"
+subtitle:   "web storage vs cookie"
+date:       2017-12-30 19:55:00
+author:     "Chaoran"
+header-img: "img/post-bg-storage.jpg"
+noToc:      true
+tags:
+    - JavaScript
+---
+
+> “To be is to be perceived. ”
+
+* 目录
+{:toc #toc}
+
+# 常用的web客户端存储
+## 1. 引言
+
+本地存储：避免取回数据前页面空白，减少请求服务器次数
+chrome浏览器，查看resources
+![storage](/img/in-post/post-js-storage/storage.png)
+
+## 2. 常用存储方案
+#### 2.1. indexDB
+
+类似SQL数据库的结构化数据存储机制，能够在客户端存储大量的结构化数据
+缺点： 兼容性不好，浏览器支持度低
+![cookie_limit](/img/in-post/post-js-storage/cookie_limit.png)
+
+#### 2.2. cookie
+>HTTP cookie 「浏览器」提供的一种机制，通过document.cookie访问
+* 既可以服务器端设置，也可以客户端设置，会跟随任意HTTP请求发送
+* cookie是存于用户硬盘的一个文件，这个文件通常对应于一个域名，也就是说，cookie可以跨越一个域名下的多个网页，但不能跨越多个域名使用。
+
+##### 2.2.1. 用途
+1. 保存用户信息
+2. 购物车
+3. 跟踪用户行为
+
+##### 2.2.2. 查找过程
+1. 用户访问站点
+2. web应用读取cookie包含的信息
+3. 再次访问时，浏览器在本地硬盘上查找相关cookie
+4. 若存在该cookie，添加到request header cookie字段中，与该HTTP请求一起发送
+*存储在cookie的数据每次都会自动添加到请求中，滥用则降低性能*
+![cookie](/img/in-post/post-js-storage/cookie.png)
+
+##### 2.2.3. cookie相关属性
+![resources_cookie](/img/in-post/post-js-storage/resources_cookie.png)
+
+1. domain 和 path 共同决定了cookie的共享页面
+    *例如cookie设置为"domain=.google.com.hk; path=/webhp"，那么只有".google.com.hk/webhp"及"/webhp"下的任一子目录如"/webhp/aaa"或"/webhp/bbb"会发送cookie信息，而".google.com.hk"就不会发送，即使它们来自同一个域。*
+2. expries 和 max-age 是用来决定cookie的生命周期
+3. secure cookie的安全标志
+    cookie中唯一一个非名值对儿的部分，默认为空，不论是 http 请求还是 https 请求，均会发送cookie。
+    指定后，cookie只有在使用SSL连接（如HTTPS请求）时才会发送到服务器
+4. httponly
+    服务端设置
+    限制客户端脚本对cookie的访问，将 cookie 设置成 httponly 可以减轻xss攻击的危害
+
+##### 2.2.4. cookie设置
+1. 服务器端
+    通过发送一个名为 Set-Cookie 的HTTP头来创建一个cookie，作为 Response Headers 的一部分，每个Set-Cookie 表示一个 cookie（如果有多个cookie,需写多个Set-Cookie），每个属性也是以名/值对的形式（除了secure），属性间以分号加空格隔开。格式如下：
+    `Set-Cookie: name=value[; expires=GMTDate][; domain=domain][; path=path][; secure]`
+![cookie_server](/img/in-post/post-js-storage/cookie_server.png)
+**只有name，value发送到服务器，其他是给浏览器的指示**
+2. 客户端
+`document.cookie = "name=value[; expires=GMTDate][; domain=domain][; path=path][; secure]"`
+```
+var cookie = {
+        /**设置cookie 
+         ** name 标识
+         ** value 值
+         ** options {
+         **   'path': '访问路径',
+         **   'domain' : '域名',
+         **   'expire' : 过期时间
+         }
+         **/
+        setCookie : function(name,value,options){
+          var options = options ? options : {},
+              path = options.path ? options.path : '/',
+              domain = options.domain ? options.domain : document.domain,
+              time = options.expire ? (new Date().getTime() + options.expire * 1000) : '',
+              expire = new Date(time).toUTCString();
+          document.cookie = encodeURIComponent(name) + "="+ encodeURIComponent(value) + ";expires=" + expire + 
+                            ";domain=" + domain + ";path=" + path;
+        },
+        //获取cookie
+        getCookie: function(name){
+          var arr,
+              reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+          if(arr=document.cookie.match(reg)){
+             console.log(arr);
+             return unescape(arr[2]);
+          }
+          return null;
+          
+        },
+        //移除cookie
+        removeCookie: function(name){
+          var val = this.getCookie(name);
+          if(val != null){
+            this.setCookie(name,val, {
+              expire : - 1
+            })
+          }
+        }
+      }
+```
+
+##### 2.2.5. 优缺点
+优点： 兼容性好
+缺点： 
+1. 增加了网络流量
+2. 数据容量有限（最多4kb，浏览器间有区别）
+3. 安全性
+
+#### 2.3. sessionStorage和localStorage
+> key value形式存储
+
+![storage_support](/img/in-post/post-js-storage/storage_support.png)
+* localStorage - 没有时间限制的数据存储
+* sessionStorage - 针对一个 session 的数据存储
+```
+if(typeof(Storage)!=="undefined")
+{
+    // 是的! 支持 localStorage  sessionStorage 对象!
+    // 一些代码.....
+} else {
+    // 抱歉! 不支持 web 存储。
+}
+```
+##### 2.3.1. 使用
+`localStorage.sitename = "菜鸟教程";`
+`localStorage.removeItem("lastname");`
+* 保存数据：
+`localStorage.setItem(key,value);`
+* 读取数据：
+`localStorage.getItem(key);`
+* 删除单个数据：
+`localStorage.removeItem(key);`
+* 删除所有数据：
+`localStorage.clear();`
+* 得到某个索引的key：localStorage.key(index);
+##### 2.3.2. 适用范围
+* 不需要和服务器进行交互的一些数据
+比如导航栏当前的状态，一些普通的数据进行缓存。甚至我们可以存储html片段，js或者css文件段
+* 很多应用通过版本控制来存储一些不经常改动的js/css文件。减少用户请求带宽的同时优化整个页面的加载速度。
+
+##### 2.3.3. 注意
+localstorage存储的值只能是字符串的形式
+当我们存储数据为引用对象的时候，会默认调用对象的toString方法，转化为字符串存储
+*所以我们在存储数组时，存储的数据会将数据项以,隔开，解析的时候需要我们分解成为数组再操作。而对于对象，我们需要用JSON.stringify转化存储，获取数据后再用JSON.parse转化为对象*
+#### 2.4. web storage 与 cookie
+web storage优点：
+1. web storage 为了更大容量存储，一般限制为同一域名5M，，并且不同域名的数据不能相互访问
+2. localStorage是存储在用户本地的浏览器上，不像cookie一样携带在http请求头部的字段里面，这有效的节约了带宽
+3. cookie需要指定作用域，不可跨域调用
+4. 拥有setItem,getItem,removeItem,clear等方法，不像cookie需要前端开发者自己封装setCookie，getCookie
+
+cookie优点：
+1. cookie作用是与服务器交互，作为HTTP规范的一部分，web storage仅仅为**本地存储**而生
+
+参考：[常用的本地存储——cookie篇
+](https://segmentfault.com/a/1190000004743454)
