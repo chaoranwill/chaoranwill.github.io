@@ -31,6 +31,7 @@ chrome浏览器，查看resources
 
 #### 2.2. cookie
 >HTTP cookie 「浏览器」提供的一种机制，通过document.cookie访问
+
 * 既可以服务器端设置，也可以客户端设置，会跟随任意HTTP请求发送
 * cookie是存于用户硬盘的一个文件，这个文件通常对应于一个域名，也就是说，cookie可以跨越一个域名下的多个网页，但不能跨越多个域名使用。
 
