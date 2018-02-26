@@ -16,10 +16,8 @@ tags:
 * 目录
 {:toc #toc}
 
-![vue-head](/img/in-post/post-vue-2018/vue-head.png)
+## 1. 属性
 
-## 1. 生命
-![vue-life](/img/in-post/post-vue-2018/vue-life.png){width="80%"}
 不要在实例属性或者回调函数中（例如,`vm.$watch('a', newVal => this.myMethod())`使用箭头函数。**因为箭头函数会绑定父级上下文**，所以 `this` 不会按照预期指向 Vue 实例，然后 `this.myMethod` 将是未定义。
 
 ## 2. 语法
@@ -478,3 +476,8 @@ mounted () {
 **过渡demo**
 
 code在这里：*https://github.com/chaoranwill/chaoran-home/tree/master/vue*
+
+## vue 思维导图
+![vue-head](/img/in-post/post-vue-2018/vue-head.png)
+## vue 生命周期
+![vue-life](/img/in-post/post-vue-2018/vue-life.png){width="80%"}
