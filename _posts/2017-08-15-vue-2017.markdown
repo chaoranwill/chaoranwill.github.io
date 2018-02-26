@@ -16,7 +16,10 @@ tags:
 * 目录
 {:toc #toc}
 
-## 1. 属性与方法
+![vue-head](/img/in-post/post-vue-2018/vue-head.png)
+
+## 1. 生命
+![vue-life](/img/in-post/post-vue-2018/vue-life.png)
 不要在实例属性或者回调函数中（例如,`vm.$watch('a', newVal => this.myMethod())`使用箭头函数。**因为箭头函数会绑定父级上下文**，所以 `this` 不会按照预期指向 Vue 实例，然后 `this.myMethod` 将是未定义。
 
 ## 2. 语法
@@ -363,7 +366,7 @@ Vue.component('button-counter', {
 })
 ```
 
-#### 8.3.1 子组件索引
+#### 8.2.2 子组件索引
 *JavaScript 中直接访问子组件。为此可以使用 ref 为子组件指定一个索引 ID*
 
 ```html
