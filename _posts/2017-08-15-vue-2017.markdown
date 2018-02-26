@@ -480,7 +480,7 @@ code在这里：<https://github.com/chaoranwill/chaoran-home/tree/master/vue>
 ## vue 思维导图
 ![vue-head](/img/in-post/post-vue-2018/vue-head.png)
 ## vue 生命周期
-<img src="../img/in-post/post-vue-2018/vue-life.png" width = "80%" height = "200" align=center />
+![vue-life](/img/in-post/post-vue-2018/vue-life.png)
 ![vue-code](/img/in-post/post-vue-2018/vue-code.png)
 ## 推荐阅读
 <http://mp.weixin.qq.com/s/KgZoZ9da4ipZeMDuG-BY-w>
