@@ -20,9 +20,12 @@ tags:
 * 不可当构造函数
 * 用rest代替argument
 * this指向一般可变，但在箭头函数中固定
-* 简单，单行，不会复用的函数建议使箭头函数  |  复杂，行多，使用传统
+* 简单，单行，不会复用的函数建议使箭头函数 
+    复杂，行多，使用传统
 
 #### 1.2. promise
+> 解决异步回调多层嵌套的问题
+
 1. pending 进行中
 2. resolved 已完成
 3. rejected 已失败
@@ -269,6 +272,7 @@ function problem() {
 myObj.element = null;
 element.someObject =null;
 ```
+
 ##### 4.1.2. 减少JavaScript中的垃圾回收
 * 在初始化的时候新建对象，然后在后续过程中尽量多的重用这些创建好的对象。
 * 另外还有以下三种内存分配表达式（可能不像new关键字那么明显了）：
