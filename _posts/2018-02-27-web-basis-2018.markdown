@@ -4,7 +4,7 @@ title:      "Web basis summary"
 subtitle:   "basic of front-end development"
 date:       2018-02-27 19:55:00
 author:     "Chaoran"
-header-img: "img/post-bg-webbasic.jpg"
+header-img: "img/post-bg-web-basic.jpg"
 noToc:      true
 tags:
     - 前端开发
@@ -32,7 +32,7 @@ import      //模块
 class       //类
 ```
 ##### 1.1.2. 数据类型
-###### 类型介绍
+###### -- 类型介绍
 ES5:
 `String、Number、Boolean、Null、Undefined、Object`
 ES6增:
@@ -48,7 +48,7 @@ ES6增:
     - 将其存储在**堆**(heap)中，存储在变量处的值是一个指针，指向存储对象的内存处(按址访问)
     - 可以为其添加、改变和删除属性和方法；但基本类型不可以添加属性和方法
 
-###### 类型判断
+###### -- 类型判断
 * 原始类型
     - typeof
 * 引用类型
@@ -91,12 +91,12 @@ ES6增:
     jQuery.type( null ) === "null"                    // true
     jQuery.type( true ) === "boolean"                 // true
     ```
-###### 函数
+###### -- 函数
 * 普通函数 -- 直接调用
 * 构造函数 -- new 创建对象
 * 对象方法 -- 对象调用
 
-###### JS 内置对象
+###### -- JS 内置对象
 * window
     - 全局对象，主要描述浏览器窗口相关的属性和状态
 * Date
@@ -105,6 +105,69 @@ ES6增:
     - 主要用于对象的序列化和反序列化
     - 实现对象的深拷贝
 * RegExp
-深拷贝与浅拷贝
+
+###### -- 浅复制与深拷贝
+1. 浅复制
+    对对象地址的复制，并没有开辟新的栈，复制的结果是两个对象指向同一个地址，修改其中一个对象的属性，则另一个对象的属性也会改变
+2. 深拷贝
+    开辟新的栈，两个对象对应两个不同的地址，修改一个对象的属性，不会改变另一个对象的属性
+
+**方法**
+1. 递归
+    ```js
+    var china = {
+        nation : '中国',
+        birthplaces:['北京','上海','广州'],
+        skincolr :'yellow',
+        friends:['sk','ls']
+    }
+    //深复制，要想达到深复制就需要用递归
+    function deepCopy(o,c){
+        var c = c || {}
+        for(var i in o){
+            if(typeof o[i] === 'object'){
+                //要考虑深复制问题了
+                if(o[i].constructor === Array){
+                    //这是数组
+                    c[i] =[]
+                }else{
+                    //这是对象
+                    c[i] = {}
+                }
+                deepCopy(o[i],c[i])
+            }else{
+                c[i] = o[i]
+            }
+        }
+        return c
+    }
+    var result = {name:'result'}
+    result = deepCopy(china,result)
+    console.dir(result)
+    ```
+    ![递归](/img/in-post/post-web-basic/digui.png)
+    出自知乎 <https://www.zhihu.com/question/23031215/answer/124017500>
+2. JSON
+```js
+var test ={
+    name:{
+        xing:{ 
+            first:'张',
+            second:'李'
+        },
+        ming:'老头'
+    },
+    age :40,
+    friend :['隔壁老王','宋经纪','同事']
+}
+var result = JSON.parse(JSON.stringify(test))
+result.age = 30
+result.name.xing.first = '往'
+result.friend.push('fdagldf;ghad')
+console.dir(test)
+console.dir(result)
+```
+![json](/img/in-post/post-web-basic/json.png)
+
 
 
