@@ -954,3 +954,9 @@ body {
 .page-fullscreen footer .copyright a:hover {
   color: #ddd;
 }
+p {
+  margin: 10px 0;
+}
+.post-container ul,.post-container ol {
+  margin-bottom: 30px;
+}
