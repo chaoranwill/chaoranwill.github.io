@@ -153,7 +153,8 @@ seajs专注web浏览器端，通过node扩展方式方便跑在node端
 4. 质量，require<seajs
 5. 插件
 
-AMD && CMD： <http://www.cnblogs.com/chaoran/p/6696690.html>
+更多了解：
+* [AMD && CMD](http://www.cnblogs.com/chaoran/p/6696690.html?_blank)
 #### 3.2. react
 > 用于构建用户界面的JavaScript库，主要用于构建ui，将普通的DOM以数据结构的形式展现出来
 
@@ -315,7 +316,8 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 * 如果去查找一个普通对象的属性时，在当前对象和其原型中都找不到时，会返回undefined
 * 查找的属性在作用域链中不存在的话就会抛出ReferenceError
 
-闭包中的this作用域: <https://www.cnblogs.com/nuanriqingfeng/p/5789003.html>
+更多了解：
+* [闭包中的this作用域](https://www.cnblogs.com/nuanriqingfeng/p/5789003.html?_blank)
 
 **闭包的运用**
 * 匿名自执行函数

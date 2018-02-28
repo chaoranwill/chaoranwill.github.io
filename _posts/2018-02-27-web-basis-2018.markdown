@@ -249,7 +249,8 @@ JavaScript
 常见问题：
 * timeout 只会影响readyState，而不会影响status，因为超时只会中断数据传输，但不会影响服务器的处理结果。 如果 timeout 设置的不合理，就会导致响应码status 是200，但 response里却没有数据，这种情况就是服务器正确响应了请求，但数据的下载被超时中断了。
 
-HTTP 相关请见：<http://www.cnblogs.com/chaoran/p/4783633.html>
+HTTP 相关请见：
+* [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html?_blank)
 ##### 1.8.2. JSONP && XSS
 浏览器设置了安全限制——JavaScript或Cookie只能访问同域下的内容——同源策略
 
@@ -260,18 +261,20 @@ JSONP虽然可以解决跨域问题，但只能是get请求，并且没有有效
 
 随着移动端的快速发展，Web技术的应用场景正在变得越来越复杂， 关注点分离 原则在系统设计层面就显得越来越重要，而XMLHttpRequest 是 Ajax 最古老的一个接口，因而不太符合现代化的系统设计理念。因此，浏览器提供了一个新的 Ajax 接口，即 Fetch API ，Fetch API 是基于Promise 思想设计的，更符合关注点分离原则。
 
-JSONP && CORS 详解：<http://www.cnblogs.com/chaoran/p/6579588.html>
-fetch 进阶指南： <http://web.jobbole.com/91161/>
-JavaScript 异步编程的4种方式：<http://www.ruanyifeng.com/blog/2012/12/asynchronous%EF%BC%BFjavascript.html>
+更多请见：
+* [JSONP && CORS 详解](http://www.cnblogs.com/chaoran/p/6579588.html?_blank)
+* [fetch 进阶指南](http://web.jobbole.com/91161/?_blank)
+* [JavaScript 异步编程的4种方式](http://www.ruanyifeng.com/blog/2012/12/asynchronous%EF%BC%BFjavascript.html?_blank)
 
 #### 1.9. 模块化
 模块加载方案，最主要有 CMD 和 AMD 两种，分别以commonjs 和 requirejs为代表
 
 ES6 在语言标准的层面上，实现了模块化编程，其设计思想是，**尽量静态化**，使得编译时就能确定模块的依赖关系，即**编译时加载**
 
-CMD和AMD是在运行时确定依赖关系，即**运行时加载**。
+CMD和AMD是在运行时确定依赖关系，即**运行时加载**
 
-AMD && CMD: <http://www.cnblogs.com/chaoran/p/6696690.html>
+详情：
+[AMD && CMD](http://www.cnblogs.com/chaoran/p/6696690.html?_blank)
 
 ##### ES6 模块化
 每一个ES6模块都是一个包含JS代码的文件，模块本质上就是一段脚本，而不是用module关键字定义一个模块，但是模块与脚本还是有两点区别：
@@ -327,7 +330,8 @@ Node.js在服务端的优势是，它采用单线程和异步I/O模型，实现�
 * 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部
 * 当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）
 
-ES6 新增：<http://www.cnblogs.com/chaoran/p/6366170.html>
+更多：
+* [ES6 新增](http://www.cnblogs.com/chaoran/p/6366170.html?_blank)
 
 ## 2. CSS
 #### 2.1. CSS 选择器
@@ -353,7 +357,8 @@ ES6 新增：<http://www.cnblogs.com/chaoran/p/6366170.html>
     **为父元素增加一个border-top或者padding-top即可解决这个问题**
 * box-sizing 属性的设置会影响盒子width和height的计算
 
-垂直外边距合并--CSS的Margin属性:详解margin属性: <http://blog.csdn.net/bingqingsuimeng/article/details/41892433>
+更多：
+* [垂直外边距合并--CSS的Margin属性:详解margin属性](http://blog.csdn.net/bingqingsuimeng/article/details/41892433?_blank)
 
 #### 2.3. 浮动布局
 设置元素的 float 属性，能使该元素脱离普通文档流
@@ -365,6 +370,8 @@ ES6 新增：<http://www.cnblogs.com/chaoran/p/6366170.html>
 * 行内盒子(inline-block)
 * table也可以实现同样的效果。
 
+
+
 参考：
-<https://www.zhihu.com/question/23031215/answer/124017500>
-<https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=100000096&idx=1&sn=4d9f2f43a8e29a1e9484bcad1e114c15&chksm=7ac8b98a4dbf309c495a4a4568757e2d21ae5265d365330a9d23e96f0457957539d43e9522a0&mpshare=1&scene=1&srcid=0226TkvgVT54Lk6u5XuL256h#rd>
+* [javascript中的深拷贝和浅拷贝](https://www.zhihu.com/question/23031215/answer/124017500?_blank)
+* [web 前端知识体系精简](https://mp.weixin.qq.com/s?__biz=MzUzOTM0MTE4OQ==&mid=100000096&idx=1&sn=4d9f2f43a8e29a1e9484bcad1e114c15&chksm=7ac8b98a4dbf309c495a4a4568757e2d21ae5265d365330a9d23e96f0457957539d43e9522a0&mpshare=1&scene=1&srcid=0226TkvgVT54Lk6u5XuL256h#rd?_blank)
