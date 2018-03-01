@@ -4,7 +4,7 @@ title:      "FE knowledge fragment"
 subtitle:   " "
 date:       2018-02-27 19:55:00
 author:     "Chaoran"
-header-img: "img/post-bg-web-fragment.jpg"
+header-img: "img/post-bg-web-basic.png"
 noToc:      true
 tags:
     - 前端开发
