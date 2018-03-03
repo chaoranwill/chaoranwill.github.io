@@ -15,7 +15,17 @@ tags:
 * 目录
 {:toc #toc}
 ## 1. ES6
+* 箭头函数
+* 字符串模板
+* generators(生成器)
+* async/await
+* 解构赋值
+* class
+* 引入module模块的概念
+
 #### 1.1. 箭头函数：
+> 箭头函数可以让this指向固定化，这种特性很有利于封装回调函数
+
 * 函数内的this对象，是定义时所在的对象，不是使用时所在的对象
 * 不可当构造函数
 * 用rest代替argument
@@ -44,9 +54,27 @@ tags:
 * pending时，状态无法得知
 
 **Promise.all**
+> 接收 Promise 数组为参数，将多个Promise实例，包装成一个新的Promise实例，所有 resolve ，返回所有值
+
 在不同的接口请求数据然后拼合成自己所需的数据，通常这些接口之间没有关联（例如不需要前一个接口的数据作为后一个接口的参数）
+```js
+var p = Promise.all([p1, p2, p3]);
+```
+
+p的状态由p1、p2、p3决定，分成两种情况:
+* 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+* 只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
+
 **Promise.race**
 它同样接收一个数组，不同的是只要该数组中的 Promise 对象的状态发生变化（无论是 resolve 还是 reject）该方法都会返回
+
+**async/await**
+> async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来
+
+* 是写异步代码的新方式，以前的方法有回调函数和Promise。
+* 是基于Promise实现的，它不能用于普通的回调函数。
+* 与Promise一样，是非阻塞的。
+* 使得异步代码看起来像同步代码，这正是它的魔力所在。
 
 #### 1.3. interator 
 > 是一种接口，为所有数据结构提供一种统一的访问机制，即for...of 循环 
@@ -153,8 +181,8 @@ seajs专注web浏览器端，通过node扩展方式方便跑在node端
 4. 质量，require<seajs
 5. 插件
 
-更多了解：
-* [AMD && CMD](http://www.cnblogs.com/chaoran/p/6696690.html?_blank)
+更多了解：[AMD && CMD](http://www.cnblogs.com/chaoran/p/6696690.html?_blank)
+
 #### 3.2. react
 > 用于构建用户界面的JavaScript库，主要用于构建ui，将普通的DOM以数据结构的形式展现出来
 
@@ -243,6 +271,7 @@ MVC 可以分成两种方式：
 
 #### 3.7. restful架构
 Fielding将他对互联网软件的架构原则，定名为REST，即Representational State Transfer的缩写。我对这个词组的翻译是"资源的表现层状态转化"。
+
 ## 4. js
 #### 4.1. js垃圾回收与内存管理
 > 各大浏览器通常用采用的垃圾回收有两种方法：标记清除、引用计数
