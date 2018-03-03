@@ -15,11 +15,37 @@ tags:
 * 目录
 {:toc #toc}
 
-#### 1. display:none和visibility:hidden
-* display:none  隐藏对应的元素，在文档布局中不再给它分配空间，它各边的元素会合拢，就当他从来不存在。
-* visibility:hidden  隐藏对应的元素，但是在文档布局中仍保留原来的空间。
+## 1. HTML
+#### 15. html5
+HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存储，多任务等功能的增加。
+1. 拖拽释放(Drag and drop) API 
+2. 语义化更好的内容标签（header,nav,footer,aside,article,section）
+3. 音频、视频API(audio,video)
+4. 画布(Canvas) API
+5. 地理(Geolocation) API
+6. 本地离线存储 localStorage 长期存储数据，浏览器关闭后数据不丢失；
+7. sessionStorage 的数据在浏览器关闭后自动删除
+8. 表单控件，calendar、date、time、email、url、search  
+9. 新的技术webworker, websocket, Geolocation
 
-#### 2. 块与行内元素
+**移除的元素：**
+1. 纯表现的元素：basefont，big，center，font, s，strike，tt，u；
+2. 对可用性产生负面影响的元素：frame，frameset，noframes；
+
+#### 10. 语义化
+1. 去掉或者丢失样式的时候能够让页面呈现出清晰的结构
+2. 有利于SEO：和搜索引擎建立良好沟通，有助于爬虫抓取更多的有效信息：爬虫依赖于标签来确定上下文和各个关键字的权重；
+3. 方便其他设备解析（如屏幕阅读器、盲人阅读器、移动设备）以意义的方式来渲染网页；
+4. 便于团队开发和维护，语义化使得网页更具可读性，是进一步开发网页的必要步骤，遵循W3C标准的团队都遵循这个标准，可以减少差异化。
+
+#### 11. Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?
+1. <!DOCTYPE> 声明位于文档中的最前面，处于 html 标签之前。告知浏览器以何种模式来渲染文档 
+    * 声明三种 DTD 类型，分别表示严格版本、过渡版本以及基于框架的 HTML 文档。
+2. 严格模式的排版和 JS 运作模式是  以该浏览器支持的最高标准运行。
+3. 在混杂模式中，页面以宽松的向后兼容的方式显示。模拟老式浏览器的行为以防止站点无法工作。
+4. DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现。
+
+#### 2.1 块与行内元素
 标准文档流里面，块级元素：
 `div  , p  , form,   ul,  li ,  ol, dl, h1-h6,   address,  fieldset,  hr, menu,  table`
 * 总是在新行上开始，占据一整行；
@@ -40,6 +66,37 @@ tags:
 默认具有 CSS 格式化外表范围的元素，比如 img 元素，有自己的宽和高
 `input，textarea，select`
 
+#### 16. iframe的优缺点？
+**优点：**
+1. 解决加载缓慢的第三方内容如图标和广告等的加载问题
+2. Security sandbox
+3. 并行加载脚本
+4. 方便页面的部分修改
+5. 重载时减少数据传输
+
+**缺点：**
+1. iframe会阻塞主页面的Onload事件
+2. 即时内容为空，加载也需要时间
+3. 没有语意
+4. 浏览器后退无效
+5. 搜索引擎不容易解读
+6. IFRAME销毁是无法全部释放内存，容易导致内存泄漏
+
+**可用 Ajax 代替iframe** 
+
+#### 17. 浏览器内多个标签页之间的通信
+调用 localstorge、cookies 等本地存储方式
+
+## 2. CSS
+#### 9. CSS3有哪些新特性
+1. CSS3实现圆角（border-radius），阴影（box-shadow），
+2. 对文字加特效（text-shadow、），线性渐变（gradient），旋转（transform）
+3. transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);// 旋转,缩放,定位,倾斜
+4. 增加了更多的CSS选择器  多背景 rgba
+5. 在CSS3中唯一引入的伪类是 ::selection.
+6. 媒体查询，多栏布局
+7. border-image
+
 #### 3. CSS中 使用方式及其区别？
 1. 内联式
     直接用在标签上，维护成本高
@@ -58,34 +115,17 @@ tags:
 
 更多： [link 与 @import之对比](http://www.cnblogs.com/chaoran/p/4783933.html)
 
-#### 4. position的absolute与fixed
-**共同点：**
-* 改变行内元素的呈现方式，display被置为inline-block；
-* 让元素脱离普通流，不占据空间；
-* 默认会覆盖到非定位元素上
+#### 21. FOUC（无样式内容闪烁）
+>FOUC - Flash Of Unstyled Content 文档样式闪烁
 
-**不同点：**
-* absolute的根元素是可以设置的，而fixed的根元素固定为浏览器窗口。
-* 当你滚动网页，fixed元素与浏览器窗口之间的距离是不变的。
+```html
+<style type="text/css" media="all">@import "../fouc.css";</style> 
+```
 
-**relative：**
-* 生成相对定位的元素，相对于其正常位置进行定位。
-* 元素的位置通过left、right、top、bottom属性进行规定，
-* 可以通过z-index进行层次分级。
-* 元素元素仍保持其未定位前的形状，原本所占的空间仍将保留。
-* 如果没有定位偏移量，对元素本身没有任何影响
-
-**absolute：**
-* 生成绝对定位元素，脱离文档流，并相对于其包含块进行定位
-* 所占的空间会会被后面元素占据；
-* 元素定位后生成一个块级框，而不论原来它在正常流中生成何种类型的框；
-* 绝对定位元素的包含块由离它最近的 'position' 属性为 'absolute'、'relative' 或者 'fixed' 的祖先元素创建。如果没有定义，那么就相对于整个文档body定位（注意不是相对于浏览器窗口定位）
-* 相对定位一般都是配合绝对定位元素使用
-
-**fixed：**
-* 生成绝对定位元素，相对于浏览器窗口的定位
-* 通常配合z-index一起来使用。
-* 比如说网页上悬挂的聊天图标或者广告就是用了fixed
+引用CSS文件的@import就是造成这个问题的罪魁祸首。IE会先加载整个HTML文档的DOM，然后再去导入外部的CSS文件，因此，在页面DOM加载完成到CSS导入完成中间会有一段时间页面上的内容是没有样式的，这段时间的长短跟网速，电脑速度都有关系。
+解决方法: 
+* 用 link 代替 @import
+* 在 head 之间加入一个 link 或者 script 元素
 
 #### 5. 盒模型
 * 盒模型： 内容(content)、填充(padding)、边界(margin)、 边框(border)
@@ -131,6 +171,35 @@ tags:
 * :enabled :disabled 控制表单控件的禁用状态。
 * :checked        单选框或复选框被选中。
 
+#### 4. position的absolute与fixed
+**共同点：**
+* 改变行内元素的呈现方式，display被置为inline-block；
+* 让元素脱离普通流，不占据空间；
+* 默认会覆盖到非定位元素上
+
+**不同点：**
+* absolute的根元素是可以设置的，而fixed的根元素固定为浏览器窗口。
+* 当你滚动网页，fixed元素与浏览器窗口之间的距离是不变的。
+
+**relative：**
+* 生成相对定位的元素，相对于其正常位置进行定位。
+* 元素的位置通过left、right、top、bottom属性进行规定，
+* 可以通过z-index进行层次分级。
+* 元素元素仍保持其未定位前的形状，原本所占的空间仍将保留。
+* 如果没有定位偏移量，对元素本身没有任何影响
+
+**absolute：**
+* 生成绝对定位元素，脱离文档流，并相对于其包含块进行定位
+* 所占的空间会会被后面元素占据；
+* 元素定位后生成一个块级框，而不论原来它在正常流中生成何种类型的框；
+* 绝对定位元素的包含块由离它最近的 'position' 属性为 'absolute'、'relative' 或者 'fixed' 的祖先元素创建。如果没有定义，那么就相对于整个文档body定位（注意不是相对于浏览器窗口定位）
+* 相对定位一般都是配合绝对定位元素使用
+
+**fixed：**
+* 生成绝对定位元素，相对于浏览器窗口的定位
+* 通常配合z-index一起来使用。
+* 比如说网页上悬挂的聊天图标或者广告就是用了fixed
+
 #### 7. display
 ![display](/img/in-post/post-web-nowcoder/display.png)
 display 值的作用：
@@ -139,6 +208,10 @@ display 值的作用：
 3. inline-block 象行内元素一样显示，但其内容象块类型元素一样显示。
 4. list-item 象块类型元素一样显示，并添加样式列表标记。
 
+#### 1. display:none和visibility:hidden
+* display:none  隐藏对应的元素，在文档布局中不再给它分配空间，它各边的元素会合拢，就当他从来不存在。
+* visibility:hidden  隐藏对应的元素，但是在文档布局中仍保留原来的空间。
+
 #### 8. position 值的定位区别
 * absolute 生成绝对定位的元素，相对于 static 定位以外的第一个祖先元素进行定位。
 * fixed 生成固定定位的元素，相对于浏览器窗口进行定位（老IE不支持）。
@@ -146,27 +219,57 @@ display 值的作用：
 * static 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right z-index 声明）。
 * inherit 规定从父元素继承 position 属性的值。
 
-#### 9. CSS3有哪些新特性
-1. CSS3实现圆角（border-radius），阴影（box-shadow），
-2. 对文字加特效（text-shadow、），线性渐变（gradient），旋转（transform）
-3. transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);// 旋转,缩放,定位,倾斜
-4. 增加了更多的CSS选择器  多背景 rgba
-5. 在CSS3中唯一引入的伪类是 ::selection.
-6. 媒体查询，多栏布局
-7. border-image
+#### 13. 怪异模式
+> 为了在那些针对 HTML5 设计，但是又没有添加 doctype(可以决定浏览器工作在哪种模式下，后面会详细讨论)的页面而存在
 
-#### 10. 语义化
-1. 去掉或者丢失样式的时候能够让页面呈现出清晰的结构
-2. 有利于SEO：和搜索引擎建立良好沟通，有助于爬虫抓取更多的有效信息：爬虫依赖于标签来确定上下文和各个关键字的权重；
-3. 方便其他设备解析（如屏幕阅读器、盲人阅读器、移动设备）以意义的方式来渲染网页；
-4. 便于团队开发和维护，语义化使得网页更具可读性，是进一步开发网页的必要步骤，遵循W3C标准的团队都遵循这个标准，可以减少差异化。
+浏览器 | 内核 | 前缀 | js 引擎
+- | :-: | -:  | -: 
+IE | Trident | -ms- | Chakra
+Chrome | Webkit | -webkit- | V8 
+Safari | Webkit | -webkit- | Javascriptcore
+Opera | Presto | -o- | Carakan
 
-#### 11. Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?
-1. <!DOCTYPE> 声明位于文档中的最前面，处于 html 标签之前。告知浏览器以何种模式来渲染文档 
-    * 声明三种 DTD 类型，分别表示严格版本、过渡版本以及基于框架的 HTML 文档。
-2. 严格模式的排版和 JS 运作模式是  以该浏览器支持的最高标准运行。
-3. 在混杂模式中，页面以宽松的向后兼容的方式显示。模拟老式浏览器的行为以防止站点无法工作。
-4. DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现。 
+
+
+IE6 时，渲染引擎（MSHTML.dll）做出了一个重要的改变，将自己原先不符合 W3C 规范中的盒模型 box mode 绘制方式改为与 W3C 标准一致（后面会详细讨论），由于这个重大的改动，原先针对 IE 旧版本所设计的 HTML 页面都不能正确显示了，所以在 IE6 发布的时候附带了一个切换回 IE5 页面渲染方式的功能，这个功能中就首次提出了 Quirks Mode。
+
+当用户需要显示旧版本的页面时切换到 Quirks Mode，这时浏览器的渲染引擎就切换到 IE5.5 所对应的版本(MSHTML.dll 5.5.x)，box mode 还是按照之前的方式绘制
+
+当用户需要显示一些新的、满足 W3C 规范的页面时，渲染引擎切换到一个与 Quirks Mode 对应的 Standards Mode（标准模式）
+
+**浏览器如何判断文档类型**
+1. Doctype 检测
+当 doctype 为<!DOCTYPE html>，表明该页面是遵守了 HTML5 规范的，浏览器会选择 Standards Mode
+当 doctype 缺失的时候，浏览器会选择 Quirks Mode
+
+2. x-ua-compatible 信息
+![meta](/img/in-post/post-web-nowcoder/meta.png)
+
+**标准模式下的页面与怪异模式下的页面区别**
+1. 盒模型
+开发人员描述 CSS 中块级元素的一种约定俗称
+![box-ie](/img/in-post/post-web-nowcoder/box-ie.png)
+![box-standard](/img/in-post/post-web-nowcoder/box-stan.png)
+
+2. 图片元素的垂直对齐方式
+vertical-align：定义行内元素的 base line 相对于该元素所在行的 base line 的垂直对齐
+    `baseline，sub，supper，top，text-top，bottom，text-bottom，middle `
+    base line 指的是一行字横排时下沿的基础线，baseline 并不是汉字的下端沿，而是英文字母 e 的下端沿，bottom line，指的是汉字，或者英文字母 p，g 的下端沿。
+    * 对于 inline 元素和 table-cell 元素，在 IE Standards Mode 下 vertical-align 属性默认取值为 baseline。而当 inline 元素的内容只有图片时，如 table 的单元格 table-cell。在 IE Quirks Mode 下，table 单元格中的图片的 vertical align 属性默认为 bottom，因此，在图片底部会有几像素的空间
+3. table 元素中的字体
+ IE Quirks Mode 下，对于 table 元素，字体的某些属性将不会从 body 或其他封闭元素继承到 table 中，特别是 font-size 属性。
+4. 内联元素的尺寸
+IE Standards Mode 下，non-replaced inline 元素无法自定义大小，而在 IE Quirks Mode 下，定义这些元素的 width 和 height 属性，能够影响该元素显示的大小尺寸。
+5. 元素的百分比高度
+ IE Standards Mode 下，高度取决于内容的变化，而在 Quirks Mode 下，百分比高度则被正确应用。
+6. 元素溢出的处理
+IE Standard Mode 下，overflow 取默认值 visible，即溢出可见，这种情况下，溢出内容不会被裁剪，呈现在元素框外。而在 Quirks Mode 下，该溢出被当做扩展 box 来对待，即元素的大小由其内容决定，溢出不会被裁剪，元素框自动调整，包含溢出内容
+
+#### 14. CSS reset
+> 是否使用，取决于 “是否需要依赖浏览器默认样式”
+
+1. 导致blockquote、ol、ul、hn等语义元素在没有赋以其他合理的样式时（常常如此），缺乏恰当的样式展现。而因为视觉上无法区分，这进一步导致许多开发人员忽视或误用这些语义元素
+2.  CSS reset 通常会增加浏览器进行样式计算的成本（即有一定的性能负担）
 
 #### 12. html常见兼容性问题
 1. png24位的图片在iE6浏览器上出现背景
@@ -221,94 +324,27 @@ display 值的作用：
 12. li之间有间距
 解决方法：li 设置vertical-align:middle;
 
-#### 13. 怪异模式
-> 为了在那些针对 HTML5 设计，但是又没有添加 doctype(可以决定浏览器工作在哪种模式下，后面会详细讨论)的页面而存在
+## 3. JavaScript
+#### 35. JavaScript 的同源策略
+> 同源策略是客户端脚本（尤其是Javascript）的重要的安全度量标准。它最早出自Netscape Navigator2.0，其目的是防止某个文档或脚本从多个不同源装载
 
-浏览器 | 内核 | 前缀 | js 引擎
-- | :-: | -:  | -: 
-IE | Trident | -ms- | Chakra
-Chrome | Webkit | -webkit- | V8 
-Safari | Webkit | -webkit- | Javascriptcore
-Opera | Presto | -o- | Carakan
+这里的同源策略指的是：协议，域名，端口相同，同源策略是一种安全协议，指一段脚本只能读取来自同一来源的窗口和文档的属性。
 
+**为什么要有同源限制：**
+比如一个黑客程序，他利用Iframe把真正的银行登录页面嵌到他的页面上，当你使用真实的用户名，密码登录时，他的页面就可以通过Javascript读取到你的表单中input中的内容，这样用户名，密码就轻松到手了。
 
+#### 36. use strict
+> ECMAscript 5添加了第二种运行模式："严格模式"（strict mode）。顾名思义，这种模式使得Javascript在更严格的条件下运行
 
-IE6 时，渲染引擎（MSHTML.dll）做出了一个重要的改变，将自己原先不符合 W3C 规范中的盒模型 box mode 绘制方式改为与 W3C 标准一致（后面会详细讨论），由于这个重大的改动，原先针对 IE 旧版本所设计的 HTML 页面都不能正确显示了，所以在 IE6 发布的时候附带了一个切换回 IE5 页面渲染方式的功能，这个功能中就首次提出了 Quirks Mode。
-
-当用户需要显示旧版本的页面时切换到 Quirks Mode，这时浏览器的渲染引擎就切换到 IE5.5 所对应的版本(MSHTML.dll 5.5.x)，box mode 还是按照之前的方式绘制
-
-当用户需要显示一些新的、满足 W3C 规范的页面时，渲染引擎切换到一个与 Quirks Mode 对应的 Standards Mode（标准模式）
-
-**浏览器如何判断文档类型**
-1. Doctype 检测
-当 doctype 为<!DOCTYPE html>，表明该页面是遵守了 HTML5 规范的，浏览器会选择 Standards Mode
-当 doctype 缺失的时候，浏览器会选择 Quirks Mode
-
-2. x-ua-compatible 信息
-![meta](/img/in-post/post-web-nowcoder/meta.png)
-
-**标准模式下的页面与怪异模式下的页面区别**
-1. 盒模型
-开发人员描述 CSS 中块级元素的一种约定俗称
-![box-ie](/img/in-post/post-web-nowcoder/box-ie.png)
-![box-standard](/img/in-post/post-web-nowcoder/box-stan.png)
-
-2. 图片元素的垂直对齐方式
-vertical-align：定义行内元素的 base line 相对于该元素所在行的 base line 的垂直对齐
-    `baseline，sub，supper，top，text-top，bottom，text-bottom，middle `
-    base line 指的是一行字横排时下沿的基础线，baseline 并不是汉字的下端沿，而是英文字母 e 的下端沿，bottom line，指的是汉字，或者英文字母 p，g 的下端沿。
-    * 对于 inline 元素和 table-cell 元素，在 IE Standards Mode 下 vertical-align 属性默认取值为 baseline。而当 inline 元素的内容只有图片时，如 table 的单元格 table-cell。在 IE Quirks Mode 下，table 单元格中的图片的 vertical align 属性默认为 bottom，因此，在图片底部会有几像素的空间
-3. table 元素中的字体
- IE Quirks Mode 下，对于 table 元素，字体的某些属性将不会从 body 或其他封闭元素继承到 table 中，特别是 font-size 属性。
-4. 内联元素的尺寸
-IE Standards Mode 下，non-replaced inline 元素无法自定义大小，而在 IE Quirks Mode 下，定义这些元素的 width 和 height 属性，能够影响该元素显示的大小尺寸。
-5. 元素的百分比高度
- IE Standards Mode 下，高度取决于内容的变化，而在 Quirks Mode 下，百分比高度则被正确应用。
-6. 元素溢出的处理
-IE Standard Mode 下，overflow 取默认值 visible，即溢出可见，这种情况下，溢出内容不会被裁剪，呈现在元素框外。而在 Quirks Mode 下，该溢出被当做扩展 box 来对待，即元素的大小由其内容决定，溢出不会被裁剪，元素框自动调整，包含溢出内容
-
-#### 14. CSS reset
-> 是否使用，取决于 “是否需要依赖浏览器默认样式”
-
-1. 导致blockquote、ol、ul、hn等语义元素在没有赋以其他合理的样式时（常常如此），缺乏恰当的样式展现。而因为视觉上无法区分，这进一步导致许多开发人员忽视或误用这些语义元素
-2.  CSS reset 通常会增加浏览器进行样式计算的成本（即有一定的性能负担）
-
-#### 15. html5
-HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存储，多任务等功能的增加。
-1. 拖拽释放(Drag and drop) API 
-2. 语义化更好的内容标签（header,nav,footer,aside,article,section）
-3. 音频、视频API(audio,video)
-4. 画布(Canvas) API
-5. 地理(Geolocation) API
-6. 本地离线存储 localStorage 长期存储数据，浏览器关闭后数据不丢失；
-7. sessionStorage 的数据在浏览器关闭后自动删除
-8. 表单控件，calendar、date、time、email、url、search  
-9. 新的技术webworker, websocket, Geolocation
-
-**移除的元素：**
-1. 纯表现的元素：basefont，big，center，font, s，strike，tt，u；
-2. 对可用性产生负面影响的元素：frame，frameset，noframes；
-
-#### 16. iframe的优缺点？
-**优点：**
-1. 解决加载缓慢的第三方内容如图标和广告等的加载问题
-2. Security sandbox
-3. 并行加载脚本
-4. 方便页面的部分修改
-5. 重载时减少数据传输
+设立"严格模式"的目的，主要有以下几个：
+1. 消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为;
+2. 消除代码运行的一些不安全之处，保证代码运行的安全；
+3. 提高编译器效率，增加运行速度；
+4. 为未来新版本的Javascript做好铺垫。
+注：经过测试 IE6,7,8,9 均不支持严格模式。
 
 **缺点：**
-1. iframe会阻塞主页面的Onload事件
-2. 即时内容为空，加载也需要时间
-3. 没有语意
-4. 浏览器后退无效
-5. 搜索引擎不容易解读
-6. IFRAME销毁是无法全部释放内存，容易导致内存泄漏
-
-**可用 Ajax 代替iframe**
-
-#### 17. 浏览器内多个标签页之间的通信
-调用 localstorge、cookies 等本地存储方式
+现在网站的 JS 都会进行压缩，一些文件用了严格模式，而另一些没有。这时这些本来是严格模式的文件，被 merge 后，这个串就到了文件的中间，不仅没有指示严格模式，反而在压缩后浪费了字节。
 
 #### 18. WebSocket 
 > HTTP 协议缺陷：通信只能由客户端发起
@@ -328,39 +364,6 @@ readyState属性返回实例对象的当前状态，共有四种:
 * OPEN：值为1，表示连接成功，可以通信了。
 * CLOSING：值为2，表示连接正在关闭。
 * CLOSED：值为3，表示连接已经关闭，或者打开连接失败。
-
-#### 19. 线程与进程
-1. 一个程序至少有一个进程,一个进程至少有一个线程
-2. 线程的划分尺度小于进程，使得多线程程序的并发性高
-3. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
-4. 线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制 
-5. 从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别
-
-#### 20. 网站的文件和资源优化
-1. 文件合并
-2. 文件最小化/文件压缩
-3. 使用 CDN 托管
-4. 缓存的使用（多个域名来提供缓存）
-5. 其他
-
-测试代码性能
-* Profiler
-* JSPerf（http://jsperf.com/nexttick-vs-setzerotimeout-vs-settimeout）
-* Dromaeo
-
-更多：[网站性能优化](http://www.cnblogs.com/chaoran/p/4795800.html)
-
-#### 21. FOUC（无样式内容闪烁）
->FOUC - Flash Of Unstyled Content 文档样式闪烁
-
-```html
-<style type="text/css" media="all">@import "../fouc.css";</style> 
-```
-
-引用CSS文件的@import就是造成这个问题的罪魁祸首。IE会先加载整个HTML文档的DOM，然后再去导入外部的CSS文件，因此，在页面DOM加载完成到CSS导入完成中间会有一段时间页面上的内容是没有样式的，这段时间的长短跟网速，电脑速度都有关系。
-解决方法: 
-* 用 link 代替 @import
-* 在 head 之间加入一个 link 或者 script 元素
 
 #### 22. null和undefined
 * null 是一个表示"无"的对象，转为数值时为0
@@ -455,18 +458,6 @@ NodeJS的事件循环模型一般要注意下面几点：
 1. 高并发
 2. 聊天
 3. 实时消息推送   
-
-#### 30. 页面从输入 URL 到页面加载过程
-分为4个步骤：
-1. 当发送一个 URL 请求时，不管这个 URL 是 Web 页面的 URL 还是 Web 页面上每个资源的 URL，浏览器都会开启一个线程来处理这个请求，同时在远程 DNS 服务器上启动一个 DNS 查询。这能使浏览器获得请求对应的 IP 地址。
-2. 浏览器与远程 Web 服务器通过 TCP 三次握手协商来建立一个 TCP/IP 连接。该握手包括一个同步报文，一个同步-应答报文和一个应答报文，这三个报文在 浏览器和服务器之间传递。该握手首先由客户端尝试建立起通信，而后服务器应答并接受客户端的请求，最后由客户端发出该请求已经被接受的报文。
-3. 一旦 TCP/IP 连接建立，浏览器会通过该连接向远程服务器发送 HTTP 的 GET 请求。远程服务器找到资源并使用 HTTP 响应返回该资源，值为 200 的 HTTP 响应状态表示一个正确的响应。
-4. 此时，Web 服务器提供资源服务，客户端开始下载资源。
-
-请求返回后，便进入了我们关注的前端模块
-简单来说，浏览器会解析 HTML 生成 DOM Tree，其次会根据 CSS 生成 CSS Rule Tree，而 javascript 又可以根据 DOM API 操作 DOM
-
-更多：[从输入 URL 到页面加载完的过程中都发生了什么事情？](http://www.cnblogs.com/chaoran/p/4795642.html)
 
 #### 31. javascript 创建对象
 1. Object构造函数创建
@@ -615,6 +606,37 @@ NodeJS的事件循环模型一般要注意下面几点：
     }
     ```
 
+#### 40. 原型与原型链
+* 原型对象
+    - 每个函数对象都有一个prototype 属性，这个属性指向函数的原型对象
+    - 原型上的属性和方法都是共有的
+    - prototype这个对象上，自带一个属性，constructor指向当前这个类
+    - 原型对象（Person.prototype）是 构造函数（Person）的一个实例
+    **注意：**
+        - 添加和修改原型的属性和方法都能立即在所有对象实例中反应出来（即使先创建实例后修改原型）
+        - 但是如果重写整个原型对象，创建在前的实例并不能获得重写后的属性或方法
+        这是因为重写原型之后是新生成原型对象，和声明在前的任何已经存在的实例都没有关系。
+* 原型链
+> 原型链是由一些用来继承和共享属性的对象组成的（有限的）对象链
+
+    每个对象数据类型（普通对象，prototype，实例）都有一个属性，叫做 __proto__
+    __proto__指针 指向构造函数的 prototype
+    `person1.__proto__ == Person.prototype`
+![prototype](/img/in-post/post-web-nowcoder/prototype.jpg)
+
+console.log（Tom.age）的查找过程
+1. 首先在私有空间内查找age属性，私有空间的属性包括自身的属性和从类那里继承的属性
+2. 找不到的话：通过__proto__去当前实例所属类的原型上进行查找，找到的话，说明是共有属性；
+3. 还找不到的话：继续通过__proto__去当前实例所属类的原型进行查找，找不到将继续通过__proto__一直找到Object。 
+
+原型和原型链是JS实现继承的一种模型。
+原型链的形成是真正是靠__proto__ 而非prototype
+
+
+更多：
+* [JS之理解原型和原型链](https://segmentfault.com/a/1190000010354583)
+* [最详尽的 JS 原型与原型链终极详解](https://www.jianshu.com/p/dee9f8b14771)
+
 #### 33. ajax 过程
 1. 创建XMLHttpRequest对象,也就是创建一个异步调用对象
 2. 创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息
@@ -622,6 +644,48 @@ NodeJS的事件循环模型一般要注意下面几点：
 4. 发送HTTP请求
 5. 获取异步调用返回的数据
 6. 使用JavaScript和DOM实现局部刷新
+
+## 4. 其他
+#### 37. GET 和 POST
+* GET：一般用于信息获取，使用URL传递参数，对所发送信息的数量也有限制，一般在2000个字符
+* POST：一般用于修改服务器上的资源，对所发送的信息没有限制
+
+GET方式需要使用 Request.QueryString 来取得变量的值
+POST方式通过 Request.Form 来获取变量的值
+也就是说 Get 是通过地址栏来传值，而 Post 是通过提交表单来传值。
+
+在以下情况中，请使用 POST 请求：
+1. 无法使用缓存文件（更新服务器上的文件或数据库）
+2. 向服务器发送大量数据（POST 没有数据量限制）
+3. 发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
+
+更多：[学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
+
+#### 30. 页面从输入 URL 到页面加载过程
+分为4个步骤：
+1. 当发送一个 URL 请求时，不管这个 URL 是 Web 页面的 URL 还是 Web 页面上每个资源的 URL，浏览器都会开启一个线程来处理这个请求，同时在远程 DNS 服务器上启动一个 DNS 查询。这能使浏览器获得请求对应的 IP 地址。
+2. 浏览器与远程 Web 服务器通过 TCP 三次握手协商来建立一个 TCP/IP 连接。该握手包括一个同步报文，一个同步-应答报文和一个应答报文，这三个报文在 浏览器和服务器之间传递。该握手首先由客户端尝试建立起通信，而后服务器应答并接受客户端的请求，最后由客户端发出该请求已经被接受的报文。
+3. 一旦 TCP/IP 连接建立，浏览器会通过该连接向远程服务器发送 HTTP 的 GET 请求。远程服务器找到资源并使用 HTTP 响应返回该资源，值为 200 的 HTTP 响应状态表示一个正确的响应。
+4. 此时，Web 服务器提供资源服务，客户端开始下载资源。
+
+请求返回后，便进入了我们关注的前端模块
+简单来说，浏览器会解析 HTML 生成 DOM Tree，其次会根据 CSS 生成 CSS Rule Tree，而 javascript 又可以根据 DOM API 操作 DOM
+
+更多：[从输入 URL 到页面加载完的过程中都发生了什么事情？](http://www.cnblogs.com/chaoran/p/4795642.html)
+
+#### 20. 网站的文件和资源优化
+1. 文件合并
+2. 文件最小化/文件压缩
+3. 使用 CDN 托管
+4. 缓存的使用（多个域名来提供缓存）
+5. 其他
+
+测试代码性能
+* Profiler
+* JSPerf（http://jsperf.com/nexttick-vs-setzerotimeout-vs-settimeout）
+* Dromaeo
+
+更多：[网站性能优化](http://www.cnblogs.com/chaoran/p/4795800.html)
 
 #### 34. 前端的安全问题
 1. XSS (Cross Site Scripting) 跨站脚本攻击
@@ -645,42 +709,6 @@ NodeJS的事件循环模型一般要注意下面几点：
     * 对请求进行认证，确保该请求确实是用户本人填写表单并提交的，而不是第三者伪造的.具体可以在会话中增加token,确保看到信息和提交信息的是同一个人
 
 更多：[web 攻击](http://www.cnblogs.com/chaoran/p/6581024.html)
-
-#### 35. JavaScript 的同源策略
-> 同源策略是客户端脚本（尤其是Javascript）的重要的安全度量标准。它最早出自Netscape Navigator2.0，其目的是防止某个文档或脚本从多个不同源装载
-
-这里的同源策略指的是：协议，域名，端口相同，同源策略是一种安全协议，指一段脚本只能读取来自同一来源的窗口和文档的属性。
-
-**为什么要有同源限制：**
-比如一个黑客程序，他利用Iframe把真正的银行登录页面嵌到他的页面上，当你使用真实的用户名，密码登录时，他的页面就可以通过Javascript读取到你的表单中input中的内容，这样用户名，密码就轻松到手了。
-
-#### 36. use strict
-> ECMAscript 5添加了第二种运行模式："严格模式"（strict mode）。顾名思义，这种模式使得Javascript在更严格的条件下运行
-
-设立"严格模式"的目的，主要有以下几个：
-1. 消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为;
-2. 消除代码运行的一些不安全之处，保证代码运行的安全；
-3. 提高编译器效率，增加运行速度；
-4. 为未来新版本的Javascript做好铺垫。
-注：经过测试 IE6,7,8,9 均不支持严格模式。
-
-**缺点：**
-现在网站的 JS 都会进行压缩，一些文件用了严格模式，而另一些没有。这时这些本来是严格模式的文件，被 merge 后，这个串就到了文件的中间，不仅没有指示严格模式，反而在压缩后浪费了字节。
-
-### 37. GET 和 POST
-* GET：一般用于信息获取，使用URL传递参数，对所发送信息的数量也有限制，一般在2000个字符
-* POST：一般用于修改服务器上的资源，对所发送的信息没有限制
-
-GET方式需要使用 Request.QueryString 来取得变量的值
-POST方式通过 Request.Form 来获取变量的值
-也就是说 Get 是通过地址栏来传值，而 Post 是通过提交表单来传值。
-
-在以下情况中，请使用 POST 请求：
-1. 无法使用缓存文件（更新服务器上的文件或数据库）
-2. 向服务器发送大量数据（POST 没有数据量限制）
-3. 发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
-
-更多：[学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
 
 #### 38. css阻塞 && js阻塞
 **页面加载：**
@@ -735,117 +763,12 @@ js阻塞其他资源的加载的原因是：**浏览器为了防止js修改DOM�
     ```
     此技术的重点在于：无论在何处启动下载，文件额下载和运行都不会阻塞其他页面处理过程，即使在head里（除了用于下载文件的 http 链接）。
 
-#### 39. 通用的事件监听器
-```js
-// event(事件)工具集，来源：github.com/markyun
-markyun.Event = {
-    // 页面加载完成后
-    readyEvent: function (fn) {
-        if (fn == null) {
-            fn = document;
-        }
-        var oldonload = window.onload;
-        if (typeof window.onload != 'function') {
-            window.onload = fn;
-        } else {
-            window.onload = function () {
-                oldonload();
-                fn();
-            };
-        }
-    },
-    // 视能力分别使用dom0||dom2||IE方式 来绑定事件
-    // 参数： 操作的元素,事件名称 ,事件处理程序
-    addEvent: function (element, type, handler) {
-        if (element.addEventListener) {
-            //事件类型、需要执行的函数、是否捕捉
-            element.addEventListener(type, handler, false);
-        } else if (element.attachEvent) {
-            element.attachEvent('on' + type, function () {
-                handler.call(element);
-            });
-        } else {
-            element['on' + type] = handler;
-        }
-    },
-    // 移除事件
-    removeEvent: function (element, type, handler) {
-        if (element.removeEnentListener) {
-            element.removeEnentListener(type, handler, false);
-        } else if (element.detachEvent) {
-            element.detachEvent('on' + type, handler);
-        } else {
-            element['on' + type] = null;
-        }
-    },
-    // 阻止事件 (主要是事件冒泡，因为IE不支持事件捕获)
-    stopPropagation: function (ev) {
-        if (ev.stopPropagation) {
-            ev.stopPropagation();
-        } else {
-            ev.cancelBubble = true;
-        }
-    },
-    // 取消事件的默认行为
-    preventDefault: function (event) {
-        if (event.preventDefault) {
-            event.preventDefault();
-        } else {
-            event.returnValue = false;
-        }
-    },
-    // 获取事件目标
-    getTarget: function (event) {
-        return event.target || event.srcElement;
-    },
-    // 获取event对象的引用，取到事件的所有信息，确保随时能使用event；
-    getEvent: function (e) {
-        var ev = e || window.event;
-        if (!ev) {
-            var c = this.getEvent.caller;
-            while (c) {
-                ev = c.arguments[0];
-                if (ev && Event == ev.constructor) {
-                    break;
-                }
-                c = c.caller;
-            }
-        }
-        return ev;
-    }
-};
-```
-
-#### 40. 原型与原型链
-* 原型对象
-    - 每个函数对象都有一个prototype 属性，这个属性指向函数的原型对象
-    - 原型上的属性和方法都是共有的
-    - prototype这个对象上，自带一个属性，constructor指向当前这个类
-    - 原型对象（Person.prototype）是 构造函数（Person）的一个实例
-    **注意：**
-        - 添加和修改原型的属性和方法都能立即在所有对象实例中反应出来（即使先创建实例后修改原型）
-        - 但是如果重写整个原型对象，创建在前的实例并不能获得重写后的属性或方法
-        这是因为重写原型之后是新生成原型对象，和声明在前的任何已经存在的实例都没有关系。
-* 原型链
-> 原型链是由一些用来继承和共享属性的对象组成的（有限的）对象链
-
-    每个对象数据类型（普通对象，prototype，实例）都有一个属性，叫做 __proto__
-    __proto__指针 指向构造函数的 prototype
-    `person1.__proto__ == Person.prototype`
-![prototype](/img/in-post/post-web-nowcoder/prototype.jpg)
-
-console.log（Tom.age）的查找过程
-1. 首先在私有空间内查找age属性，私有空间的属性包括自身的属性和从类那里继承的属性
-2. 找不到的话：通过__proto__去当前实例所属类的原型上进行查找，找到的话，说明是共有属性；
-3. 还找不到的话：继续通过__proto__去当前实例所属类的原型进行查找，找不到将继续通过__proto__一直找到Object。 
-
-原型和原型链是JS实现继承的一种模型。
-原型链的形成是真正是靠__proto__ 而非prototype
-
-
-更多：
-* [JS之理解原型和原型链](https://segmentfault.com/a/1190000010354583)
-* [最详尽的 JS 原型与原型链终极详解](https://www.jianshu.com/p/dee9f8b14771)
+#### 19. 线程与进程
+1. 一个程序至少有一个进程,一个进程至少有一个线程
+2. 线程的划分尺度小于进程，使得多线程程序的并发性高
+3. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
+4. 线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制 
+5. 从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别
 
 #### 41. 服务器推送
 1. html5 websocket
@@ -940,3 +863,164 @@ UDP适用于一次只传送少量数据、对可靠性要求不高的应用环�
 * [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
 * [HTTP,HTTP2.0,SPDY,HTTPS你应该知道的一些事](http://web.jobbole.com/87695/)
 
+## 代码
+#### 39. 通用的事件监听器
+```js
+// event(事件)工具集，来源：github.com/markyun
+markyun.Event = {
+    // 页面加载完成后
+    readyEvent: function (fn) {
+        if (fn == null) {
+            fn = document;
+        }
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = fn;
+        } else {
+            window.onload = function () {
+                oldonload();
+                fn();
+            };
+        }
+    },
+    // 视能力分别使用dom0||dom2||IE方式 来绑定事件
+    // 参数： 操作的元素,事件名称 ,事件处理程序
+    addEvent: function (element, type, handler) {
+        if (element.addEventListener) {
+            //事件类型、需要执行的函数、是否捕捉
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent('on' + type, function () {
+                handler.call(element);
+            });
+        } else {
+            element['on' + type] = handler;
+        }
+    },
+    // 移除事件
+    removeEvent: function (element, type, handler) {
+        if (element.removeEnentListener) {
+            element.removeEnentListener(type, handler, false);
+        } else if (element.detachEvent) {
+            element.detachEvent('on' + type, handler);
+        } else {
+            element['on' + type] = null;
+        }
+    },
+    // 阻止事件 (主要是事件冒泡，因为IE不支持事件捕获)
+    stopPropagation: function (ev) {
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
+        } else {
+            ev.cancelBubble = true;
+        }
+    },
+    // 取消事件的默认行为
+    preventDefault: function (event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        } else {
+            event.returnValue = false;
+        }
+    },
+    // 获取事件目标
+    getTarget: function (event) {
+        return event.target || event.srcElement;
+    },
+    // 获取event对象的引用，取到事件的所有信息，确保随时能使用event；
+    getEvent: function (e) {
+        var ev = e || window.event;
+        if (!ev) {
+            var c = this.getEvent.caller;
+            while (c) {
+                ev = c.arguments[0];
+                if (ev && Event == ev.constructor) {
+                    break;
+                }
+                c = c.caller;
+            }
+        }
+        return ev;
+    }
+};
+```
+
+#### 数组去重
+建一个空对象和空数组，循环遍历需要去重的数组，判断对象有没有此属性，没有的话就给对象添加此属性，并向空数组中push这个值。
+```js
+//es5
+functionunique(arr){
+      var obj = {}
+    var result = []
+ for(var i in arr){
+             if(!obj[arr[i]]){
+                       obj[arr[i]] = true;
+                     result.push(arr[i]);
+           }
+       }
+       return result;
+}
+//es6
+[...new Set(arr)]
+```
+
+#### 冒泡排序
+相邻两个对比，最后把最大的排到了最后，重复此过程。
+```js
+functionbubbleSort(arr) {
+      var len = arr.length;
+   for (var i = 0; i < len; i++) {
+        for (var j = 0; j < len - 1 - i; j++) {
+                 if (arr[j] > arr[j+1]) {        //相邻元素两两对比
+                              var temp = arr[j+1];        //元素交换
+                              arr[j+1] = arr[j];
+                             arr[j] = temp;
+                  }
+              }
+       }
+       return arr;
+}
+```
+
+#### 选择排序
+寻找最小的数，保存索引，然后与第一层循环其下标对于的值进行交换
+```js
+functionselectionSort(arr) {
+   var len = arr.length;
+   var minIndex, temp;
+     for (var i = 0; i < len - 1; i++) {
+            minIndex = i;
+          for (var j = i + 1; j <len; j++) {
+                     if (arr[j] < arr[minIndex]) {     //寻找最小的数
+                              minIndex = j;                 //将最小数的索引保存
+                       }
+              }
+              temp = arr[i];
+         arr[i] =arr[minIndex];
+        arr[minIndex] =temp;
+   }
+       return arr;
+}
+```
+
+#### 快速排序
+选取一个记录作为中间轴，然后将比‘这个记录值’小的移到‘记录值’之前，大的移到之后，然后递归
+```js
+functionquickSort(arr) {
+       if(arr.length == 0) {
+          return [];    // 返回空数组
+  }
+       var cIndex = Math.floor(arr.length / 2);
+        var c = arr.splice(cIndex, 1);
+  var l = [];
+     var r = [];
+     for (var i = 0; i < arr.length; i++) {
+          if(arr[i]< c) {
+                        l.push(arr[i]);
+        } else {
+                        r.push(arr[i]);
+        }
+       }
+       return quickSort(l).concat(c, quickSort(r));
+}
+```
