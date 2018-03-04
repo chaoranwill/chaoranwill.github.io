@@ -250,7 +250,7 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 
 实现方式：
 * 发布者-订阅者模式（backbone.js）
-
+    一般通过sub, pub的方式实现数据和视图的绑定监听，更新数据方式通常做法是 `vm.set('property', value)`
 
 脏值检查（angular.js） 
 

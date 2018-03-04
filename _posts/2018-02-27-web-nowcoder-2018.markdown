@@ -233,6 +233,26 @@ display 值的作用：
 * static 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right z-index 声明）。
 * inherit 规定从父元素继承 position 属性的值。
 
+#### 垂直水平居中
+* **水平或垂直居中**
+    - 单行内容垂直居中
+    - div水平居中
+    - float
+* **水平+垂直居中**
+    - 非固定高度居中
+    - 利用表格
+    - margin负值
+    - 完全居中
+    - fixed（可视区域内居中）
+    - transform
+    - inline-block
+    - Flex方法
+* **图片居中**
+    - align
+    - text-align
+
+更多了解：[CSS 居中](http://www.cnblogs.com/chaoran/p/7061932.html)
+
 #### 2.10. 怪异模式
 > 为了在那些针对 HTML5 设计，但是又没有添加 doctype(可以决定浏览器工作在哪种模式下，后面会详细讨论)的页面而存在
 
