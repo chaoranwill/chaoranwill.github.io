@@ -251,10 +251,60 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 实现方式：
 * 发布者-订阅者模式（backbone.js）
     一般通过sub, pub的方式实现数据和视图的绑定监听，更新数据方式通常做法是 `vm.set('property', value)`
+    这种方式现在毕竟太low了，我们更希望通过 `vm.property = value` 这种方式更新数据，同时自动更新视图，于是有了下面两种方式
 
-脏值检查（angular.js） 
+* 脏值检查（angular.js） 
+    angular.js 是通过脏值检测的方式比对数据是否有变更，来决定是否更新视图，最简单的方式就是通过 setInterval() 定时轮询检测数据变动，当然Google不会这么low，angular只有在指定的事件触发时进入脏值检测，大致如下：
+    - DOM事件，譬如用户输入文本，点击按钮等。( `ng-click `)
+    - XHR响应事件 (` $http `)
+    - 浏览器Location变更事件 (` $location `)
+    - Timer事件(`$timeout , $interval`)
+    - 执行` $digest()` 或` $apply()`
 
-数据劫持（vue.js）
+* 数据劫持（vue.js）
+    vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过 `Object.defineProperty()` 来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
+    - `Object.defineProperty()` 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象
+        ```js
+        //语法
+        Object.defineProperty(obj, prop, descriptor)
+
+        //例子
+        Object.defineProperty(obj, "key", {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: "static"
+        });
+
+        var obj = {};
+        Object.defineProperty(obj, 'hello', {
+            get: function() {
+                console.log('get val:'+ val);
+                return val;
+        　 },
+        　　set: function(newVal) {
+                val = newVal;
+                console.log('set val:'+ val);
+            }
+        });
+        obj.hello='chaoran';
+        obj.hello;
+        ```
+        ![mvc](/img/in-post/post-web-fragment/define.png)
+        
+        更多：[了解 defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+
+**实现 MVVM 双向绑定**
+* 实现一个数据监听器Observer
+    能够对数据对象的所有属性进行监听，如有变动可拿到最新值并通知订阅者
+* 实现一个指令解析器Compile
+    对每个元素节点的指令进行扫描和解析，根据指令模板替换数据，以及绑定相应的更新函数
+* 实现一个Watcher
+    作为连接Observer和Compile的桥梁，能够订阅并收到每个属性变动的通知，执行指令绑定的相应回调函数，从而更新视图
+* mvvm入口函数，整合以上三者
+![mvvm](/img/in-post/post-web-fragment/mvvm-back.png)
+
+具体参考：[剖析Vue原理&实现双向绑定MVVM](https://segmentfault.com/a/1190000006599500)
 
 #### 3.5. angular与react之对比
 * React 和 Angular 之间的巨大差异是 单向与双向绑定
