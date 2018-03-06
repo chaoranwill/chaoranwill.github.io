@@ -36,13 +36,14 @@ tags:
 #### 1.2. promise
 > 解决异步回调多层嵌套的问题
 
-1. pending 进行中
-2. resolved 已完成
-3. rejected 已失败
 * 是一个容器；
     包含某个未来结束的事件
 * 是一个对象：
     从它可获取异步操作的消息
+
+1. pending 进行中
+2. resolved 已完成
+3. rejected 已失败
 
 **特点**
 * 状态不受外界影响，只有事件结果决定
@@ -239,7 +240,7 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 * 其他
     使用空的vue实例作为中央事件总线
 
-##### 双向绑定
+##### 3.4.1. 双向绑定
 > 将对象属性变化绑定到UI
 简单理解：在单向绑定的基础上给可输入元素（input、textare等）添加了change(input)事件，来动态修改model和 view
 
@@ -314,7 +315,7 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 #### 3.6. 软件架构
 > 模式之间不同  主要是  M与V  的数据传递的流程不同
 
-##### mvc
+##### 3.6.1. mvc
 ![mvc](/img/in-post/post-web-fragment/mvc.png)
 * View 传送指令到 Controller
 * Controller 完成业务逻辑后，要求 Model 改变状态
@@ -324,13 +325,13 @@ MVC 可以分成两种方式：
 * 通过 View 接受指令，传递给 Controller
 * 直接通过controller接受指令
 
-##### MVP
+##### 3.6.2. MVP
 ![mvp](/img/in-post/post-web-fragment/mvp.png)
 * 各部分之间的通信，都是双向的。
 * View 与 Model 不发生联系，都通过 Presenter 传递。
 * View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。
 
-##### MVVM
+##### 3.6.3. MVVM
 ![mvvm](/img/in-post/post-web-fragment/mvvm.png)
 * 用数据“绑定”的形式让数据更新的事件不需要开发人员手动去编写特殊用例，而是自动地双向同步。
 * 数据绑定可以认为是Observer模式或者是Publish/Subscribe模式，原理都是为了用一种统一的集中的方式实现频繁需要被实现的数据更新问题。
@@ -343,7 +344,7 @@ Fielding将他对互联网软件的架构原则，定名为REST，即Representat
 #### 4.1. js垃圾回收与内存管理
 > 各大浏览器通常用采用的垃圾回收有两种方法：标记清除、引用计数
 
-##### 垃圾回收
+##### 4.1.1. 垃圾回收
 自动垃圾回收机制(GC:Garbage Collecation)，也就是说，执行环境会负责管理代码执行过程中使用的内存
 垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存
 * 标记清除
@@ -370,14 +371,14 @@ myObj.element = null;
 element.someObject =null;
 ```
 
-##### 减少JavaScript中的垃圾回收
+##### 4.1.2. 减少JavaScript中的垃圾回收
 * 在初始化的时候新建对象，然后在后续过程中尽量多的重用这些创建好的对象。
 * 另外还有以下三种内存分配表达式（可能不像new关键字那么明显了）：
     - {} （创建一个新对象）
     - [] （创建一个新数组）
     - function() {…} (创建一个新的方法，注意：新建方法也会导致垃圾收集！！)
 
-##### 优化
+##### 4.1.3. 优化
 1. 对象object优化
     * 避免使用new/{}来新建对象
     * cr.wipe(obj)—遍历此对象的所有属性，并逐个删除，最终将对象清理为一个空对象  
@@ -433,7 +434,7 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 * 引起内存泄露
 
 #### 4.4. 事件委托和this
-##### 事件委托
+##### 4.4.1. 事件委托
 由其它元素而非事件目标元素来响应事件产生的行为的思想。如用ul元素来处理其子元素li的事件。
 
 **事件冒泡：** `stopPropagation、stopImmediatePropagation、preventDefault`
@@ -441,7 +442,7 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 **订阅发布**
 优点：减少监听器数量，改善性能
 缺点：父容器的侦听器可能需要检查事件来选择正确的操作
-##### this
+##### 4.4.2. this
 > this 关键字在JavaScript中的一种常用方法是指代码当前上下文
 
 * 默认指向全局对象，其通常是window

@@ -44,3 +44,14 @@
 	margin-bottom: 10px;
 }
 
+@media screen and (max-width:700px) {
+    #dsRewardBtn {
+        display: none !important
+    }
+    #returnTop {
+        bottom: 10px !important
+    }
+    #div_digg {
+        display: none !important;
+    }
+}
