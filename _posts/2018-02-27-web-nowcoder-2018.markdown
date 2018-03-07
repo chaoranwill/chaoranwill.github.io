@@ -177,7 +177,7 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
 4. important > 内联 > id 
 
 **CSS3新增伪类举例：**
-* p:first-of-type 选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
+* [p:first-of-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type) 选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
 * p:last-of-type  选择属于其父元素的最后 <p> 元素的每个 <p> 元素。
 * p:only-of-type  选择属于其父元素唯一的 <p> 元素的每个 <p> 元素。
 * p:only-child    选择属于其父元素的唯一子元素的每个 <p> 元素。
@@ -437,9 +437,11 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。它�
 1. defer和async
     差别在于脚本下载完之后何时执行
     * async
-        加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）
-    * defer
-    加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在**所有元素解析完成**之后，DOMContentLoaded 事件触发之前完成。
+        加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步），不考虑依赖关系
+    * **defer**--常用
+        `<script async src="script.js"></script>`
+        加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在**所有元素解析完成**之后，DOMContentLoaded 事件触发之前完成。
+        **按照加载顺序执行脚本**
 2. 动态创建DOM方式（创建script，插入到DOM中，加载完毕后callBack）
 3. 按需异步载入js
 4. 放到最后加载
@@ -678,6 +680,74 @@ console.log（Tom.age）的查找过程
 4. 发送HTTP请求
 5. 获取异步调用返回的数据
 6. 使用JavaScript和DOM实现局部刷新
+
+#### 3.16. `setTimeout` & `this` & `setInterval`
+**setTimeout this**
+> 超时调用的代码都是在全局作用域中执行的，因此函数中的this的值在非严格模式下指向window对象，在严格模式下是undefined
+
+![mvc](/img/in-post/post-web-fragment/this.jpg)
+* setTimeout()中，如果是setTimeout(this)这样的形式，那么this要看上下文，默认是window；
+* 如果setTimeout里面的函数中的this的话，都统一指向window
+* 第14行代码的this是指向test1对象的，那只要我们保存一下这个变量，然后使用闭包就能获取到它了，因为闭包可以保存自身当前作用域上的变量（当然这肯定是耗费内存的）
+    ```js
+    function test1() {
+        var _this = this; 
+        this.name = "chaoran";
+        this.sayName = function() {
+            console.log(this.name);
+        }
+        setTimeout(function () {
+            // 由于闭包的原因保存了_this为test1对象，所以sayName()输出“chaoran”
+            _this.sayName();     
+            },0);
+        }
+    new test1();
+    ```
+
+**事件添加**
+> 定时器对队列的工作方式：当特定时间过去后将代码添加到队列中，但并不意味着会马上将执行，设定一个200ms后执行的定时器，指的是在200ms后它将被添加到队列中，是否执行，还得看队列中是否没有其他的东西
+
+> 定时器的回调函数并不是相当于在时间到了就执行，而是有一个主js执行进程，这个进程是页面刚加载的时候页面按照加载顺序执行的js代码，此外还有一个需要在进程空闲的时候执行的代码队列
+
+```js
+var a=document.getElementById("nav");
+    a.onclick=function(){
+    setTimeout(alertsomething,200);
+    //一些其他的代码
+}
+function alertsomething(){
+    alert("it is working");
+}
+```
+假定onclick处理程序需要执行300ms，这时虽然在205ms添加了定时器代码，但是仍旧需要等待onclick事件完成后才能够执行。如图所示，本来在205ms处添加了定时器代码，但是由于此时onclick事件还没结束，故要等到300ms后才执行定时器代码
+![load-order1](/img/in-post/post-web-nowcoder/settimeout.png)
+
+**为什么常用setTimeout模拟setInterval**
+* setTimeout方法，在一个指定的时间间隔后运行代码。
+    问题：定时器代码可能在代码再次被添加到队列之前还没有完成执行，结果导致定时器代码连续运行好几次，而之间没有任何停顿
+* setInterval方法， 每隔一个固定的时间间隔后持续运行指定代码
+    仅当没有该定时器的任何其他代码实例时，才将定时器代码添加到队列中。这确保了定时器代码加入到队列中的最小时间间隔为指定间隔，问题：
+    - 某些间隔被跳过；
+    - 多个定时器的代码执行之间的间隔可能比预期的小
+
+**解决方法：**
+> 重复定时器
+
+```js
+setTimeout(function(){
+    //处理代码
+    setTimeout(arguments.callee,interval)
+},intercal);
+```
+
+**应用**
+* 调整事件发生顺序
+    网页开发中，某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，我们先让父元素的事件回调函数先发生，就要用到 `setTimeout(f, 0)`
+
+更多了解：
+* [理解 setTimeout 和 setInterval](https://www.cnblogs.com/xiaohuochai/p/5773183.html)
+* [由 setTimeout 的 this 讲起](http://blog.csdn.net/qq_26598303/article/details/52668683)
+    
 
 ## 4. 其他
 #### 4.1. GET 和 POST
@@ -1041,20 +1111,20 @@ functionselectionSort(arr) {
 选取一个记录作为中间轴，然后将比‘这个记录值’小的移到‘记录值’之前，大的移到之后，然后递归
 ```js
 functionquickSort(arr) {
-       if(arr.length == 0) {
-          return [];    // 返回空数组
-  }
-       var cIndex = Math.floor(arr.length / 2);
-        var c = arr.splice(cIndex, 1);
-  var l = [];
-     var r = [];
-     for (var i = 0; i < arr.length; i++) {
-          if(arr[i]< c) {
-                        l.push(arr[i]);
+    if (arr.length == 0) {
+        return []; // 返回空数组
+    }
+    var cIndex = Math.floor(arr.length / 2);
+    var c = arr.splice(cIndex, 1);
+    var l = [];
+    var r = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] < c) {
+            l.push(arr[i]);
         } else {
-                        r.push(arr[i]);
+            r.push(arr[i]);
         }
-       }
-       return quickSort(l).concat(c, quickSort(r));
+    }
+    return quickSort(l).concat(c, quickSort(r));
 }
 ```

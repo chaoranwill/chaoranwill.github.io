@@ -29,9 +29,10 @@ tags:
 * 函数内的this对象，是定义时所在的对象，不是使用时所在的对象
 * 不可当构造函数
 * 用rest代替argument
-* this指向一般可变，但在箭头函数中固定
+* this指向一般可变，但在箭头函数中固定，取决于定义时的环境
 * 简单，单行，不会复用的函数建议使箭头函数 
     复杂，行多，使用传统
+
 
 #### 1.2. promise
 > 解决异步回调多层嵌套的问题
@@ -72,10 +73,24 @@ p的状态由p1、p2、p3决定，分成两种情况:
 **async/await**
 > async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来
 
+**async/await 的优势在于处理 then 链，解决 promise 的返回值和参数传递**
+
+* async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成
+* 如果在函数中 return 一个直接量，async 会把这个直接量通过 Promise.resolve() 封装成 Promise 对象
+
+* 如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。
+
+* 如果它等到的是一个 Promise 对象，await 就忙起来了，它会**阻塞**后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果
+    async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行
+
+
+**await 作用**
 * 是写异步代码的新方式，以前的方法有回调函数和Promise。
 * 是基于Promise实现的，它不能用于普通的回调函数。
 * 与Promise一样，是非阻塞的。
 * 使得异步代码看起来像同步代码，这正是它的魔力所在。
+
+更多了解：[理解 JavaScript 的 async/await](https://segmentfault.com/a/1190000007535316)
 
 #### 1.3. interator 
 > 是一种接口，为所有数据结构提供一种统一的访问机制，即for...of 循环 
@@ -98,16 +113,16 @@ p的状态由p1、p2、p3决定，分成两种情况:
 * 为遍历对象设计，不适用数组
 * key
 * 以字符串作为键名
-* 遍历数字键以及手动添加的其他键
+* 遍历所有的可枚举属性，包括原型
 * 可能会以任意顺序遍历键名
+* 循环除了遍历数组元素以外,还会遍历自定义属性
 
 **for...of**
-* 语法简洁，无以上缺点
+* 语法简洁，无以上缺点,for of遍历的只是数组内的元素，而不包括数组的原型属性
 * 循环value
 * 不同用于foreach方法，可以与break，continue，return配合使用
-* 提供了遍历所有数据结构的统一操作接口，循环普通对象结合 `bject.keys()` 搭配使用
+* 提供了遍历所有数据结构的统一操作接口，循环普通对象结合 `Object.keys()` 搭配使用
 * 可自动遍历generator函数生成的iterator对象
-* 除了遍历数组元素以外,还会遍历自定义属性
 
 #### 1.4. generator 函数
 > 一种异步解决方案（一种封装了多个内部状态的状态机）
@@ -146,29 +161,33 @@ JavaScript对异步编程的实现
 使用自定义的http头部让浏览器与服务器进行沟通，确定该请求是否成功
 **核心：**由服务器发送一个响应标头
 
+详细：[JSONP && CORS](http://www.cnblogs.com/chaoran/p/6579588.html)
+
 #### 2.3. web安全
-1） 将重要的cookie标记为http only
-2） 只允许用户输入期望值
-3） encode
-4） 过滤或移除特殊标签
-5） 过滤JavaScript事件标签
+* 将重要的cookie标记为http only
+* 只允许用户输入期望值
+* encode
+* 过滤或移除特殊标签
+* 过滤JavaScript事件标签
+
+更多：[web 攻击](http://www.cnblogs.com/chaoran/p/6581024.html)
 
 ## 3. 架构
 #### 3.1. 模块化
-**原理：** 将复杂系统分解为代码结构更合理，可维护性更高，可管理的模块
-**目的：** 只需完成自己的业务代码
-**发展过程：**
-1. commonjs
- 	模块为单独的文件，require，同步使用
-nodejs主要用于服务器进程，加载内容在本地磁盘
-异步情况：浏览器环境中需要从服务器加载模块，需要采用异步模式
-2. AMD（Asynchronous Module Definition）
-    * 允许输出模块兼容commonjs规范
-    * require([module], callback);
-    * 模块加载与调用不同步，浏览器不会发生假死
-    * requirejs   curljs
-3. CMD
-seajs推广中对模块定义的产出
+* **原理：** 将复杂系统分解为代码结构更合理，可维护性更高，可管理的模块
+* **目的：** 只需完成自己的业务代码
+* **发展过程：**
+    1. commonjs
+        模块为单独的文件，require，同步使用
+    nodejs主要用于服务器进程，加载内容在本地磁盘
+    异步情况：浏览器环境中需要从服务器加载模块，需要采用异步模式
+    2. AMD（Asynchronous Module Definition）
+        * 允许输出模块兼容commonjs规范
+        * require([module], callback);
+        * 模块加载与调用不同步，浏览器不会发生假死
+        * requirejs   curljs
+    3. CMD
+    seajs推广中对模块定义的产出
 
 **CMD与AMD区别：**
 * amd推崇依赖前置（定义模块时申明其依赖的模块），cmd推崇依赖就近（用时再require）
