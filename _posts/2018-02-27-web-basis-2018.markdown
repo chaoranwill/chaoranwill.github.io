@@ -217,6 +217,39 @@ JS将新对象的原型链指向了构造函数的原型对象，于是就在新
     
 因此，闭包可以形成一个独立的执行过程
 
+**应用场景**
+* 模拟块级作用域
+    ```js
+    function outputNumbers(count){
+        (function(){
+            for(var i = 0; i < count; i++){
+            alert(i);
+            }
+        })();
+        alert(i); //导致一个错误！
+    }
+    ```
+* 创建私有变量
+    ```js
+    // 1.2.闭包可以用于在对象中创建私有变量
+    function MyObject(){
+        // 私有变量和私有函数
+        var privateVariable = 10;
+        function privateFunction(){
+            return false;
+        }
+        // 特权方法,调用私有方法、函数
+        this.publicMethod = function(){
+            privateVariable++;
+            return privateFunction();
+        }
+    }
+    ```
+
+更多了解：
+* [更好的理解闭包](https://www.zhihu.com/question/31383111/answer/51889930)
+* [学习 JavaScript 闭包](http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html)
+
 #### 1.7. 单线程和异步
 JavaScript
 * 单线程语言，在浏览器中，当JS代码被加载时，浏览器会为其分配一个主线程来执行任务(函数)

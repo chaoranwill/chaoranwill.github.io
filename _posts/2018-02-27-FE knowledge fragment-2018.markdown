@@ -187,7 +187,7 @@ JavaScript对异步编程的实现
         * 模块加载与调用不同步，浏览器不会发生假死
         * requirejs   curljs
     3. CMD
-    seajs推广中对模块定义的产出
+        seajs推广中对模块定义的产出
 
 **CMD与AMD区别：**
 * amd推崇依赖前置（定义模块时申明其依赖的模块），cmd推崇依赖就近（用时再require）

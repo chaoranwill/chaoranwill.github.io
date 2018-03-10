@@ -1,0 +1,144 @@
+---
+layout:     post
+title:      "The interview summary"
+subtitle:   "From Tencent"
+date:       2018-03-09 19:55:00
+author:     "Chaoran"
+header-img: "img/post-bg-interview.jpg"
+noToc:      true
+tags:
+    - 前端开发
+---
+
+> “To be is to be perceived. ”
+
+* 目录
+{:toc #toc}
+
+## 1. Tencent
+#### 1.1. 一面
+js 的事件机制
+vue
+Vue 生命周期
+双向绑定原理 & 如何实现
+vuex 原理
+数据更新后执行
+跨域
+    什么叫跨域
+    方案
+安全 && 怎样预防
+session & cookie
+本地存储
+浏览器缓存
+页面从输入URL 到加载过程
+协议
+HTTP 
+get & post
+TCP & UDP
+三次握手
+四次挥手
+排序：冒泡，选择，快速
+数据库
+
+#### 1.2. 二面
+js 实现两个超大数相加
+基础：
+* JS 中所有的数字类型，实际存储都是通过 8 字节 double 浮点型 表示的，并不是能够精确表示范围内的所有数
+* 大整数存储（安全使用范围）
+    - 其他语言 `2^63 - 1`
+    - js  `Math.pow(2, 53) - 1`
+        ```js
+        //js 最大和最小安全值
+        Number.MAX_SAFE_INTEGER  //9007199254740991
+        Number.MIN_SAFE_INTEGER  //-9007199254740991
+        ```
+      
+1. js 中所有
+```js
+var largeNumberAdd = function(num1, num2) {
+    var arr1 = num1.split(''),
+        arr2 = num2.split(''),
+        tem = '',
+        num3 = 0,
+        result = []
+    var longDiff = arr1.length - arr2.length
+    if (longDiff > 0) {
+        for (let i = 0; i < longDiff; i++) {
+            arr2.unshift('0')            
+        }
+    }else if (longDiff < 0) {
+        for (let i = 0; i < Math.abs(longDiff); i++) {
+            arr1.unshift('0')
+        }
+    }
+    for (let i = arr1.length - 1; i >= 0; i--) {
+        tem = parseInt(arr1[i]) + parseInt(arr2[i]) + num3
+        // check if tem > 10
+        if (tem >= 10) {
+            num3 = 1
+            result.push((tem + '')[1])
+        }else {
+            num3 = 0
+            result.push(tem)
+        }
+    }
+    return result.reverse().join('')
+}
+
+// console.log(largeNumberAdd('11111','11111'))
+console.log(largeNumberAdd('00000000000000000000011111','333331999'))
+console.log(11111+333331999)
+// console.log(largeNumberAdd('3333333333333333333333333333333311111111111111111111111111111111111111','333333333333333331111111111111111111111111111166666666666666'))
+```
+
+js 每秒钟的计算量
+js 如何解析后台返回的超大数据
+前提：
+* js 用浮点数表示所有64位数字，所有达到 2^53 的可以被精确表示，更大的数字都会被裁剪，——如何表示64位数字
+虽然js 能够解析进制数字表示64位数字，但底层的数字表示不支持 64 位
+在浏览器中执行以下代码
+```html
+<html>
+  <head>
+    <script language="javascript">
+      function showPrecisionLimits() {
+        document.getElementById("r50").innerHTML = 0x0004000000000001 - 0x0004000000000000;
+        document.getElementById("r51").innerHTML = 0x0008000000000001 - 0x0008000000000000;
+        document.getElementById("r52").innerHTML = 0x0010000000000001 - 0x0010000000000000;
+        document.getElementById("r53").innerHTML = 0x0020000000000001 - 0x0020000000000000;
+        document.getElementById("r54").innerHTML = 0x0040000000000001 - 0x0040000000000000;
+      }
+    </script>
+  </head>
+  <body onload="showPrecisionLimits()">
+    <p>(2^50+1) - (2^50) = <span id="r50"></span></p>
+    <p>(2^51+1) - (2^51) = <span id="r51"></span></p>
+    <p>(2^52+1) - (2^52) = <span id="r52"></span></p>
+    <p>(2^53+1) - (2^53) = <span id="r53"></span></p>
+    <p>(2^54+1) - (2^54) = <span id="r54"></span></p>
+  </body>
+</html>
+```
+在Firefox，Chrome和IE浏览器中，可以看到，如果能够存储64位数字，则以下减法结果皆为1。而结果相反，可以看到2 ^ 53 + 1和2 ^ 53 间的差异丢失
+```js
+（2 ^ 50 + 1） - （2 ^ 50）= 1
+（2 ^ 51 + 1） - （2 ^ 51）= 1
+（2 ^ 52 + 1） - （2 ^ 52）= 1
+（2 ^ 53 + 1） - （2 ^ 53）= 0
+（2 ^ 54 + 1） - （2 ^ 54）= 0
+```
+
+位运算
+因此，我们可以选择用两个 32 位的数字表示 64 位整数，然后进行按位与
+```js
+var a = [ 0x0000ffff, 0xffff0000 ];
+var b = [ 0x00ffff00, 0x00ffff00 ];
+var c = [ a[0] & b[0], a[1] & b[1] ];
+
+document.body.innerHTML = c[0].toString(16) + ":" + c[1].toString(16);
+
+//结果
+ff00:ff0000
+```
+
+
