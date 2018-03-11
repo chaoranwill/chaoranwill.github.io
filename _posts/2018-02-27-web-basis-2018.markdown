@@ -477,7 +477,9 @@ Node.js在服务端的优势是，它采用单线程和异步I/O模型，实现�
 
 比如：内部滚动就是一个BFC，当一个父容器的overflow-y设置为auto时，并且子容器的长度大于父容器时，就会出现内部滚动，无论内部的元素怎么滚动，都不会影响父容器以外的布局，这个父容器的渲染区域就叫BFC。
 
-**特点**
+ IFC（Inline Formatting Context）即行内格式化上下文
+
+**BFC 特点**
 * 盒子们自所在的containing block顶部一个接一个垂直排列
 * 水平方向上撑满整个宽度（除非内部盒子自己建立了新的BFC）
 * 两个相邻的BFC之间的距离由margin决定
@@ -486,7 +488,6 @@ Node.js在服务端的优势是，它采用单线程和异步I/O模型，实现�
 **触发BFC**
 根元素或其它包含它的元素
 * float的值不为none
-* overflow的值不为visible
 * display的值为inline-block、table-cell、table-caption
 * position的值为absolute或fixed
 * flex boxes (元素的display: flex或inline-flex)

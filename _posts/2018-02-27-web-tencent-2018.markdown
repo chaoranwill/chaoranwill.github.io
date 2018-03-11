@@ -52,8 +52,7 @@ js 实现两个超大数相加
         Number.MAX_SAFE_INTEGER  //9007199254740991
         Number.MIN_SAFE_INTEGER  //-9007199254740991
         ```
-      
-1. js 中所有
+
 ```js
 var largeNumberAdd = function(num1, num2) {
     var arr1 = num1.split(''),
