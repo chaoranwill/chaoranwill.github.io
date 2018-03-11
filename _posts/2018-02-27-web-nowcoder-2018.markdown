@@ -478,7 +478,8 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
         - 相对定位的时候，top(bottom)   left(right)参照的是父元素的 content-box
         - 绝对定位的时候参照的是最近的定位元素 padding-box
 
-
+* em 和 rem
+  两者都是基于字体尺寸的，区别在于 em 是相对于当前父元素的字体大小为标准，而 rem 是相对于 html 元素的字体大小为标准。
 
 参考： [CSS 单位](https://segmentfault.com/a/1190000004043937)
 
