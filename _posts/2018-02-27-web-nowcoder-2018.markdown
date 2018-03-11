@@ -51,20 +51,6 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
 3. 在混杂模式中，页面以宽松的向后兼容的方式显示。模拟老式浏览器的行为以防止站点无法工作。
 4. DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现。
 
-#### viewport
-```html
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<!--
-    // width    设置viewport宽度，为一个正整数，或字符串‘device-width’
-    // device-width  设备宽度
-    // height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
-    // initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
-    // minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
-    // maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
-    // user-scalable    是否允许手动缩放
--->
-```
-
 #### 1.4. 块与行内元素
 标准文档流里面，块级元素：
 `div  , p  , form,   ul,  li ,  ol, dl, h1-h6,   address,  fieldset,  hr, menu,  table`
@@ -201,6 +187,20 @@ FireFox | gecko | -moz- |
     如果我们在文档中添加 `<link href='common.css' rel='stylesheet'/>`
     那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用 link 方式来加载 css ，而不是使用 @import 方式。
 
+#### 1.10. viewport
+```html
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<!--
+    width    设置viewport宽度，为一个正整数，或字符串‘device-width’
+    device-width  设备宽度
+    height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
+    initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
+    minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
+    maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
+    user-scalable    是否允许手动缩放
+-->
+```
+
 ## 2. CSS
 #### 2.1. CSS3有哪些新特性
 1. CSS3实现圆角（border-radius），阴影（box-shadow），
@@ -274,7 +274,7 @@ FireFox | gecko | -moz- |
 1. 优先级就近原则，同权重情况下样式定义最近者为准;
 2. 载入样式以最后载入的定位为准;
 3. !important >  id > class > tag  > *
-4. important > 内联 > id 
+4. important > 内嵌 > ID > 类 > 标签 | 伪类 | 属性选择 > 伪对象 > 继承 > 通配符
 
 **CSS3新增伪类举例：**
 * [p:first-of-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type) 选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
@@ -317,7 +317,7 @@ FireFox | gecko | -moz- |
 #### 2.7. display
 ![display](/img/in-post/post-web-nowcoder/display.png)
 display 值的作用：
-1. block 象块类型元素一样显示。
+1. block 块级元素一样显示
 2. inline 缺省值。象行内元素类型一样显示。
 3. inline-block 象行内元素一样显示，但其内容象块类型元素一样显示。
 4. list-item 象块类型元素一样显示，并添加样式列表标记。
@@ -333,7 +333,7 @@ display 值的作用：
 * static 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right z-index 声明）。
 * inherit 规定从父元素继承 position 属性的值。
 
-#### 垂直水平居中
+#### 2.10. 垂直水平居中
 * **水平或垂直居中**
     - 单行内容垂直居中
     - div水平居中
@@ -350,10 +350,51 @@ display 值的作用：
 * **图片居中**
     - align
     - text-align
+* **浮动元素居中**
+    - 设置当前div的宽度，然后设置margin-left:50%; position:relative; left:-250px;其中的left是宽度的一半。
+    - 父元素和子元素同时左浮动，然后父元素相对左移动50%，再然后子元素相对左移动-50%。
 
 更多了解：[CSS 居中](http://www.cnblogs.com/chaoran/p/7061932.html)
 
-#### 2.10. 怪异模式
+#### 清除浮动
+* 父级div定义 height 
+    - 原理：父级div手动定义height，就解决了父级div无法自动获取到高度的问题。 
+    - 优点：简单、代码少、容易掌握 
+    - 缺点：只适合高度固定的布局，要给出精确的高度，如果高度和父级div不一样时，会产生问题 
+    - 建议：不推荐使用，只建议高度固定的布局时使用 
+* 结尾处加空div标签 clear:both 
+    - 原理：添加一个空div，利用css提高的clear:both清除浮动，让父级div能自动获取到高度 
+    - 优点：简单、代码少、浏览器支持好、不容易出现怪问题 
+    - 缺点：不少初学者不理解原理；如果页面浮动布局多，就要增加很多空div，让人感觉很不好 
+    - 建议：不推荐使用，但此方法是以前主要使用的一种清除浮动方法 
+* 父级div定义 伪类:after 和 zoom 
+    - 原理：IE8以上和非IE浏览器才支持:after，原理和方法2有点类似，zoom(IE转有属性)可解决ie6,ie7浮动问题 
+    - 优点：浏览器支持好、不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 
+    - 缺点：代码多、不少初学者不理解原理，要两句代码结合使用才能让主流浏览器都支持。 
+    - 建议：推荐使用，建议定义公共类，以减少CSS代码。
+* 父级div定义 overflow:hidden 
+    - 原理：必须定义width或zoom:1，同时不能定义height，使用overflow:hidden时，浏览器会自动检查浮动区域的高度 
+    - 优点：简单、代码少、浏览器支持好 
+    - 缺点：不能和position配合使用，因为超出的尺寸的会被隐藏。 
+    - 建议：只推荐没有使用position或对overflow:hidden理解比较深的朋友使用。 
+* 父级div定义 overflow:auto 
+    - 原理：必须定义width或zoom:1，同时不能定义height，使用overflow:auto时，浏览器会自动检查浮动区域的高度 
+    - 优点：简单、代码少、浏览器支持好 
+    - 缺点：内部宽高超过父级div时，会出现滚动条。 
+    - 建议：不推荐使用，如果你需要出现滚动条或者确保你的代码不会出现滚动条就使用吧。
+* 父级一起浮动 
+    - 原理：所有代码一起浮动，就变成了一个整体 
+    - 优点：没有优点 
+    - 缺点：会产生新的浮动问题。 
+    - 建议：不推荐使用，只作了解。
+* 父级div定义 display:table 
+    - 原理：将div属性变成表格 
+    - 优点：没有优点 
+    - 缺点：会产生新的未知问题。 
+    - 建议：不推荐使用，只作了解
+
+
+#### 2.11. 怪异模式
 > 为了在那些针对 HTML5 设计，但是又没有添加 doctype(可以决定浏览器工作在哪种模式下，后面会详细讨论)的页面而存在
 
 浏览器 | 内核 | 前缀 | js 引擎
@@ -399,13 +440,13 @@ IE Standards Mode 下，non-replaced inline 元素无法自定义大小，而在
 6. 元素溢出的处理
 IE Standard Mode 下，overflow 取默认值 visible，即溢出可见，这种情况下，溢出内容不会被裁剪，呈现在元素框外。而在 Quirks Mode 下，该溢出被当做扩展 box 来对待，即元素的大小由其内容决定，溢出不会被裁剪，元素框自动调整，包含溢出内容
 
-#### 2.11. CSS reset
+#### 2.12. CSS reset
 > 是否使用，取决于 “是否需要依赖浏览器默认样式”
 
 1. 导致blockquote、ol、ul、hn等语义元素在没有赋以其他合理的样式时（常常如此），缺乏恰当的样式展现。而因为视觉上无法区分，这进一步导致许多开发人员忽视或误用这些语义元素
 2.  CSS reset 通常会增加浏览器进行样式计算的成本（即有一定的性能负担）
 
-#### 2.12. html常见兼容性问题
+#### 2.13. html常见兼容性问题
 1. png24位的图片在iE6浏览器上出现背景
     解决方案：做成PNG8，也可以引用一段脚本处理.
 
@@ -458,7 +499,7 @@ IE Standard Mode 下，overflow 取默认值 visible，即溢出可见，这种�
 12. li之间有间距
 解决方法：li 设置vertical-align:middle;
 
-#### 2.13. 适配 & CSS 中的单位
+#### 2.14. 适配 & CSS 中的单位
 假定已经存在一个使用px单位，且完全适配320xp宽度手机的页面
 1. 改变viewport的initial-scale的数值
 首屏渲染 -> js改变initial-scale -> 二次渲染，页面放大(闪烁)
