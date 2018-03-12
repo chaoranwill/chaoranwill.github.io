@@ -274,7 +274,7 @@ FireFox | gecko | -moz- |
 1. 优先级就近原则，同权重情况下样式定义最近者为准;
 2. 载入样式以最后载入的定位为准;
 3. !important >  id > class > tag  > *
-4. important > 内嵌 > ID > 类 > 标签 | 伪类 | 属性选择 > 伪对象 > 继承 > 通配符
+4. !important > 内嵌 > ID > 类 > 标签、 伪类、 属性选择 > 伪对象 > 继承 > 通配符
 
 **CSS3新增伪类举例：**
 * [p:first-of-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type) 选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
@@ -456,7 +456,9 @@ IE Standard Mode 下，overflow 取默认值 visible，即溢出可见，这种�
 3. IE6双边距bug：在IE6下，如果对元素设置了浮动，同时又设置了margin-left或margin-right，margin值会加倍。
 `#box{ float:left; width:10px; margin:0 0 0 10px;} `
 这种情况之下IE会产生20px的距离
-解决方案：在float的标签样式控制中加入 _display:inline; 将其转化为行内属性。( _ 这个符号只有ie6会识别)
+解决方案：
+    * 在float的标签样式控制中加入 _display:inline; 将其转化为行内属性。( _ 这个符号只有ie6会识别)
+    * 或者用padding-left代替margin-left
 
 4. 渐进识别的方式，从总体中逐渐排除局部。 
 首先，巧妙的使用“\9”这一标记，将IE游览器从所有情况中分离出来。 
