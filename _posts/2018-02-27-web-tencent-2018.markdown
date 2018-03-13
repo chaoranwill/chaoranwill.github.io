@@ -16,31 +16,113 @@ tags:
 {:toc #toc}
 
 ## 1. Tencent
-#### 1.1. 一面
-js 的事件机制
-vue
-Vue 生命周期
-双向绑定原理 & 如何实现
-vuex 原理
-数据更新后执行
-跨域
-    什么叫跨域
-    方案
-安全 && 怎样预防
-session & cookie
-本地存储
-浏览器缓存
-页面从输入URL 到加载过程
-协议
-HTTP 
-get & post
-TCP & UDP
-三次握手
-四次挥手
-排序：冒泡，选择，快速
-数据库
+#### 1.1. 问题
+##### 1.1.1. js 的事件机制
+##### 1.1.2. vue
+##### 1.1. Vue 生命周期
+##### 1.1. 双向绑定原理 & 如何实现
+##### 1.1. vuex 原理
 
-#### 1.2. 二面
+##### 1.1. vue 数据更新后执行
+##### 1.1. 跨域
+**什么叫跨域**
+
+**方案**
+##### 1.1. 安全 && 怎样预防
+##### 1.1. session & cookie
+##### 1.1. 本地存储
+##### 1.1. 浏览器缓存
+##### 1.1. 页面从输入URL 到加载过程
+##### 1.1. 协议
+##### 1.1. HTTP 
+###### content-type
+* application/x-www-form-urlencoded
+    > 最常见的 POST 提交数据的方式了。浏览器的原生 form 表单，如果不设置 enctype 属性，那么最终就会以 application/x-www-form-urlencoded方式提交数据。 
+
+    传递的key/val会经过URL转码，所以如果传递的参数存在中文或者特殊字符需要注意。
+    ```js
+    //例子
+    //b=曹,a=1
+
+    POST  HTTP/1.1(CRLF)
+    Host: www.example.com(CRLF)
+    Content-Type: application/x-www-form-urlencoded(CRLF)
+    Cache-Control: no-cache(CRLF)
+    (CRLF)
+    b=%E6%9B%B9&a=1(CRLF)
+    //这里b参数的值"曹"因为URL转码变成其他的字符串了
+    ```
+
+* multipart/form-data
+    > 常见的 POST 数据提交的方式。我们使用表单上传文件时，必须让 form 的 enctyped 等于这个值
+    并且Http协议会使用boundary来分割上传的参数
+
+* text/xml
+    ```xml
+    //例子
+    POST http://www.example.com HTTP/1.1(CRLF) 
+    Content-Type: text/xml(CRLF)
+    (CRLF)
+    <?xml version="1.0"?>
+    <resource>
+        <id>123</id>
+        <params>
+            <name>
+                <value>homeway</value>
+            </name>
+            <age>
+                <value>22</value>
+            </age>
+        </params>
+    </resource>
+    ```
+
+* application/json
+    > 用来告诉服务端消息主体是序列化后的 JSON 字符串
+
+    ```js
+    //例子
+    //传递json
+
+    POST  HTTP/1.1(CRLF)
+    Host: www.example.com(CRLF)
+    Content-Type: application/json(CRLF)
+    Cache-Control: no-cache(CRLF)
+    Content-Length: 24(CRLF)
+    (CRLF)
+    {
+        "a":1,
+        "b":"hello"
+    }
+    ```
+**(CRLF)指 `\r\n`**
+参考： [HTTP常见Content-Type比较](http://blog.csdn.net/jekxi/article/details/54342789)
+##### 1.1. get & post
+##### 1.1. TCP & UDP & 握手
+###### TCP
+![三次握手](/img/in-post/post-web-interview/tcp.png)
+1. 第一次握手：
+    Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。
+2. 第二次握手：
+    Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。
+3. 第三次握手：
+    Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了
+
+tcp 未收到消息处理
+三次握手
+    指令
+四次挥手
+#### 安全
+加密算法
+##### 1.1. 排序：冒泡，选择，快速
+##### 1.1. 数据库
+适配器
+##### 1.1. 软件设计模式
+单例模式
+##### 1.1. 通用的事件监听器
+ie 和其他的处理区别
+
+#### 1.2. Online Coding
 js 实现两个超大数相加
 基础：
 * JS 中所有的数字类型，实际存储都是通过 8 字节 double 浮点型 表示的，并不是能够精确表示范围内的所有数
