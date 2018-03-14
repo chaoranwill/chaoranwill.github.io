@@ -17,24 +17,22 @@ tags:
 
 ## 1. Tencent
 #### 1.1. js 的事件机制
-#### 1.1. vue
-#### 1.1. Vue 生命周期
-#### 1.1. 双向绑定原理 & 如何实现
-#### 1.1. vuex 原理
-
-#### 1.1. vue 数据更新后执行
-#### 1.1. 跨域
+#### 1.2. vue
+##### 1.2.1. Vue 生命周期
+##### 1.2.2. 双向绑定原理 & 如何实现
+##### 1.2.3. vuex 原理
+##### 1.2.4. vue 数据更新后执行
+#### 1.3. 跨域
 **什么叫跨域**
 
 **方案**
-#### 1.1. 安全 && 怎样预防
-#### 1.1. session & cookie
-#### 1.1. 本地存储
-#### 1.1. 浏览器缓存
-#### 1.1. 页面从输入URL 到加载过程
-#### 1.1. 协议
-#### 1.1. HTTP 
-##### content-type
+#### 1.4. 安全 && 怎样预防
+#### 1.5. session & cookie
+#### 1.6. 本地存储
+#### 1.7. 浏览器缓存
+#### 1.8. 页面从输入URL 到加载过程
+#### 1.9. HTTP 
+##### 1.9.1. content-type
 * application/x-www-form-urlencoded
     > 最常见的 POST 提交数据的方式了。浏览器的原生 form 表单，如果不设置 enctype 属性，那么最终就会以 application/x-www-form-urlencoded方式提交数据。 
 
@@ -96,9 +94,9 @@ tags:
     ```
 **(CRLF)指 `\r\n`**
 参考： [HTTP常见Content-Type比较](http://blog.csdn.net/jekxi/article/details/54342789)
-#### 1.1. get & post
-#### 1.1. TCP & UDP & 握手
-##### TCP (Transmission Control Protocol)
+#### 1.10. get & post
+#### 1.11. TCP & UDP & 握手
+##### 1.11.1. TCP (Transmission Control Protocol)
 两个序号和三个标志位：
 * 序号：seq序号，占32位，用来标识从TCP源端向目的端发送的字节流，发起方发送数据时对此进行标记。
 * 确认序号：ack序号，占32位，只有ACK标志位为1时，确认序号字段才有效，ack=seq+1。
@@ -128,7 +126,7 @@ tags:
 
 ![tips](/img/in-post/post-web-interview/tips.png)
 
-##### 四次挥手
+##### 1.11.2. 四次挥手
 > 由于TCP连接时全双工的，因此，每个方向都必须要单独进行关闭，这一原则是当一方完成数据发送任务后，发送一个FIN来终止这一方向的连接，收到一个FIN只是意味着这一方向上没有数据流动了，即不会再收到数据了，但是在这个TCP连接上仍然能够发送数据，直到这一方向也发送了FIN
 
 ![tcp-transport](/img/in-post/post-web-interview/tcp-transport.jpg)
@@ -156,7 +154,8 @@ tags:
 
 参考： [TCP三次握手详解及释放连接过程](https://www.cnblogs.com/laowz/p/6947539.html)
 
-#### HTTP 加密
+#### 1.12. HTTP 加密
+##### 1.12.1. 加密对象
 对于HTTP协议来说，加密的对象有以下两个：
 * 对通信的加密：
     HTTP中没有加密功能，但是可以通过和SSL(Secure Socket Layer，安全套接层)组合使用，加密通信内容。使用SSL建立安全通信线路后，就可以在这条线路上进行HTTP通信了。与SSL组合使用的HTTP被称为HTTPS（HTTP Secure，超文本传输安全协议）。
@@ -188,21 +187,21 @@ MD5是一种常用的加密方法，它是一种散列函数，利用MD5对用�
 
 +随机乱码字符防止被破解
 
-##### 加密算法
+##### 1.12.2. 加密算法
 **对称加密**
 ![encryption](/img/in-post/post-web-interview/encryption.JPEG)
 
 **非对称加密**
 ![encryption](/img/in-post/post-web-interview/encryption2.JPEG)
 
-#### 1.1. 排序：冒泡，选择，快速
-#### 1.1. 数据库
-##### 触发器
+#### 1.13. 排序：冒泡，选择，快速
+#### 1.14. 数据库
+##### 1.14.1. 触发器
 > 一种特殊的存储过程，存储过程一般通过定义的名字直接调用，而触发器是通过增、删、改进行触发执行的。会在事件发生时自动强制执行
 
 触发器是一中特殊的存储过程，主要是通过事件来触发而被执行的。它可以强化约束，来维护数据的完整性和一致性，可以跟踪数据库内的操作从而不允许未经许可的更新和变化。可以联级运算。如，某表上的触发器上包含对另一个表的数据操作，而该操作又会导致该表触发器被触发。
 
-##### 事务 & 锁
+##### 1.14.2. 事务 & 锁
 * 事务
     就是被绑定在一起作为一个逻辑工作单元的SQL语句分组，如果任何一个语句操作失败那么整个操作就被失败，以后操作就会回滚到操作前状态，或者是上有个节点。
     为了确保要么执行，要么不执行，就可以使用事务。要将一组语句作为事务考虑，就需要通过ACID测试，即原子性，一致性，隔离性和持久性。
@@ -210,12 +209,267 @@ MD5是一种常用的加密方法，它是一种散列函数，利用MD5对用�
     在所有的DBMS中，锁是实现事务的关键，锁可以保证事务的完整性和并发性。与现实生活中锁一样，它可以使某些数据的拥有者，在某段时间内不能使用某些数据或数据结构。当然锁还分级别的。共享锁（只读不写）、排他锁（可读可写） 
 
 
-#### 1.1. 软件设计模式
+#### 1.15. 软件设计模式
 设计原则
 * 对接口编程而不是对实现编程
 * 优先使用对象组合而不是继承
 
-单例模式
+![design](/img/in-post/post-web-interview/design.png)
+![design-rule](/img/in-post/post-web-interview/design-rule.png)
+##### 工厂模式
+> 客户类和工厂类分开。消费者任何时候需要某种产品，只需向工厂请求即可。消费者无须修改就可以接纳新产品。
+缺点是当产品修改时，工厂类也要做相应的修改。如：如何创建及如何向客户端提供。
+
+```js
+function CreatePerson(name,age,sex) {
+    var obj = new Object();
+    obj.name = name;
+    obj.age = age;
+    obj.sex = sex;
+    obj.sayName = function(){
+        return this.name;
+    }
+    return obj;
+}
+var p1 = new CreatePerson("longen",'28','男');
+var p2 = new CreatePerson("tugenhua",'27','女');
+```
+
+工厂模式是为了解决多个类似对象声明的问题;也就是为了解决实列化对象产生重复的问题。
+* 优点：能解决多个相似的问题。
+* 缺点：不能知道对象识别的问题(对象的类型不知道)。
+
+##### 单例模式
+> 单体是一个用来划分命名空间并将一批相关的属性和方法组织在一起的对象，如果他可以被实例化，那么他只能被实例化一次
+
+```js
+// 对象字面量
+var Singleton = {
+    attr1: 1,
+    attr2: 2,
+    method1: function(){
+        return this.attr1;
+    },
+    method2: function(){
+        return this.attr2;
+    }
+};
+
+/* 上面的所有成员变量都是通过Singleton来访问的，但是它并不是单体模式；
+    * 因为单体模式还有一个更重要的特点，就是可以仅被实例化一次，上面的只是不能被实例化的一个类，因此不是单体模式；对象字面量是用来创建单体模式的方法之一；
+    */
+
+/*要实现一个单体模式的话，我们无非就是使用一个变量来标识该类是否被实例化
+如果未被实例化的话，那么我们可以实例化一次，否则的话，直接返回已经被实例化的对象
+*/
+
+// 单体模式
+var Singleton = function(name){
+    this.name = name;
+    this.instance = null;
+};
+Singleton.prototype.getName = function(){
+    return this.name;
+}
+// 获取实例对象
+function getInstance(name) {
+    if(!this.instance) {
+        this.instance = new Singleton(name);
+    }
+    return this.instance;
+}
+// 测试单体模式的实例
+var a = getInstance("aa");  
+var b = getInstance("bb");
+
+console.log(a === b)        // true
+console.log(a.getName())    // aa
+console.log(b.getName())    // aa
+```
+**应用案例**
+> 弹窗
+传统创建：比如我点击一个元素需要创建一个div，我点击第二个元素又会创建一次div，我们频繁的点击某某元素，他们会频繁的创建div的元素，虽然当我们点击关闭的时候可以移除弹出代码，但是呢我们频繁的创建和删除并不好，特别对于性能会有很大的影响，对DOM频繁的操作会引起重绘等，从而影响性能；因此这是非常不好的习惯；我们现在可以使用单体模式来实现弹窗效果，我们只实例化一次就可以
+
+**编写通用的单体模式**
+> 我们使用一个参数fn传递进去，如果有result这个实例的话，直接返回，否则的话，当前的getInstance函数调用fn这个函数，是this指针指向与这个fn这个函数；之后返回被保存在result里面；现在我们可以传递一个函数进去，不管他是创建div也好，还是创建iframe也好，总之如果是这种的话，都可以使用getInstance来获取他们的实例对象；
+```js
+// 创建div
+var createWindow = function(){
+    var div = document.createElement("div");
+    div.innerHTML = "我是弹窗内容";
+    div.style.display = 'none';
+    document.body.appendChild(div);
+    return div;
+};
+// 创建iframe
+var createIframe = function(){
+    var iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+    return iframe;
+};
+// 获取实例的封装代码
+var getInstance = function(fn) {
+    var result;
+    return function(){
+        return result || (result = fn.call(this,arguments));
+    }
+};
+// 测试创建div
+var createSingleDiv = getInstance(createWindow);
+document.getElementById("Id").onclick = function(){
+    var win = createSingleDiv();
+    win.style.display = "block";
+};
+// 测试创建iframe
+var createSingleIframe = getInstance(createIframe);
+document.getElementById("Id").onclick = function(){
+    var win = createSingleIframe();
+    win.src = "http://cnblogs.com";
+};
+```
+
+##### 模块模式
+> 模块模式的思路是为单体模式添加私有变量和私有方法能够减少全局变量的使用
+
+    prototype + constructor
+##### 观察者模式（发布-订阅）
+> 发布---订阅模式又叫观察者模式，它定义了对象间的一种一对多的关系，让多个观察者对象同时监听某一个主题对象，当一个对象发生改变时，所有依赖于它的对象都将得到通知
+
+发布订阅模式的流程如下：
+1. 确定谁是发布者(比如我的博客)。
+2. 然后给发布者添加一个缓存列表，用于存放回调函数来通知订阅者。
+3. 发布消息，发布者需要遍历这个缓存列表，依次触发里面存放的订阅者回调函数。
+4. 退订（比如不想再接收到这些订阅的信息了，就可以取消掉）
+
+```js
+var Event = (function(){
+    var list = {},
+        listen,
+        trigger,
+        remove;
+        listen = function(key,fn){
+            if(!list[key]) {
+                list[key] = [];
+            }
+            list[key].push(fn);
+        };
+        trigger = function(){
+            var key = Array.prototype.shift.call(arguments),
+                fns = list[key];
+            if(!fns || fns.length === 0) {
+                return false;
+            }
+            for(var i = 0, fn; fn = fns[i++];) {
+                fn.apply(this,arguments);
+            }
+        };
+        remove = function(key,fn){
+            var fns = list[key];
+            if(!fns) {
+                return false;
+            }
+            if(!fn) {
+                fns && (fns.length = 0);
+            }else {
+                for(var i = fns.length - 1; i >= 0; i--){
+                    var _fn = fns[i];
+                    if(_fn === fn) {
+                        fns.splice(i,1);
+                    }
+                }
+            }
+        };
+        return {
+            listen: listen,
+            trigger: trigger,
+            remove: remove
+        }
+})();
+
+// 测试代码如下：
+Event.listen("color",function(size) {
+    console.log("尺码为:"+size); // 打印出尺码为42
+});
+Event.trigger("color",42);
+```
+
+##### 代理模式
+> 代理是一个对象，它可以用来控制对本体对象的访问，它与本体对象实现了同样的接口，代理对象会把所有的调用方法传递给本体对象的
+本地对象注重的去执行页面上的代码，代理则控制本地对象何时被实例化，何时被使用
+
+**优点：**
+* 代理对象可以代替本体被实例化，并使其可以被远程访问；
+* 它还可以把本体实例化推迟到真正需要的时候；对于实例化比较费时的本体对象，或者因为尺寸比较大以至于不用时不适于保存在内存中的本体，我们可以推迟实例化该对象；
+
+```js
+// 先申明一个奶茶妹对象
+var TeaAndMilkGirl = function(name) {
+    this.name = name;
+};
+// 这是京东ceo先生
+var Ceo = function(girl) {
+    this.girl = girl;
+    // 送结婚礼物 给奶茶妹
+    this.sendMarriageRing = function(ring) {
+        console.log("Hi " + this.girl.name + ", ceo送你一个礼物：" + ring);
+    }
+};
+// 京东ceo的经纪人是代理，来代替送
+var ProxyObj = function(girl){
+    this.girl = girl;
+    // 经纪人代理送礼物给奶茶妹
+    this.sendGift = function(gift) {
+        // 代理模式负责本体对象实例化
+        (new Ceo(this.girl)).sendMarriageRing(gift);
+    }
+};
+// 初始化
+var proxy = new ProxyObj(new TeaAndMilkGirl("奶茶妹"));
+proxy.sendGift("结婚戒"); // Hi 奶茶妹, ceo送你一个礼物：结婚戒
+```
+
+* TeaAndMilkGirl 是一个被送的对象(这里是奶茶妹)；
+* Ceo 是送礼物的对象，他保存了奶茶妹这个属性，及有一个自己的特权方法sendMarriageRing 就是送礼物给奶茶妹这么一个方法；
+* 然后呢他是想通过他的经纪人去把这件事完成，于是需要创建一个经济人的代理模式，名字叫ProxyObj ；
+* 他的主要做的事情是，把ceo交给他的礼物送给ceo的情人，因此该对象同样需要保存ceo情人的对象作为自己的属性，同时也需要一个特权方法sendGift ，该方法是送礼物，因此在该方法内可以实例化本体对象，这里的本体对象是ceo送花这件事情，因此需要实例化该本体对象后及调用本体对象的方法(sendMarriageRing).
+
+理解使用虚拟代理实现图片的预加载
+
+在网页开发中，图片的预加载是一种比较常用的技术，如果直接给img标签节点设置src属性的话，如果图片比较大的话，或者网速相对比较慢的话，那么在图片未加载完之前，图片会有一段时间是空白的场景，这样对于用户体验来讲并不好，那么这个时候我们可以在图片未加载完之前我们可以使用一个loading加载图片来作为一个占位符，来提示用户该图片正在加载，等图片加载完后我们可以对该图片直接进行赋值即可；下面我们先不用代理模式来实现图片的预加载的情况下代码如下：
+```js
+//利用代理模式来编写预加载图片
+var myImage = (function(){
+    var imgNode = document.createElement("img");
+    document.body.appendChild(imgNode);
+    return {
+        setSrc: function(src) {
+            imgNode.src = src;
+        }
+    }
+})();
+
+// 代理模式
+var ProxyImage = (function(){
+    var img = new Image();
+    img.onload = function(){
+        myImage.setSrc(this.src);
+    };
+    return {
+        setSrc: function(src) {
+                    myImage.setSrc("http://img.lanrentuku.com/img/allimg/1212/5-121204193Q9-50.gif");
+                    img.src = src;
+        }
+    }
+})();
+// 调用方式
+ProxyImage.setSrc("https://img.alicdn.com/tps/i4/TB1b_neLXXXXXcoXFXXc8PZ9XXX-130-200.png");
+```
+
+这种懒加载方法不用代理模式也是可以实现的，只是用代理模式。我们可以让 myImage 只做一件事，只负责将实际图片加入到页面中，而loading图片交给ProxyImage去做。从而降低代码的耦合度。因为当我不想用loading的时候，可以直接调用myImage 方法。也即是说假如我门不需要代理对象的话，直接可以换成本体对象调用该方法即可
+
+##### 补充
+
+参考：[Javascript设计模式详解](http://www.cnblogs.com/tugenhua0707/p/5198407.html)
 #### 1.1. 通用的事件监听器
 ie 和其他的处理区别
 
