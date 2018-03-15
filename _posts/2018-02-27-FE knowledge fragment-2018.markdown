@@ -15,7 +15,14 @@ tags:
 * 目录
 {:toc #toc}
 ## 1. ES6
+最重要特征
 * 箭头函数
+* promises
+* 异步函数 (Async Functions)
+* 解构
+* 默认和剩余参数（Default and Rest Parameters）
+
+其他
 * 字符串模板
 * generators(生成器)
 * async/await
@@ -35,7 +42,7 @@ tags:
 
 
 #### 1.2. promise
-> 解决异步回调多层嵌套的问题
+> 解决异步回调多层嵌套的问题，使异步任务的处理方式变成线性
 
 * 是一个容器；
     包含某个未来结束的事件
@@ -92,7 +99,50 @@ p的状态由p1、p2、p3决定，分成两种情况:
 
 更多了解：[理解 JavaScript 的 async/await](https://segmentfault.com/a/1190000007535316)
 
-#### 1.3. interator 
+#### 1.3. 解构
+> 快速解压缩对象属性和数组中的值，并将它们分配给各个变量
+
+```js
+//解构数组
+var soccerteam = ['George', 'Dennis', 'Sandy']
+var [a, b] = soccerteam // destructure soccerteam array
+console.log(a) // "George"
+console.log(b) // "Dennis"
+```
+
+#### 1.4. 默认和剩余参数
+**默认参数**
+```js
+//我们都使用过一下模式来创建具有默认值的参数：
+function getarea(w,h){
+  var w = w || 10
+  var h = h || 15
+  return w * h
+}
+
+//有了ES6对默认参数的支持，显式定义的参数值的日子已经结束：
+function getarea(w=10, h=15){
+  return w * h
+}
+getarea(5) // returns 75
+```
+
+**剩余参数**
+```js
+//将函数参数转换成数组
+function addit(...theNumbers){
+  // get the sum of the array elements
+  //reduce 将结果序列和下一个参数做累计计算
+  // ...将参数转化为数组
+  //console.log(...theNumbers)   [1,2,3,4]
+    return theNumbers.reduce((prevnum, curnum) => prevnum + curnum, 0) 
+}
+
+addit(1,2,3,4) // returns 10
+```
+
+
+#### 1.5. interator 
 > 是一种接口，为所有数据结构提供一种统一的访问机制，即for...of 循环 
 
 **作用：**
@@ -124,20 +174,20 @@ p的状态由p1、p2、p3决定，分成两种情况:
 * 提供了遍历所有数据结构的统一操作接口，循环普通对象结合 `Object.keys()` 搭配使用
 * 可自动遍历generator函数生成的iterator对象
 
-#### 1.4. generator 函数
+#### 1.6. generator 函数
 > 一种异步解决方案（一种封装了多个内部状态的状态机）
 
 * 返回的不是函数运行结果，而是指向内部状态的指针对象
 * 调用next方法，从停止地方开始执行，移向下一个状态
 
-#### 1.5. yield 与 return
+#### 1.7. yield 与 return
 相似：都能返回紧跟在语句后面那个表达式的值
 区别：记忆功能，执行次数，返回值数量
 
-#### 1.6. 回调函数
+#### 1.8. 回调函数
 JavaScript对异步编程的实现
 
-#### 1.7. ES6 Object.assign
+#### 1.9. ES6 Object.assign
 > 将源对象（source）的所有可枚举属性，复制到目标对象（target）
 
 `Object.assign(target, source1, source2);`

@@ -83,8 +83,133 @@ tags:
         btn3.attachEvent('onclick',handlers2);
         ```
 
-##### ---通用的事件监听器
 ##### ---ie 与其他浏览器的区别
+**事件对象**
+* IE
+    IE中事件对象是作为全局对象 `window.event` 存在的
+* Firefox
+    Firefox中则是做为句柄( handler )的第一个参数传入
+* 通用
+    `var evt = window.event || arguments[0];`
+
+![event](/img/in-post/post-web-interview/event.png)
+
+**事件监听**
+- Chrome、FireFox、Opera、Safari、IE9.0及其以上版本
+    ```js
+    addEventListener(eventName,handler,boolean);
+    removeEventListener()
+    /* 两个方法都一样接收三个参数,
+    * 事件名
+    * 事件处理程序
+    * boolean false时表示在事件冒泡阶段调用事件处理程序,一般建议在冒泡阶段使用
+    */
+    ```
+
+    ![eventlistener](/img/in-post/post-web-interview/addEventListener.png)
+
+- IE8.0及其以下版本
+    ```js
+    element.attachEvent(type, handler); 
+    element.detachEvent(type, handler); 
+    /* element  要绑定事件的对象，html 节点
+    * type     事件类型 +'on' 如： "onclick, onmouseover"
+    * listener 事件处理程序（只写函数名，不带括号）
+    */
+    ```
+
+- 早期浏览器
+    `obj['on' + type] = handler`
+
+**阻止冒泡**
+* `event.stopPropagation`
+* `event.cancelBubble = true //IE`  
+
+**阻止默认事件**
+* `event.preventDefault()`
+* `event.returnValue = false  //IE`
+
+##### ---通用的事件监听器
+```js
+// event(事件)工具集，来源：github.com/markyun
+markyun.Event = {
+    // 页面加载完成后
+    readyEvent: function (fn) {
+        if (fn == null) {
+            fn = document;
+        }
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = fn;
+        } else {
+            window.onload = function () {
+                oldonload();
+                fn();
+            };
+        }
+    },
+    // 视能力分别使用dom0||dom2||IE方式 来绑定事件
+    // 参数： 操作的元素,事件名称 ,事件处理程序
+    addEvent: function (element, type, handler) {
+        if (element.addEventListener) {
+            //事件类型、需要执行的函数、是否捕捉
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent('on' + type, function () {
+                handler.call(element);
+            });
+        } else {
+            element['on' + type] = handler;
+        }
+    },
+    // 移除事件
+    removeEvent: function (element, type, handler) {
+        if (element.removeEnentListener) {
+            element.removeEnentListener(type, handler, false);
+        } else if (element.detachEvent) {
+            element.detachEvent('on' + type, handler);
+        } else {
+            element['on' + type] = null;
+        }
+    },
+    // 阻止事件 (主要是事件冒泡，因为IE不支持事件捕获)
+    stopPropagation: function (ev) {
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
+        } else {
+            ev.cancelBubble = true;
+        }
+    },
+    // 取消事件的默认行为
+    preventDefault: function (event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        } else {
+            event.returnValue = false;
+        }
+    },
+    // 获取事件目标
+    getTarget: function (event) {
+        return event.target || event.srcElement;
+    },
+    // 获取event对象的引用，取到事件的所有信息，确保随时能使用event；
+    getEvent: function (e) {
+        var ev = e || window.event;
+        if (!ev) {
+            var c = this.getEvent.caller;
+            while (c) {
+                ev = c.arguments[0];
+                if (ev && Event == ev.constructor) {
+                    break;
+                }
+                c = c.caller;
+            }
+        }
+        return ev;
+    }
+};
+```
+
 
 #### 1.2. vue
 ##### ---Vue 生命周期
