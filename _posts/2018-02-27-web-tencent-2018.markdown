@@ -712,4 +712,57 @@ document.body.innerHTML = c[0].toString(16) + ":" + c[1].toString(16);
 ff00:ff0000
 ```
 
+## 2. 阿里
+#### 2.1. 编写一个 css 层级选择器
+根据一个给定的元素生成一个css 选择器，函数名为genCssSelector ，
+点击某元素弹出该元素及其父元素，类似 querySelector
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javaScript">
+        // your code here
+        var genCssSelector = function (e) {
+            e = e || window.event
+            var tar = e.target || e.srcElement
+            var objArr = []
 
+            while (tar) {
+                if (tar.className) {
+                    objArr.push('.' + tar.className)
+                } else if (tar.id) {
+                    objArr.push('#' + tar.id)
+                } else {
+                    objArr.push(tar.nodeName.toLowerCase())
+                }
+                tar = tar.parentNode
+            }
+            objArr.pop()
+            return objArr.reverse().join(' ')
+        }
+
+        document.addEventListener('click', function (e) {
+            //点击li时，返回：html body #page .content.main .refer ul li 
+            console.log(genCssSelector(e));
+        })
+    </script>
+</head>
+<body>
+    <div id="page">
+        <div class="main">
+            <div class="reference">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    23333
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```
