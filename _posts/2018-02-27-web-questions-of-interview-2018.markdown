@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Topics of FE "
-subtitle:   "collected from nowcoder"
+title:      "Questions of FE "
+subtitle:   "collected from nowcoder and blogs"
 date:       2018-03-01 19:55:00
 author:     "Chaoran"
 header-img: "img/post-bg-fe-topics.jpeg"
@@ -1055,6 +1055,29 @@ setTimeout(function(){
 * [理解 setTimeout 和 setInterval](https://www.cnblogs.com/xiaohuochai/p/5773183.html)
 * [由 setTimeout 的 this 讲起](http://blog.csdn.net/qq_26598303/article/details/52668683)
     
+#### 3.17. 数组方法
+**改变原数组的：**
+* shift：将第一个元素删除并且返回删除元素，空即为undefined
+* unshift：向数组开头添加元素，并返回新的长度
+* pop：删除最后一个并返回删除的元素
+* push：向数组末尾添加元素，并返回新的长度
+* reverse：颠倒数组顺序
+* sort：对数组排序
+* splice:splice(start,length,item)删，增，替换数组元素，返回被删除数组，无删除则不返回
+
+**不改变原数组的：**
+* concat：连接多个数组，返回新的数组
+* join：将数组中所有元素以参数作为分隔符放入一个字符
+* slice：slice(start,end)，返回选定元素
+* map,filter,forEach,some,every等不改变原数组
+
+**splice和slice的区别：**
+* splice(i,j,”a”) 删除，添加元素
+* splice() 方法与 slice() 方法的作用是不同的，splice() 方法会直接对数组进行修改。从i开始删j个(包括i),并将”a”插入到i处。 
+* slice(start,end) 从某个已有的数组返回选定的元素，从start位开始返回到end（包括start不包括end）如果是负数，表示从数组尾部进行计算（同样：包括start不包括end）
+请注意，该方法并不会修改数组，而是返回一个子数组。
+
+来源： [是否改变原数组的常用方法归纳](http://blog.csdn.net/cristina_song/article/details/77917404)
 
 ## 4. 其他
 #### 4.1. GET 和 POST
@@ -1100,14 +1123,52 @@ setTimeout(function(){
 2. 文件最小化/文件压缩
 3. 使用 CDN 托管
 4. 缓存的使用（多个域名来提供缓存）
+5. cookie优化
 5. 其他
+
+**CDN**
+> 就近访问，提供离用户最近，响应最快的节点
+
+每个CDN节点由两部分组成:负载均衡设备和高速缓存服务器
+
+当用户访问加入CDN服务的网站时，域名解析请求将最终交给全局负载均衡DNS进行处理。全局负载均衡DNS通过一组预先定义好的策略，将当时最接近用 户的节点地址提供给用户，使用户能够得到快速的服务。同时，它还与分布在世界各地的所有CDNC节点保持通信，搜集各节点的通信状态，确保不将用户的请求 分配到不可用的CDN节点上，实际上是通过DNS做全局负载均衡。
+
+负载均衡设备负责每个节点中各个Cache的负载均衡，保证节点的工作效率;同时，负载均衡设备还负责收集节点与周围环境的信息，保持与全局负载DNS的通信，实现整个系统的负载均衡
+
+![cdn](/img/in-post/post-web-nowcoder/cdn.png)
+1.用户向浏览器输入www.web.com这个域名，浏览器第一次发现本地没有dns缓存，则向网站的DNS服务器请求；
+
+2.网站的DNS域名解析器设置了CNAME，指向了www.web.51cdn.com,请求指向了CDN网络中的智能DNS负载均衡系统；
+
+3.智能DNS负载均衡系统解析域名，把对用户响应速度最快的IP节点返回给用户；
+
+4.用户向该IP节点（CDN服务器）发出请求；
+
+5.由于是第一次访问，CDN服务器会向原web站点请求，并缓存内容；
+
+6.请求结果发给用户。
+
+**cookie 优化**
+* 去除没有必要的cookie，如果网页不需要cookie就完全禁掉。
+
+* 将cookie的大小减到最小。
+    由于cookie在访问对应域名下的资源时都会通过HTTP请求发送到服务器，因此，减小cookie的大小，能减小HTTP请求报文的大小，提高响应速度。
+
+* 设置合适的过期时间，较长的过期时间可以提高响应速度。
+    给cookie添加一个过期时间，则cookie信息将存储到硬盘上，即使浏览器退出Cookie还会存在。只要Cookie未被清除且还在过期时间内，该Cookie就会在访问对应域名时发送给服务器。
+
+* 通过使用不同的domain减少cookie的使用。
+    cookie在访问对应域名下的资源时都会通过HTTP请求发送到服务器，但在访问一些资源，如js，css和图片时，大多数情况下cookie是多余的，可以使用不同的domain来存储这些静态资源，这样访问这些资源时就不会发送多余的cookie，从而提高响应速度。
 
 测试代码性能
 * Profiler
 * JSPerf（http://jsperf.com/nexttick-vs-setzerotimeout-vs-settimeout）
 * Dromaeo
 
-更多：[网站性能优化](http://www.cnblogs.com/chaoran/p/4795800.html)
+更多：
+[网站性能优化](http://www.cnblogs.com/chaoran/p/4795800.html)
+[一张图说明CDN网络的原理](http://blog.csdn.net/coolmeme/article/details/9468743)
+
 
 #### 4.4. 前端的安全问题
 1. XSS (Cross Site Scripting) 跨站脚本攻击
@@ -1166,14 +1227,14 @@ js阻塞其他资源的加载的原因是：**浏览器为了防止js修改DOM�
 **嵌入JS应该放在什么位置？**
 1. 放在底部，虽然放在底部照样会阻塞所有呈现，但不会阻塞资源下载。
 2. 如果嵌入JS放在head中，请把嵌入JS放在CSS头部。
-3. 使用 defer（只支持IE）
+3. 使用 defer
 4. 不要在嵌入的JS中调用运行时间较长的函数，如果一定要用，可以用 setTimeout 来调用
 
 **Javascript无阻塞加载具体方式：**
 1. 将脚本放在底部。link 还是放在head中，用以保证在js加载前，能加载出正常显示的页面。script 标签放在 /body 前。
 2. 阻塞脚本：由于每个 script 标签下载时阻塞页面解析过程，所以限制页面 script 总数也可以改善性能。适用于内联脚本和外部脚本。
 3. 非阻塞脚本：等页面完成加载后，再加载js代码。也就是，在 window.onload 事件发出后开始下载代码。
-4. defer属性：支持IE4和fierfox3.5更高版本浏览器
+4. defer属性：支持IE4和firefox3.5更高版本浏览器
 5. 动态脚本元素：文档对象模型（DOM）允许你使用js动态创建HTML的几乎全部文档内容。代码如下：
     ```js
     <script>
@@ -1366,8 +1427,142 @@ markyun.Event = {
     }
 };
 ```
+#### 5.2. 实现事件模型（发布-订阅）
+**【实现事件模型】**
+> 即写一个类或是一个模块，有两个函数，一个bind一个trigger，分别实现绑定事件和触发事件，核心需求就是可以对某一个事件名称绑定多个事件响应函数，然后触发这个事件名称时，依次按绑定顺序触发相应的响应函数。
 
-#### 5.2. 数组去重
+大致实现思路就是创建一个类或是匿名函数，在bind和trigger函数外层作用域创建一个字典对象，用于存储注册的事件及响应函数列表，bind时，如果字典没有则创建一个，key是事件名称，value是数组，里面放着当前注册的响应函数，如果字段中有，那么就直接push到数组即可。trigger时调出来依次触发事件响应函数即可
+```js
+var Event = (function(){
+    var list = {},
+        listen,
+        trigger,
+        remove;
+        listen = function(key,fn){
+            if(!list[key]) {
+                list[key] = [];
+            }
+            list[key].push(fn);
+        };
+        trigger = function(){
+            var key = Array.prototype.shift.call(arguments),
+                fns = list[key];
+            if(!fns || fns.length === 0) {
+                return false;
+            }
+            for(var i = 0, fn; fn = fns[i++];) {
+                fn.apply(this,arguments);
+            }
+        };
+        remove = function(key,fn){
+            var fns = list[key];
+            if(!fns) {
+                return false;
+            }
+            if(!fn) {
+                fns && (fns.length = 0);
+            }else {
+                for(var i = fns.length - 1; i >= 0; i--){
+                    var _fn = fns[i];
+                    if(_fn === fn) {
+                        fns.splice(i,1);
+                    }
+                }
+            }
+        };
+        return {
+            listen: listen,
+            trigger: trigger,
+            remove: remove
+        }
+})();
+
+// 测试代码如下：
+Event.listen("color",function(size) {
+    console.log("尺码为:"+size); // 打印出尺码为42
+});
+Event.trigger("color",42);
+```
+
+#### 5.3. bind
+> bind() 函数会创建一个新函数（称为绑定函数），新函数与被调函数（绑定函数的目标函数）具有相同的函数体（在 ECMAScript 5 规范中内置的call属性）。
+当目标函数被调用时 this 值绑定到 bind() 的第一个参数，该参数不能被重写。绑定函数被调用时，bind() 也接受预设的参数提供给原函数。
+
+**思路**
+* 因为bind方法不会立即执行函数，需要返回一个待执行的函数
+    （这里用到**闭包**，可以返回一个函数）`return function(){}`
+* 作用域绑定
+    这里可以使用apply或者call方法来实现 `xx.call(yy) / xx.apply(yy)`
+* 参数传递
+    由于参数的不确定性，需要用apply传递数组（实例更明了）`xx.apply(yy,[...Array...])` 
+
+```js
+Function.prototype.testBind = function(that){
+    var _this = this,
+    /*
+    * 由于参数的不确定性，统一用arguments来处理，这里的arguments只是一个类数组对象，有length属性
+    * 可以用数组的slice方法转化成标准格式数组，除了作用域对象that以外，
+    * 后面的所有参数都需要作为数组参数传递
+    * Array.prototype.slice.apply(arguments,[1])/Array.prototype.slice.call(arguments,1)
+    */
+    slice = Array.prototype.slice,
+    args = slice.apply(arguments,[1]);
+    //返回函数    
+    return function(){
+        //apply绑定作用域，进行参数传递
+        return _this.apply(that,
+            args.concat(Array.prototype.slice.apply(arguments,[0]))
+        )
+    }    
+}
+
+//test
+var test = function(a,b){
+    console.log('作用域绑定 '+ this.value)
+    console.log('testBind参数传递 '+ a.value2)
+    console.log('调用参数传递 ' + b)
+}
+var obj = {
+    value:'ok'
+}
+var fun_new = test.testBind(obj,{value2:'also ok'})
+
+fun_new ('hello bind')
+// 作用域绑定 ok
+// testBind参数传递 also ok
+// 调用参数传递 hello bind
+
+/* Array.prototype.slice.apply(arguments,[0]) 指的是这个返回函数执行的时候传递的一系列参数，所以是从第一个参数开始 [0] 
+* args = slice.apply(arguments,[1])指的是 testBind方法执行时候传递的参数，所以从第二个开始 [1]
+* 只有两者合并了之后才是返回函数的完整参数
+*/
+```
+
+#### 5.4. 将url的查询参数解析成字典对象
+> 解决方案:拆字符或者用正则匹配来解决
+烈建议用正则匹配，因为url允许用户随意输入，如果用拆字符的方式，有任何一处没有考虑到容错，就会导致整个js都报错
+
+```js
+function getQueryObject(url) {
+    url = url == null ? window.location.href : url;
+    var search = url.substring(url.lastIndexOf("?") + 1);
+    var obj = {};
+    var reg = /([^?&=]+)=([^?&=]*)/g;
+    search.replace(reg, function (rs, $1, $2) {
+        var name = decodeURIComponent($1);
+        var val = decodeURIComponent($2);
+        val = String(val);
+        obj[name] = val;
+        return rs;
+    });
+    return obj;
+}
+```
+
+####
+
+
+#### 5.5. 数组去重
 建一个空对象和空数组，循环遍历需要去重的数组，判断对象有没有此属性，没有的话就给对象添加此属性，并向空数组中push这个值。
 ```js
 //es5
@@ -1386,7 +1581,7 @@ functionunique(arr){
 [...new Set(arr)]
 ```
 
-#### 5.3. 冒泡排序
+#### 5.6. 冒泡排序
 相邻两个对比，最后把最大的排到了最后，重复此过程。
 ```js
 functionbubbleSort(arr) {
@@ -1404,7 +1599,7 @@ functionbubbleSort(arr) {
 }
 ```
 
-#### 5.4. 选择排序
+#### 5.7. 选择排序
 寻找最小的数，保存索引，然后与第一层循环其下标对于的值进行交换
 ```js
 functionselectionSort(arr) {
@@ -1425,7 +1620,7 @@ functionselectionSort(arr) {
 }
 ```
 
-#### 5.5. 快速排序
+#### 5.8. 快速排序
 选取一个记录作为中间轴，然后将比‘这个记录值’小的移到‘记录值’之前，大的移到之后，然后递归
 ```js
 functionquickSort(arr) {

@@ -60,3 +60,6 @@ var div_array = Array.prototype.slice.call(div_list); // 将 NodeList 转换为�
 //ES6 - Array.from();
 var div_array_from = Array.from(div_list); //将 NodeList 转换为数组
 ```
+
+参考：
+[HTMLCollection vs. NodeList](https://www.jianshu.com/p/f6ff5ebe45fd)
