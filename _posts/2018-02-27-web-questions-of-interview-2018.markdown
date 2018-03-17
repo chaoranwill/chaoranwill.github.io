@@ -165,8 +165,9 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
     解析和执行 javascript 来实现网页的动态效果。
 
 最开始渲染引擎和JS引擎并没有区分的很明确，后来 JS 引擎越来越独立，内核就倾向于只指渲染引擎。
+
 浏览器 | 内核 | 前缀 | js 引擎
-- | :-: | -:  | -: 
+-| :-: | -:  | -: 
 IE(360, 搜狗浏览器) | Trident | -ms- | Chakra
 Chrome | Webkit | -webkit- | V8 
 Safari | Webkit | -webkit- | Javascriptcore
