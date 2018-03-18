@@ -90,12 +90,33 @@ DOM事件模型中的事件对象常用属性:
 * target获取事件目标
 * stopPropagation()阻止事件冒泡
 * preventDefault()阻止事件默认行为
+* 判断加载状态 —— onload 事件
 
 IE事件模型中的事件对象常用属性:
 * type用于获取事件类型
 * srcElement获取事件目标
-* cancelBubble阻止事件冒泡
-* returnValue阻止事件默认行为
+* cancelBubble 阻止事件冒泡
+* returnValue 阻止事件默认行为
+* 通过 readystate 属性值判断何时方法下载完毕可用
+    readystate共有以下几个值：
+    - uninitialized： 对象存在但未初始化；
+    - loading：对象正在加载；
+    - loaded：对象数据加载完毕；
+    - interactive：可以操作对象了，但还没加载完毕；
+    - complete：加载完毕。
+    注意上面5个值并不一定每个事件都全包含，并且不一定是什么顺序。
+
+    Document.readyState 属性
+    一个文档的 readyState 可以是以下之一：
+    - loading / 加载
+        document 仍在加载。
+    - interactive / 互动
+        文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载。
+    - complete / 完成
+        T文档和所有子资源已完成加载。状态表示 load 事件即将被触发。
+
+    当这个属性的值变化时，document 对象上的readystatechange 事件将被触发。
+
 
 **事件对象**
 * IE
@@ -870,6 +891,7 @@ ff00:ff0000
         - 与 react 的不同
             应用场景
         - 如何实现双向绑定
+        - 如何通信
 3. 其他
     * 还会哪些语言
     * 还有什么感觉没问到但掌握很好的

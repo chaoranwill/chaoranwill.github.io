@@ -1117,7 +1117,71 @@ setTimeout(function(){
 请求返回后，便进入了我们关注的前端模块
 简单来说，浏览器会解析 HTML 生成 DOM Tree，其次会根据 CSS 生成 CSS Rule Tree，而 javascript 又可以根据 DOM API 操作 DOM
 
-更多：[从输入 URL 到页面加载完的过程中都发生了什么事情？](http://www.cnblogs.com/chaoran/p/4795642.html)
+**页面资源加载**
+* 解析HTML结构
+* 加载并解析外部脚本
+* DOM树构建完成，执行脚本。//DOMInteractive –> DOMContentLoaded
+* 加载图片、样式表文件等外部文件
+* 页面加载完毕。`window.onload`
+
+**涉及到的事件**
+* `document.onload: `
+    当整个html文档加载的时候就触发了，也就是在body元素加载之前就开始执行了
+* `DOMContentLoaded:` 
+    当页面的DOM树解析好并且需要等待JS执行完才触发 
+    当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载
+    ```js
+    <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        console.log("DOM fully loaded and parsed");
+    });
+
+    for(var i=0; i<1000000000; i++){
+        // 这个同步脚本将延迟DOM的解析。
+        // 所以DOMContentLoaded事件稍后将启动。
+    } 
+    </script>
+    ```
+    support
+    ![support](/img/in-post/post-web-nowcoder/support.png)
+    
+* `onreadytstatechange: `
+    当对象状态变更时触发这个事件，一旦 document 的 readyState 属性发生变化就会触发
+    一个文档的 readyState 可以是以下之一：
+    - loading / 加载
+        document 仍在加载。
+    - interactive / 互动
+        文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载。
+    - complete / 完成
+        T文档和所有子资源已完成加载。状态表示 load 事件即将被触发。
+
+* `window.onload: `
+    当页面全部加载完成（包括所有资源）
+
+**document.ready的实现**
+
+作用：监控dom是否加载完毕，dom加载完毕时及资源加载之前触发 
+```js
+document.ready = function(callback) {
+    if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+            callback();
+        }, false);
+    }else if (document.attachEvent) {// 兼容ie
+        document.attachEvent('onreadytstatechange', function() {
+            if (document.readyState == "complete") {
+                document.detachEvent("onreadystatechange", arguments.callee);
+                callback();
+            }
+        });
+    }
+}
+```
+
+更多：
+[从输入 URL 到页面加载完的过程中都发生了什么事情？](http://www.cnblogs.com/chaoran/p/4795642.html)
+[资源加载和页面事件 load, ready, DOMContentLoaded等](http://blog.csdn.net/u011700203/article/details/47656857)
 
 #### 4.3. 网站的文件和资源优化
 1. 文件合并
