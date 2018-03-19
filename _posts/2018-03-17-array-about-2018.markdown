@@ -16,8 +16,8 @@ tags:
 * 目录
 {:toc #toc}
 
-## 是否改变原数组的常用方法
-#### 改变原数组的
+## 1. 是否改变原数组的常用方法
+#### 1.1. 改变原数组的
 * shift：将第一个元素删除并且返回删除元素，空即为undefined
 * unshift：向数组开头添加元素，并返回新的长度
 * pop：删除最后一个并返回删除的元素
@@ -26,13 +26,13 @@ tags:
 * sort：对数组排序
 * splice:splice(start,length,item)删，增，替换数组元素，返回被删除数组，无删除则不返回
 
-#### 不改变原数组的：
+#### 1.2. 不改变原数组的：
 * concat：连接多个数组，返回新的数组
 * join：将数组中所有元素以参数作为分隔符放入一个字符
 * slice：slice(start,end)，返回选定元素
 * map,filter,forEach,some,every等不改变原数组
 
-#### 必知的数组方法
+## 2. 必知的数组方法
 * `Array.forEach()`
     能够方便的遍历数组里的每个元素，可以在回调函数里对每个元素进行操作
     该方法**没有返回值**，不需要在回调函数里写return，这是无意义的
@@ -105,5 +105,5 @@ tags:
     ```
 
 参考：
-[每个JavaScript程序员都需要知道的5个数组方法](http://www.webhek.com/post/5-array-methods-all-javascript-beginners-should-know.html)
-[是否改变原数组的常用方法归纳](http://blog.csdn.net/cristina_song/article/details/77917404)
+* [每个JavaScript程序员都需要知道的5个数组方法](http://www.webhek.com/post/5-array-methods-all-javascript-beginners-should-know.html)
+* [是否改变原数组的常用方法归纳](http://blog.csdn.net/cristina_song/article/details/77917404)
