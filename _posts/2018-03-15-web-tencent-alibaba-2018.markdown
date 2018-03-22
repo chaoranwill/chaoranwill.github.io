@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "The interview summary"
-subtitle:   "From Tencent"
+subtitle:   "From Tencent and Alibaba"
 date:       2018-03-09 19:55:00
 author:     "Chaoran"
 header-img: "img/post-bg-interview.jpg"
@@ -31,8 +31,9 @@ tags:
 首先腾讯分为三面，都为技术面：
 * 初试一个面试官
 * 复试两个面试官，包括电话远程 online coding
-    （我也不知道为什么几天内三个面试官面我，只算两个面试过程 ヾ(´A｀)ノﾟ）
+（我也不知道为什么几天内三个面试官面我，只算两个面试过程 ヾ(´A｀)ノﾟ）
 * 终面一位面试官
+
     这位应该是大 boss ，他说并不是前端开发的，面试的问题也不会很深入，主要看个人对这个领域的想法以及对常见问题在前端领域的解决思路，不按套路出牌，emmm 感觉回答的不理想
     类似这种问题：
     - 说说最能体现你能力的工作

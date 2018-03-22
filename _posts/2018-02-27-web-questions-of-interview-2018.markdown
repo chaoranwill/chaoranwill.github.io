@@ -34,6 +34,10 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
 8. 表单控件，calendar、date、time、email、url、search  
 9. 新的技术webworker, websocket, Geolocation
 
+**webworker**
+- 为了利用多核 CPU 的计算能力，在 HTML5 中引入的工作线程使得浏览器端的 JavaScript 引擎可以并发地执行 JavaScript 代码，从而实现了对浏览器端多线程编程的良好支持。
+- Web Worker 允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 DOM 。所以，这个新标准并没有改变 JavaScript 单线程的本质。
+
 **移除的元素：**
 1. 纯表现的元素：basefont，big，center，font, s，strike，tt，u；
 2. 对可用性产生负面影响的元素：frame，frameset，noframes；
@@ -346,7 +350,7 @@ display 值的作用：
     - 缺点：不少初学者不理解原理；如果页面浮动布局多，就要增加很多空div，让人感觉很不好 
     - 建议：不推荐使用，但此方法是以前主要使用的一种清除浮动方法 
 
-* 父级div定义 伪类:after 和 zoom 
+* 父级div添加 伪元素:after 和 zoom 
     - 原理：IE8以上和非IE浏览器才支持:after，原理和方法2有点类似，zoom(IE转有属性)可解决ie6,ie7浮动问题 
     - 优点：浏览器支持好、不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 
     - 缺点：代码多、不少初学者不理解原理，要两句代码结合使用才能让主流浏览器都支持。 
@@ -398,12 +402,11 @@ display 值的作用：
     - transform
     - inline-block
     - Flex方法
+    - 设置当前div的宽度，然后设置margin-left:50%; position:relative; left:-250px;其中的left是宽度的一半。
+    - 给父元素设置float，然后父元素设置position:relative和left:50%,子元素设置position:relative和left:-50%来实现
 * **图片居中**
     - align
     - text-align
-* **浮动元素居中**
-    - 设置当前div的宽度，然后设置margin-left:50%; position:relative; left:-250px;其中的left是宽度的一半。
-    - 父元素和子元素同时左浮动，然后父元素相对左移动50%，再然后子元素相对左移动-50%。
 
 更多了解：[CSS 居中](http://www.cnblogs.com/chaoran/p/7061932.html)
 
@@ -1022,6 +1025,23 @@ console.log（Tom.age）的查找过程
 4. 发送HTTP请求
 5. 获取异步调用返回的数据
 6. 使用JavaScript和DOM实现局部刷新
+```js
+//ajax
+function myAjax(url) {
+    //创建xml对象
+     var ajax = new XMLHttpRequest()
+    //open 设置参数
+    ajax.open('get', url)
+    //发送请求
+    ajax.send()
+    //注册事件
+    ajax.onreadystatechange = function () {
+        if (ajax.status == 200) {
+            console.log(xml.responseText)
+        }
+    }
+}
+```
 
 #### 3.16. `setTimeout` & `this` & `setInterval`
 **setTimeout this**
@@ -1047,9 +1067,18 @@ console.log（Tom.age）的查找过程
     ```
 
 **事件添加**
-> 定时器对队列的工作方式：当特定时间过去后将代码添加到队列中，但并不意味着会马上将执行，设定一个200ms后执行的定时器，指的是在200ms后它将被添加到队列中，是否执行，还得看队列中是否没有其他的东西
+> 定时器对队列的工作方式：当特定时间过去后将代码添加到队列中，但并不意味着会马上将执行，设定一个200ms后执行的定时器，指的是在200ms后它将被添加到队列中，是否执行，还得看主线程及队列中是否没有其他的东西
 
 > 定时器的回调函数并不是相当于在时间到了就执行，而是有一个主js执行进程，这个进程是页面刚加载的时候页面按照加载顺序执行的js代码，此外还有一个需要在进程空闲的时候执行的代码队列
+
+（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+（2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+（3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+（4）主线程不断重复上面的第三步。
+
 
 ```js
 var a=document.getElementById("nav");
@@ -1065,12 +1094,20 @@ function alertsomething(){
 ![load-order1](/img/in-post/post-web-nowcoder/settimeout.png)
 
 **为什么常用setTimeout模拟setInterval**
-* setTimeout方法，在一个指定的时间间隔后运行代码。
-    问题：定时器代码可能在代码再次被添加到队列之前还没有完成执行，结果导致定时器代码连续运行好几次，而之间没有任何停顿
-* setInterval方法， 每隔一个固定的时间间隔后持续运行指定代码
-    仅当没有该定时器的任何其他代码实例时，才将定时器代码添加到队列中。这确保了定时器代码加入到队列中的最小时间间隔为指定间隔，问题：
-    - 某些间隔被跳过；
-    - 多个定时器的代码执行之间的间隔可能比预期的小
+
+**setInterval**
+![load-order1](/img/in-post/post-web-nowcoder/setinterval.png)
+* setInterval每隔100ms往队列中添加一个事件；
+* 100ms后，添加T1定时器代码至队列中，主线程中还有任务在执行，所以等待;
+* some event执行结束后执行T1定时器代码；又过了100ms，T2定时器被添加到队列中，主线程还在执行T1代码，所以等待；
+* 又过了100ms，理论上又要往队列里推一个定时器代码，但由于此时T2还在队列中，所以T3不会被添加，结果就是此时被跳过；
+* **这里我们可以看到，T1定时器执行结束后马上执行了T2代码，所以并没有达到定时器的效果。**
+
+综上所述，setInterval有两个缺点：
+
+* 使用setInterval时，某些间隔会被跳过
+* 多个定时器的代码执行之间的间隔可能比预期的小
+* 可能多个定时器会连续执行；
 
 **解决方法：**
 > 重复定时器
@@ -1113,6 +1150,10 @@ setTimeout(function(){
 请注意，该方法并不会修改数组，而是返回一个子数组。
 
 来源： [是否改变原数组的常用方法归纳](http://blog.csdn.net/cristina_song/article/details/77917404)
+
+
+#### 3.18. 浏览器引擎
+[聊聊 JavaScript 与浏览器的那些事 - 引擎与线程](https://zhuanlan.zhihu.com/p/32751855)
 
 ## 4. 其他
 #### 4.1. GET 和 POST
