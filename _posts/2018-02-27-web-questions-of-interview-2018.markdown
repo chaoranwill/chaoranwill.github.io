@@ -800,11 +800,80 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。它�
 
 垃圾回收器定期扫描对象，并计算引用了每个对象的其他对象的数量。如果一个对象的引用数量为 0（没有其他对象引用过该对象），或对该对象的惟一引用是循环的，那么该对象的内存即可回收。
 
-导致原因：
-1. setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
-2. 闭包
-3. 控制台日志
-4. 循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）
+js 常用的垃圾回收策略时标记清除
+IE7-8 的 DOM 的回收方式时引用计数
+所以，在 ie 中有dom 的循环引用会导致内存泄漏，ie9 已修复
+```js
+window.onload=function outerFunction(){
+    var obj = document.getElementById("element");
+    obj.onclick=function innerFunction(){};
+};
+// 可以理解成闭包循环引用导致的内存泄漏
+```
+
+* obj是外部的一个对象
+* obj.onclick 定义的这个函数隐式的调用到了obj这个对象（obj.onclick函数中的this就是对象obj）
+* obj.onclick 实际上是一个outerFunction外部的函数(DOM监听事件不可能是局部作用域的，是全局作用域)
+* 所以DOM触发这个事件相当于是在函数outerFunction外部调用了obj.click()，而事件内部使用了outerFunction的变量obj,这就形成了一个闭包。
+
+改成如下结构
+```js
+window.onload=function outerFunction(){
+    var obj = document.getElementById("element");
+    obj.onclick=function innerFunction(){};
+    obj=null;
+};
+// 将变量设置为null意味着切断变量与它此前引用的值之间的连接。当垃圾回收器下次运行时，就会删除这些值并回收它们占用的内存。
+
+
+// 使用jq
+window.onload=function outerFunction(){
+  var obj = document.getElementById("element");
+  $(obj).click(function innerFunction(){});
+};
+// jQuery绑定事件最终都没有直接绑定到DOM对象上，而是使用jQuery缓存来绑定的
+// jQuery考虑到了内存泄漏的潜在危害，所以它会手动释放自己指定的所有事件处理程序
+```
+
+**内存泄漏原因**
+* 基础的DOM泄漏
+    - 当原有的DOM被移除时，子结点引用没有被移除则无法回收。
+        ```js
+        var select = document.querySelector;
+        var treeRef = select('#tree');
+
+        var leafRef = select('#leaf');   //在COM树中leafRef是treeFre的一个子结点
+
+        select('body').removeChild(treeRef);//#tree不能被回收入，因为treeRef还在
+        　　
+        // 解决方法:
+        treeRef = null; //tree还不能被回收，因为叶子结果leafRef还在
+        leafRef = null; //现在#tree可以被释放了
+        ```
+    - 页面交叉泄漏
+        - 第一种方式是，依次将元素先添加到其父元素中，最后将整个子树添加到文档树中，如果同时满足其他条件，这种方式将导致中间对象的泄漏；
+        - 另一种方式是，从上至下依次将动态创建的元素附加到文档数中，这样每次附加的元素都直接继承了原始文档树德作用域对象，从而不会生成任何中间对象，这种方式避免了潜在的内存泄露。
+        ![dom-leak](/img/in-post/post-web-nowcoder/dom-leak-model.gif)
+    
+* setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
+    
+    使用setTimeout一般不会出现内存泄漏的现象（使用规范），但是如果和其他函数在一起，形成了闭包就难逃内存泄漏了
+* 闭包
+* 控制台日志
+* 循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）
+
+**GC 优化**
+* 分代回收（Generation GC）
+    - 这个和Java回收策略思想是一致的。目的是通过区分“临时”与“持久”对象；多回收“临时对象”区（young generation），少回收“持久对象”区（tenured generation），减少每次需遍历的对象，从而减少每次GC的耗时
+    - 对于tenured generation对象，有额外的开销：
+        把它从young generation迁移到tenured generation，另外，如果被引用了，那引用的指向也需要修改
+* 增量GC
+    - “每次处理一点，下次再处理一点，如此类推”
+    - 虽然耗时短，但中断较多，带来了上下文切换频繁的问题
+
+推荐阅读：
+* [跟我学习javascript的垃圾回收机制与内存管理](http://www.jb51.net/article/75292.htm)
+* [js晋级篇——前端内存泄漏探讨](https://www.cnblogs.com/chuaWeb/p/5196330.html)
 
 #### 3.10. 判断当前脚本运行在浏览器还是node环境
 通过判断 Global 对象是否为window，如果不为window，当前脚本没有运行在浏览器中。
@@ -1156,6 +1225,7 @@ setTimeout(function(){
 [聊聊 JavaScript 与浏览器的那些事 - 引擎与线程](https://zhuanlan.zhihu.com/p/32751855)
 
 ## 4. 其他
+[页面加载全解](https://www.cnblogs.com/jingwhale/p/4714082.html?utm_source=tuicool&utm_medium=referral)
 #### 4.1. GET 和 POST
 * 用途
     - get 是从服务器上获取数据
@@ -1641,11 +1711,11 @@ Event.trigger("color",42);
 Function.prototype.testBind = function(that){
     var _this = this,
     /*
-    * 由于参数的不确定性，统一用arguments来处理，这里的arguments只是一个类数组对象，有length属性
-    * 可以用数组的slice方法转化成标准格式数组，除了作用域对象that以外，
-    * 后面的所有参数都需要作为数组参数传递
-    * Array.prototype.slice.apply(arguments,[1])/Array.prototype.slice.call(arguments,1)
-    */
+     * 由于参数的不确定性，统一用arguments来处理，这里的arguments只是一个类数组对象，有length属性
+     * 可以用数组的slice方法转化成标准格式数组，除了作用域对象that以外，
+     * 后面的所有参数都需要作为数组参数传递
+     * Array.prototype.slice.apply(arguments,[1])/Array.prototype.slice.call(arguments,1)
+     */
     slice = Array.prototype.slice,
     args = slice.apply(arguments,[1]);
     //返回函数    
@@ -1705,15 +1775,15 @@ function getQueryObject(url) {
 ```js
 //es5
 functionunique(arr){
-      var obj = {}
+    var obj = {}
     var result = []
- for(var i in arr){
-             if(!obj[arr[i]]){
-                       obj[arr[i]] = true;
-                     result.push(arr[i]);
-           }
-       }
-       return result;
+    for(var i in arr){
+        if(!obj[arr[i]]){
+            obj[arr[i]] = true;
+            result.push(arr[i]);
+        }
+    }
+    return result;
 }
 //es6
 [...new Set(arr)]

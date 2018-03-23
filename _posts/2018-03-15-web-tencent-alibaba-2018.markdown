@@ -926,49 +926,51 @@ js 如何解析后台返回的超大数据
 * js 用浮点数表示所有64位数字，所有达到 2^53 的可以被精确表示，更大的数字都会被裁剪，——如何表示64位数字
 虽然js 能够解析进制数字表示64位数字，但底层的数字表示不支持 64 位
 在浏览器中执行以下代码
-```html
-<html>
-  <head>
-    <script language="javascript">
-      function showPrecisionLimits() {
-        document.getElementById("r50").innerHTML = 0x0004000000000001 - 0x0004000000000000;
-        document.getElementById("r51").innerHTML = 0x0008000000000001 - 0x0008000000000000;
-        document.getElementById("r52").innerHTML = 0x0010000000000001 - 0x0010000000000000;
-        document.getElementById("r53").innerHTML = 0x0020000000000001 - 0x0020000000000000;
-        document.getElementById("r54").innerHTML = 0x0040000000000001 - 0x0040000000000000;
-      }
-    </script>
-  </head>
-  <body onload="showPrecisionLimits()">
-    <p>(2^50+1) - (2^50) = <span id="r50"></span></p>
-    <p>(2^51+1) - (2^51) = <span id="r51"></span></p>
-    <p>(2^52+1) - (2^52) = <span id="r52"></span></p>
-    <p>(2^53+1) - (2^53) = <span id="r53"></span></p>
-    <p>(2^54+1) - (2^54) = <span id="r54"></span></p>
-  </body>
-</html>
-```
-在Firefox，Chrome和IE浏览器中，可以看到，如果能够存储64位数字，则以下减法结果皆为1。而结果相反，可以看到2 ^ 53 + 1和2 ^ 53 间的差异丢失
-```js
-（2 ^ 50 + 1） - （2 ^ 50）= 1
-（2 ^ 51 + 1） - （2 ^ 51）= 1
-（2 ^ 52 + 1） - （2 ^ 52）= 1
-（2 ^ 53 + 1） - （2 ^ 53）= 0
-（2 ^ 54 + 1） - （2 ^ 54）= 0
-```
 
-位运算
-因此，我们可以选择用两个 32 位的数字表示 64 位整数，然后进行按位与
-```js
-var a = [ 0x0000ffff, 0xffff0000 ];
-var b = [ 0x00ffff00, 0x00ffff00 ];
-var c = [ a[0] & b[0], a[1] & b[1] ];
+    ```html
+    <html>
+    <head>
+        <script language="javascript">
+        function showPrecisionLimits() {
+            document.getElementById("r50").innerHTML = 0x0004000000000001 - 0x0004000000000000;
+            document.getElementById("r51").innerHTML = 0x0008000000000001 - 0x0008000000000000;
+            document.getElementById("r52").innerHTML = 0x0010000000000001 - 0x0010000000000000;
+            document.getElementById("r53").innerHTML = 0x0020000000000001 - 0x0020000000000000;
+            document.getElementById("r54").innerHTML = 0x0040000000000001 - 0x0040000000000000;
+        }
+        </script>
+    </head>
+    <body onload="showPrecisionLimits()">
+        <p>(2^50+1) - (2^50) = <span id="r50"></span></p>
+        <p>(2^51+1) - (2^51) = <span id="r51"></span></p>
+        <p>(2^52+1) - (2^52) = <span id="r52"></span></p>
+        <p>(2^53+1) - (2^53) = <span id="r53"></span></p>
+        <p>(2^54+1) - (2^54) = <span id="r54"></span></p>
+    </body>
+    </html>
+    ```
 
-document.body.innerHTML = c[0].toString(16) + ":" + c[1].toString(16);
+    在Firefox，Chrome和IE浏览器中，可以看到，如果能够存储64位数字，则以下减法结果皆为1。而结果相反，可以看到2 ^ 53 + 1和2 ^ 53 间的差异丢失
+    ```js
+    （2 ^ 50 + 1） - （2 ^ 50）= 1
+    （2 ^ 51 + 1） - （2 ^ 51）= 1
+    （2 ^ 52 + 1） - （2 ^ 52）= 1
+    （2 ^ 53 + 1） - （2 ^ 53）= 0
+    （2 ^ 54 + 1） - （2 ^ 54）= 0
+    ```
 
-//结果
-ff00:ff0000
-```
+    位运算
+    因此，我们可以选择用两个 32 位的数字表示 64 位整数，然后进行按位与
+    ```js
+    var a = [ 0x0000ffff, 0xffff0000 ];
+    var b = [ 0x00ffff00, 0x00ffff00 ];
+    var c = [ a[0] & b[0], a[1] & b[1] ];
+
+    document.body.innerHTML = c[0].toString(16) + ":" + c[1].toString(16);
+
+    //结果
+    ff00:ff0000
+    ```
 
 #### 网络安全
 前端网络安全的实现
