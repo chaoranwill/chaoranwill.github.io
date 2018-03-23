@@ -10,7 +10,7 @@ tags:
     - 前端开发
 ---
 
-> “To be is to be perceived. ”
+> “通过不通过的吧，过程还是要走的 ”
 
 * 目录
 {:toc #toc}
@@ -476,8 +476,10 @@ markyun.Event = {
 ##### ---HTTPS 加密原理
 > HTTPS简介
 HTTPS其实是有两部分组成：HTTP + SSL / TLS，也就是在HTTP上又加了一层处理加密信息的模块。服务端和客户端的信息传输都会通过TLS进行加密，所以传输的数据都是加密后的数据
+SSL协议是通过非对称密钥机制保证双方身份认证，并完成建立连接，在实际数据通信时通过对称密钥机制保障数据安全性
 
 ![https](/img/in-post/post-web-interview/https1.png)
+
 
 * 服务器 用RSA生成公钥和私钥
 
