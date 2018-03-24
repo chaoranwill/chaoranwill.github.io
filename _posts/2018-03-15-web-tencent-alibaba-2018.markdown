@@ -43,7 +43,9 @@ tags:
         如何屏蔽
         ...
 
-腾讯的远程 online coding 时间较长，大概一个多小时，不仅要按要求编程，也要口述思路以及关键点，过程类似压力面，面试官说完题目要求会给你思考及coding 时间，他可以远程看到面试者的 coding 状态，主要考察应变能力，思维活跃度，编码习惯，调试能力，以及测试方法，本人在此过程中没有太注意测试过程，导致对于特殊情况考虑不全面，测试样例不完善，望小伙伴们注意 ヾ(´A｀)ノﾟ，不过，在口述代码时发现也可以自己提出来需要完善的地方。coding 为一到两题，后续问题都是围绕它结合实际应用进行拓展，主要考察是否能灵活运用以及相似的思路转换，当时面试时间太长以及基础知识较差，进制转换，存储那些个基础被小学老师收回，一连串的炮轰简直爽歪歪，个人表示此过程自己的表现较差，也要重视基础基础啊老铁们  (￣_￣ )
+腾讯二面 & online coding
+* 腾讯的远程 online coding 时间较长，大概一个多小时，不仅要按要求编程，也要口述思路以及关键点，过程类似压力面，面试官说完题目要求会给你思考及coding 时间，他可以远程看到面试者的 coding 状态，主要考察应变能力，思维活跃度，编码习惯，调试能力，以及测试方法，本人在此过程中没有太注意测试过程，导致对于特殊情况考虑不全面，测试样例不完善，望小伙伴们注意 ヾ(´A｀)ノﾟ，不过，在口述代码时发现也可以自己提出来需要完善的地方。
+* coding 为一到两题，后续问题都是围绕它结合实际应用进行拓展，主要考察是否能灵活运用以及相似的思路转换，当时面试时间太长以及基础知识较差，进制转换，存储那些个基础被小学老师收回，一连串的炮轰简直爽歪歪，个人表示此过程自己的表现较差，也要重视基础基础啊老铁们  (￣_￣ )
 
 经历了腾讯云的四个面试官，以及其他部门一个面试官的酱油面，腾讯的技术面试官普遍语速较快，思路转换很快，要跟上面试官的节奏，聊到自己比较熟悉的可以多说几句，他们也会顺着你回答的内容进行深入，也会引导面试者的回答方向，如果不太熟尽量坦白一些，不懂装懂很容易 gg
 
@@ -57,9 +59,50 @@ tags:
     阿里前端的在线测试只有一道coding 题，限时 30 分，由于初次在线答题，看着倒计时紧张的思路不通，未能准确理解题意，但实际题目并不难，考察使用原生 js 实现类似css 的层级选择器的功能，具体题目记不太清，将仅存的记忆写了下来并附上个人实现，详情见本文后部分
 * 初试
 
+
+
+**baidu**
+
+百度投的是核心搜索部门，但面试官说他们是百度前端部门，也隶属于搜索部，但百度貌似前端在一起开发，这点比较喜欢
+* 初试
+
+    面试官语速很快，一般不给太多思考时间--------感觉自己说话都打着节拍 (￣_￣ ) 
+
+**关于结尾**
+
+* 百度 & 阿里面试结束后都有问：你觉得在面试过程中有什么没问到，但自己掌握比较好的技能么
+
+    面阿里时，头脑发晕，回答：没有，我感觉您面的很专业，问的知识点都是比较核心的 (￣_￣ )
+    百度经验： 回答自己掌握还比较好的知识后，面试官真的会问很多问题（菜鸟可以参考以上做法），如果面试官面试的较偏，倒可以补充
+* 有什么要问的
+    - 腾讯二面教训
+
+        问：是否有导师带，实习的大致安排以及部门业务等
+        效果 **差**
+        面试官曰：
+            你那么关系有没有导师的问题，但学习中最重要的是靠自己，导师并不是负责回答你所有问题的
+    - 百度经验
+
+        问：部门是否有定期交流分享的机会；工作中是按照职位还是业务部门划分，如何交流；偏向页面还是业务逻辑
+        个人在自学过程中发现前端体系太大，不知对于前端学习，您有什么建议么
+        答：很多前端初学者都有类似的困惑，你最好自己从头开始做一个项目，不管是自己瞎想的还是模仿的，在项目过程中去发现需要学习什么技术，在遇到问题的时候才知道去哪个方向发展和思考，只有在项目中才能持续的学习和提高，前端知识很碎，没有项目很难有一连串的经历
+
+
+**总体**
 总体来说，面试中有按照面试题出的，也有直接聊的，一般也会结合实际工作中会遇到的场景以及技术中的一些坑，回答时结合自己的项目经验会更好，大厂的面试官更侧重于面试者对深层原理的理解，对于实习生来说一般面基础，如果有深查原理的习惯，个人的可塑造性也会较高
 
-以下为面试中的一些知识点以及个人的一些补充，敲黑板啦啦
+三厂体验对比：
+* 腾讯阿里面试官一面开始都比较侧重实践，如果简历上有过实践项目和实习经历，会问更实际的问题
+
+* 相对来说，百度更多基础知识点，更多考察对更基本的知识掌握（比如选取一个class 标签元素有几种方式等小细节的问题来考察，细到要把每个表达说完整，把每个单词拼出来）
+
+* 阿里腾讯更侧重应用中的注意事项（如：IE 和其他浏览器中的事件处理机制）不太揪细节
+
+* 三厂都有问到算法，腾讯相对更注重对算法和逻辑，对面试者基础知识要求较高，甚至涉及更底层的。
+
+* 另两厂对算法，数据结构的要求都是了解阶段
+
+以下为面试中的一些知识点以及个人的一些补充，敲黑板啦啦啦
 
 ## 1. Tencent
 #### 1.1. js 的事件机制
@@ -133,6 +176,7 @@ tags:
 
 ##### ---ie 与其他浏览器的区别
 **总结**
+
 DOM事件模型中的事件对象常用属性:
 * type用于获取事件类型
 * target获取事件目标
@@ -146,21 +190,26 @@ IE事件模型中的事件对象常用属性:
 * cancelBubble 阻止事件冒泡
 * returnValue 阻止事件默认行为
 * 通过 readystate 属性值判断何时方法下载完毕可用
+
     readystate共有以下几个值：
     - uninitialized： 对象存在但未初始化；
     - loading：对象正在加载；
     - loaded：对象数据加载完毕；
     - interactive：可以操作对象了，但还没加载完毕；
     - complete：加载完毕。
+
     注意上面5个值并不一定每个事件都全包含，并且不一定是什么顺序。
 
     Document.readyState 属性
     一个文档的 readyState 可以是以下之一：
     - loading / 加载
+
         document 仍在加载。
     - interactive / 互动
+
         文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载。
     - complete / 完成
+
         T文档和所有子资源已完成加载。状态表示 load 事件即将被触发。
 
     当这个属性的值变化时，document 对象上的readystatechange 事件将被触发。
@@ -168,10 +217,13 @@ IE事件模型中的事件对象常用属性:
 
 **事件对象**
 * IE
+
     IE中事件对象是作为全局对象 `window.event` 存在的
 * Firefox
+
     Firefox中则是做为句柄( handler )的第一个参数传入
 * 通用
+
     `var evt = window.event || arguments[0];`
 
 ![event](/img/in-post/post-web-interview/event.png)
@@ -1004,7 +1056,7 @@ js 如何解析后台返回的超大数据
 
 
 
-#### 2.1. 编写一个 css 层级选择器
+#### 2.1. 在线编程——编写一个 css 层级选择器
 根据一个给定的元素生成一个css 选择器，函数名为genCssSelector ，
 点击某元素弹出该元素及其父元素，类似 querySelector
 ```html
@@ -1057,3 +1109,378 @@ js 如何解析后台返回的超大数据
 </body>
 </html>
 ```
+
+## 百度
+1. 一面
+jsonp cors
+
+css
+* 分栏布局哪些方式
+* 详细说下flex
+
+js & jq
+* 如何获取一个元素（js jq）
+* 异步事件是如何发送的，常用机制
+* 有哪些接收后台数据的方法
+    * ajax 
+    * fetch
+    * jsonp
+    * websocket
+    * SSE
+* event loop
+* 喜欢 es6 的哪些属性
+* 箭头函数与普通函数的不同
+* 闭包
+    * 简述
+    * 应用
+    * 在循环中如何用其他方式代替闭包
+    
+vue 
+* 和 react 区别
+* 如何向服务器传递数据
+
+操作系统
+* 线程 && 进程
+
+计算机网络
+* 除了tcp 还用到哪些
+* http 与 tcp 分别属于第几层
+
+数据结构
+* 有哪些线性存储空间（array 栈）
+    
+
+#### 分栏布局
+##### ---等分布局
+![display-list](/img/in-post/post-web-interview/display1.webp)
+![display-list](/img/in-post/post-web-interview/display2.webp)
+* float
+    - 原理：增大父框的实际宽度后，使用CSS3属性box-sizing进行布局的辅助。
+
+    - 用法：先将父框设置为margin-left: -*px，再设置子框float: left、width: 25%、padding-left、box-sizing: border-box。
+    ```css
+    .parent{
+        margin-left: -20px;
+    }
+
+    .column{
+        float: left;
+        width: 25%;
+        padding-left: 20px;
+        box-sizing: border-box;  /*包含padding区域 w+g*/
+    }
+    ```
+
+* table
+    - 原理：通过增加一个父框的修正框，增大其宽度，并将父框转换为table，将子框转换为tabel-cell进行布局。
+
+    - 用法：先将父框的修正框设置为margin-left: -*px，再设置父框display: table、width:100%、table-layout: fixed，设置子框display: table-cell、padding-left。
+    ```css
+    .parent-fix{
+        margin-left: -20px;
+    }
+    .parent{
+        display: table;
+        width:100%;
+        table-layout: fixed;
+    }
+    .column{
+        display: table-cell;
+        padding-left: 20px;
+    }
+    ```
+
+* flex
+    - 原理：通过设置CSS3布局利器flex中的flex属性以达到等分布局。
+
+    - 用法：将父框设置为display: flex，再设置子框flex: 1，最后设置子框与子框的间距margin-left。
+    
+
+#### 如何获取一个class
+```js
+// 直接获取---需要高版本浏览器支持
+document.querySelectorAll("div.aa")
+
+// 类似属性选择器的写法
+document.querySelectorAll("div[class='aa']")
+
+// 补充一下还可以not选择器
+document.querySelectorAll(".aa:not(ul)")
+
+document.getElementsByClassName('cls')
+
+// jq
+$('.className')
+```
+
+#### Event Loop
+js 单线程：
+用途决定，操作 DOM 
+
+**任务队列**
+
+排队原因：计算量大的同步执行，IO设备（输入输出设备）很慢（比如Ajax操作从网络读取数据）异步。
+
+异步任务指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行
+
+"任务队列"中的事件，除了IO设备的事件以外，还包括一些用户产生的事件（比如鼠标点击、页面滚动等等）。只要指定过回调函数，这些事件发生时就会进入"任务队列"，等待主线程读取。
+
+* 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+* 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+* 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+* 主线程不断重复上面的第三步。
+
+只要主线程空了，就去检查异步的任务队列，如果异步事件触发，则将其加到主线程的执行栈
+
+深入了解定时器
+* 零延迟 `setTimeout(func, 0)`
+
+    零延迟并不是意味着回调函数立刻执行。它取决于主线程当前是否空闲与“任务队列”里其前面正在等待的任务。
+* 调用setTimeout()之后，该方法会返回一直数值ID，表示超时调用。这个超时调用ID是计划执行代码的唯一标识符，可以通过它来取消超时调用
+
+* 超时调用的代码都是在全局作用域中执行的，因此函数中this的值在非严格模式下指向window对象，严格模式下是undefined。
+
+**Event Loop**
+> 异步与event loop没有太直接的关系，准确的来讲event loop 只是实现异步的一种机制
+
+主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）
+
+#### 接收后台资源的方法（除了Ajax）
+* Ajax
+* fetch
+    返回一个Promise对象, 根据 Promise Api 的特性, fetch可以方便地使用then方法将各个处理逻辑串起来
+* Jsonp
+    mode
+    ```js
+    // fetch可以设置不同的模式使得请求有效
+    fetch(url, {mode: 'cors'});
+    ```
+    - same-origin
+    - cors
+    - cors-with-forced-preflight
+    - no-cors
+    推荐阅读： [Fetch 进阶指南](http://web.jobbole.com/91161/)
+* websocket
+    服务器推送技术之一
+    全双工
+* SSE（server-sent-events）
+    单向通道（浏览器 -> 服务器）
+
+
+#### 异步编程常用方法
+ES 6以前：
+
+* 回调函数
+* 事件监听(事件发布/订阅)
+* Promise对象
+
+ES 6：
+
+* Generator函数(协程coroutine)
+
+ES 7:
+
+* async和await
+
+**回调函数**
+
+> 一般是需要在一个耗时操作之后执行某个操作时可以使用回调函数
+
+* 定时器
+* 读取文件
+
+问题：
+在回调函数之外无法捕获到回调函数中的异常
+```js
+var fs = require('fs');
+
+try{
+    fs.readFile('not_exist_file', 'utf8', function(err, data){
+        console.log(data);
+    });
+}
+catch(e){
+    console.log("error caught: " + e);
+}
+```
+尝试读取一个不存在的文件，这当然会引发异常，但是最外层的try/catch语句却无法捕获这个异常。这是异步代码的执行机制导致的
+
+为什么异步代码回调函数中的异常无法被最外层的try/catch语句捕获?
+
+异步调用一般分为两个阶段，提交请求和处理结果，这两个阶段之间有事件循环的调用，它们属于两个不同的事件循环(tick)，彼此没有关联。
+
+异步调用一般以传入callback的方式来指定异步操作完成后要执行的动作。而异步调用本体和callback属于不同的事件循环。
+
+try/catch语句只能捕获当次事件循环的异常，对callback无能为力。
+
+**事件监听（订阅-发布）**
+> 典型的逻辑分离方式，对代码解耦很有用处
+把不变的部分封装在组件内部，供外部调用，需要自定义的部分暴露在外部处理。
+从某种意义上说，事件的设计就是组件的接口设计。
+
+```js
+//发布和订阅事件
+
+var events = require('events');
+var emitter = new events.EventEmitter();
+
+emitter.on('event1', function(message){
+    console.log(message);
+});
+
+emitter.emit('event1', "message for you");
+```
+
+**Promise 对象**
+> 用同步操作的流程写法来表达异步操作，避免了层层嵌套的异步回调
+
+* `Promise.prototype.then()`
+    ```js
+    //原生Primose顺序嵌套回调示例
+    var fs = require('fs')
+
+    var read = function (filename){
+        var promise = new Promise(function(resolve, reject){
+            fs.readFile(filename, 'utf8', function(err, data){
+                if (err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        });
+        return promise;
+    }
+
+    read('./text1.txt')
+    .then(function(data){
+        console.log(data);
+        return read('./text2.txt');   // 返回了一个新的Promise实例
+    })
+    .then(function(data){
+        console.log(data);
+    });
+    ```
+    
+    Promise构造函数的参数是一个函数，在这个函数中我们写异步操作的代码
+    在异步操作的回调中，根据err变量来选择是执行resolve方法还是reject方法
+    - 一般来说调用resolve方法的参数是异步操作获取到的数据(如果有的话)，但还可能是另一个Promise对象，表示异步操作的结果有可能是一个值
+    - 也有可能是另一个异步操作，调用reject方法的参数是异步回调用的err参数
+
+调用read函数时，实际上返回的是一个Promise对象，通过在这个Promise对象上调用then方法并传入resolve方法和reject方法来指定异步操作成功和失败后的操作。
+
+* `Promise.prototype.catch()`
+    > 用于指定发生错误时的回调函数
+
+    ```js
+    read('./text1.txt')
+    .then(function(data){
+        console.log(data);
+        return read('not_exist_file');
+    })
+    .then(function(data){
+        console.log(data);
+    })
+    .catch(function(err){
+        console.log("error caught: " + err);
+    })
+    .then(function(data){
+        console.log("completed");
+    })
+    ```
+    使用Promise对象的catch方法可以捕获异步调用链中callback的异常
+    Promise对象的catch方法返回的也是一个Promise对象，因此，在catch方法后还可以继续写异步调用方法
+
+* Promise异步并发
+    - `Promise.all()`
+        - 将多个Promise实例，包装成一个新的Promise实例
+            `var p = Promise.all([p1,p2,p3]);`
+        - 接受一个数组作为参数，p1、p2、p3都是Promise对象实例
+        - 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+        - 只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
+            ```js
+            var promises = [1, 2].map(function(fileno){
+                return read('./text' + fileno + '.txt');
+            });
+
+            Promise.all(promises)
+            .then(function(contents){
+                console.log(contents);
+            })
+            .catch(function(err){
+                console.log("error caught: " + err);
+            })
+            ```
+    - `Promise.race()`
+        - 将多个Promise实例，包装成一个新的Promise实例
+            `var p = Promise.race([p1,p2,p3]);`
+        - p1、p2、p3只要有一个实例率先改变状态，p的状态就会跟着改变，那个率先改变的Promise实例的返回值，就传递给p的返回值。
+        - 如果Promise.all方法和Promise.race方法的参数不是Promise实例，就会先调用下面讲到的Promise.resolve方法，将参数转为Promise实例，再进一步处理
+
+    - `Promise.resolve()`
+        - 将现有对象转换成Promise对象
+
+        ```js
+        var p = Promise.resolve('Hello');
+        p.then(function (s){
+            console.log(s)
+        });
+        ```
+    
+    - `Promise.reject()`
+        - 返回一个新的Promise实例，该实例的状态为rejected。
+        - `Promise.reject` 方法的参数reason，会被传递给实例的回调函数。
+
+        ```js
+        var p = Promise.reject('出错了');
+        p.then(null, function (s){
+            console.log(s)
+        });
+        ```
+* Generator函数
+    - 可以交出函数的执行权（暂停执行）
+    - 整个Generator函数就是一个封装的异步任务，或者说是异步任务的容器。异步操作需要暂停的地方，都用yield语句注明。
+    ```js
+    function* gen(x){
+        var y = yield x + 2;
+        return y;
+    }
+
+    var g = gen(1);
+    var r1 = g.next(); // { value: 3, done: false }
+    console.log(r1);
+    var r2 = g.next() // { value: undefined, done: true }
+    console.log(r2);
+    ```
+    **Generator函数的函数名前面有一个"*"**
+    - 调用Generator函数，会返回一个内部指针(即遍历器)g，这是Generator函数和一般函数不同的地方，调用它不会返回结果，而是一个指针对象。
+    - 调用指针g的next方法，会移动内部指针，指向第一个遇到的yield语句
+        - next方法的作用是分阶段执行Generator函数。每次调用next方法，会返回一个对象，表示当前阶段的信息（value属性和done属性）
+        - value属性是yield语句后面表达式的值，表示当前阶段的值；
+        - done属性是一个布尔值，表示Generator函数是否执行完毕，即是否还有下一个阶段
+
+* Thunk 函数
+    [Thunk 函数的含义和用法](http://www.ruanyifeng.com/blog/2015/05/thunk.html)
+* ES 7中的async和await
+
+* fetch
+    - 替代浏览器原生的XMLHttpRequest异步请求
+
+来自[深入解析Javascript异步编程](https://www.cnblogs.com/nullcc/p/5841182.html)
+#### 数据结构
+![data-structor](/img/in-post/post-web-interview/data-stru.png)
+
+常用的线性结构有：线性表，栈，队列，循环队列，数组
+线性表中包括顺序表、链表等，其中:
+* 栈和队列只是属于逻辑上的概念，实际中不存在，仅仅是一种思想，一种理念；
+* 线性表则是在内存中数据的一种组织、存储的方式。
+
+常见的排序算法及其时间复杂度    
+
+其他
+    git 与 GitHub 有什么区别
+    git 的一些指令
+    Linux 
+    
