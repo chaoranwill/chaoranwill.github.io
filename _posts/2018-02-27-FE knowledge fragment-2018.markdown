@@ -110,7 +110,7 @@ console.log(a) // "George"
 console.log(b) // "Dennis"
 ```
 
-#### 1.4. 默认和剩余参数
+#### 1.4. 默认&剩余参数&扩展运算符
 **默认参数**
 ```js
 //我们都使用过一下模式来创建具有默认值的参数：
@@ -128,6 +128,7 @@ getarea(5) // returns 75
 ```
 
 **剩余参数**
+
 ```js
 //将函数参数转换成数组
 function addit(...theNumbers){
@@ -141,6 +142,46 @@ function addit(...theNumbers){
 addit(1,2,3,4) // returns 10
 ```
 
+**扩展运算符**
+* 在数组中的使用
+    * 简化数组 push 方法
+    * 合并数组
+    * 替代 apply 方法
+    * 将字符转为数组
+* 在对象中的使用
+    * 将目标对象中所有可遍历属性取出，并拷贝到当前对象中
+
+```js
+console.log(...[1,2,3,4])   // 1,2,3,4 ---> console.log(1,2,3,4)
+
+let a = [],
+    b = [1,2,3,4]
+a.push(...b)          // 可将整个数组 push
+
+// apply:  Array.prototype.push.apply(a, b)
+// 为什么用push ： vue 中对数组元素的改变只监听 push 方法，concat 只改变了数据模型，视图不会变化
+
+// 合并数组
+let arr1 = [1],
+    arr2 = [2,3]
+let arr = [...arr1, ...arr2]
+
+// 将字符串转为数组
+[...'hello world']
+
+// 将目标对象中所有可遍历属性取出，并拷贝到当前对象
+let obj1 = {key1:'value1', key2: 'value2'}
+let obj2 = {
+    key3: 'value3',
+    ...obj1
+}
+console.log(obj2)
+// { key3: 'value3', key1:'value1', key2: 'value2'}
+// Object.assign({key3: 'value3'}, obj1)
+
+// 合并两个对象
+let total = {...a, ...b}
+``
 
 #### 1.5. interator 
 > 是一种接口，为所有数据结构提供一种统一的访问机制，即for...of 循环 
