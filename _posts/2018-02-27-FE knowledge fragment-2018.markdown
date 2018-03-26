@@ -181,7 +181,7 @@ console.log(obj2)
 
 // 合并两个对象
 let total = {...a, ...b}
-``
+```
 
 #### 1.5. interator 
 > 是一种接口，为所有数据结构提供一种统一的访问机制，即for...of 循环 

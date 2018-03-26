@@ -1245,8 +1245,53 @@ js 单线程：
 
 **Event Loop**
 > 异步与event loop没有太直接的关系，准确的来讲event loop 只是实现异步的一种机制
+主任务 ——> micro task ——> 渲染视图 ——> macro task
 
 主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）
+
+**Javascript 中的事件循环是以任务为单位的，将很多个待执行的任务串联在一起就形成了队列 Task Queue，很多的队列先后按顺序执行任务就形成了 Event Loop**
+
+一个事件循环(EventLoop)中会有一个正在执行的任务(Task)，而这个任务就是从 macrotask 队列中来的。
+当这个 macrotask 执行结束后，所有可用的 microtask 将会在同一个事件循环中执行
+当这些 microtask 执行结束后还能继续添加 microtask 一直到真个 microtask 队列执行结束。
+
+* 一个事件循环(event loop)会有一个或多个任务队列(task queue) 
+    
+    task queue 就是 macrotask queue
+* 每一个 event loop 都有一个 microtask queue
+* task queue == macrotask queue != microtask queue
+* 一个任务 task 可以放入 macrotask queue 也可以放入 microtask queue 中
+* 当一个 task 被放入队列 queue(macro或micro) 那这个 task 就可以被立即执行了
+
+
+**Micro Task**
+
+当我们想以同步的方式来处理异步任务时候就用 microtask（比如我们需要直接在某段代码后就去执行某个任务，就像Promise一样）
+* process.nextTick
+* promise
+* Object.observe
+* MutationObserver
+
+**Macro Task**
+* setTimeout
+* setInterval
+* setImmediate
+* I/O
+
+
+
+任务队列中，在每一次事件循环中，从 macrotask 队列开始执行，macrotask只会提取一个执行，而microtask会一直提取，直到microsoft队列为空为止。
+
+> 也就是说如果某个microtask任务被推入到执行中，那么当主线程任务执行完成后，会循环调用该队列任务中的下一个任务来执行，直到该任务队列到最后一个任务为止。而事件循环每次只会入栈一个macrotask,主线程执行完成该任务后又会检查microtasks 队列并完成里面的所有任务后再执行macrotask的任务。
+
+执行过程如下：
+* JavaScript引擎首先从 macrotask queue 中取出第一个任务，
+* 执行完毕后，将 microtask queue 中的所有任务取出，按顺序全部执行；
+* 然后再从 macrotask queue 中取下一个，
+* 执行完毕后，再次将 microtask queue 中的全部取出；
+* 循环往复，直到两个queue中的任务都取完。
+
+为啥要用 microtask？根据HTML Standard，在每个 task 运行完以后，UI 都会重渲染，那么在 microtask 中就完成数据更新，当前 task 结束就可以得到最新的 UI 了
 
 #### 接收后台资源的方法（除了Ajax）
 * Ajax

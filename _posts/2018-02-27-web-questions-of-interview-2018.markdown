@@ -96,6 +96,7 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
 
 #### 1.6. 浏览器内多个标签页之间的通信
 > sessionStorage 和 localStorage 是 HTML5 Web Storage API 提供的，可以方便的在 web 请求之间保存数据。有了本地数据，就可以避免数据在浏览器和服务器间不必要地来回传递
+h5 新方法：`postMessage`
 
 **通信方式：**
 * localStorge & sessionStorage
@@ -135,6 +136,32 @@ HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存�
     setInterval(function(){  
         console.log(getKey("mess"));  
     },1000); 
+    ```
+
+* postMessage
+    用于在两个窗口间发送消息
+    ```js
+    win.postMessage(data, origin)
+
+    // win 这个参数为需要接受消息的 window 对象
+    // 当我们通过 window.open() 打开一个新窗口时，会返回一个新窗口的 window 对象，通过这个新窗口的 window 对象，就可以向新窗口发送消息
+    // 如果页面中有 frame 时，也可以通过这个 frame 对象发送消息
+
+    // data 为我们想要发送的数据，理论上 data 可以是任何可以被复制的数据类型，但是由于部分浏览器只支持传输 String 类型，所以传输的数据最好是通过 JSON.stringify() 序列化后再传输
+
+    // origin 为字符串，为目标窗口的源，由 协议+ip/域名+端口号 组成
+    // 如果想要传递给任意窗口，可以将这个参数设置为 * ，为了安全起见，不建议设置为 *
+    // 如果目标窗口与当前窗口同源，则设置为 /
+    ```
+
+    数据接收
+    ```js
+    window.addEventListener('message', function (e) {...})
+
+    // 第一个参数为这个事件监听器的类型，'message' 表示会监听当前窗口接收到的消息
+    // 第二个参数为接收到消息后的回调函数，在回调函数中，我们可以对发送消息的源进行一些验证，从而保证安全性
+    // 回调函数参数 e 上有很多属性，我们可以将其打印出来，其中 origin 表示发送消息窗口的源；source 属性表示发送消息的窗口
+    // 通过 e.source == window.opener 可以判断发送消息的窗口与打开当前页面的窗口是否为同一个；data 属性标书传递过来的数据
     ```
 
 **特征**
