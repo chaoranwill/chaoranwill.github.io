@@ -1109,6 +1109,23 @@ console.log（Tom.age）的查找过程
 原型和原型链是JS实现继承的一种模型。
 原型链的形成是真正是靠__proto__ 而非prototype
 
+![prototype](/img/in-post/post-web-nowcoder/prototype02.jpg)
+```js
+// 原型对象的结构：
+
+Function.prototype = {
+    constructor : Function,
+    __proto__ : parent prototype,
+    some prototype properties: ...
+};
+```
+总结：
+* 函数的原型对象constructor默认指向函数本身
+* 原型对象除了有原型属性外，为了实现继承，还有一个原型链指针__proto__，该指针指向上一层的原型对象，而上一层的原型对象的结构依然类似，这样利用__proto__一直指向Object的原型对象上
+* Object 的原型对象用 `Object.prototype.proto = null` 表示原型链的最顶端，如此变形成了javascript的原型链继承，同时也解释了为什么所有的javascript对象都具有Object的基本方法。
+
+
+
 
 更多：
 * [JS之理解原型和原型链](https://segmentfault.com/a/1190000010354583)
