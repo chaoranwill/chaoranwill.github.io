@@ -24,7 +24,7 @@ tags:
 * [Web basis summary](https://chaoranwill.github.io/2018/02/27/web-basis-2018/)
 * [FE knowledge fragment](https://chaoranwill.github.io/2018/02/27/FE-knowledge-fragment-2018/)
 
-阿里和腾讯每位面试官的面试时间基本都在 30-60 分钟
+每位面试官的面试时间基本都在 40-80 分钟
 
 **腾讯**
 
@@ -39,12 +39,14 @@ tags:
     类似这种问题：
     - 说说最能体现你能力的工作
     - 网络安全的实现
+
         如何检测恶意脚本
         如何屏蔽
         ...
 
 腾讯二面 & online coding
 * 腾讯的远程 online coding 时间较长，大概一个多小时，不仅要按要求编程，也要口述思路以及关键点，过程类似压力面，面试官说完题目要求会给你思考及coding 时间，他可以远程看到面试者的 coding 状态，主要考察应变能力，思维活跃度，编码习惯，调试能力，以及测试方法，本人在此过程中没有太注意测试过程，导致对于特殊情况考虑不全面，测试样例不完善，望小伙伴们注意 ヾ(´A｀)ノﾟ，不过，在口述代码时发现也可以自己提出来需要完善的地方。
+
 * coding 为一到两题，后续问题都是围绕它结合实际应用进行拓展，主要考察是否能灵活运用以及相似的思路转换，当时面试时间太长以及基础知识较差，进制转换，存储那些个基础被小学老师收回，一连串的炮轰简直爽歪歪，个人表示此过程自己的表现较差，也要重视基础基础啊老铁们  (￣_￣ )
 
 经历了腾讯云的四个面试官，以及其他部门一个面试官的酱油面，腾讯的技术面试官普遍语速较快，思路转换很快，要跟上面试官的节奏，聊到自己比较熟悉的可以多说几句，他们也会顺着你回答的内容进行深入，也会引导面试者的回答方向，如果不太熟尽量坦白一些，不懂装懂很容易 gg
@@ -57,7 +59,10 @@ tags:
 
     投完简历后官网会有相关在线测试题
     阿里前端的在线测试只有一道coding 题，限时 30 分，由于初次在线答题，看着倒计时紧张的思路不通，未能准确理解题意，但实际题目并不难，考察使用原生 js 实现类似css 的层级选择器的功能，具体题目记不太清，将仅存的记忆写了下来并附上个人实现，详情见本文后部分
-* 初试
+* 一面
+* 二面
+* 挂掉了。。。
+
 
 
 
@@ -77,18 +82,24 @@ tags:
 * 有什么要问的
     - 腾讯二面教训
 
-        问：是否有导师带，实习的大致安排以及部门业务等
+        我：是否有导师带，实习的大致安排以及部门业务等
+
         效果 **差**
+
         面试官曰：
+
             你那么关系有没有导师的问题，但学习中最重要的是靠自己，导师并不是负责回答你所有问题的
     - 百度经验
 
-        问：部门是否有定期交流分享的机会；工作中是按照职位还是业务部门划分，如何交流；偏向页面还是业务逻辑
+        我：部门是否有定期交流分享的机会；工作中是按照职位还是业务部门划分，如何交流；偏向页面还是业务逻辑
+
         个人在自学过程中发现前端体系太大，不知对于前端学习，您有什么建议么
-        答：很多前端初学者都有类似的困惑，你最好自己从头开始做一个项目，不管是自己瞎想的还是模仿的，在项目过程中去发现需要学习什么技术，在遇到问题的时候才知道去哪个方向发展和思考，只有在项目中才能持续的学习和提高，前端知识很碎，没有项目很难有一连串的经历
+
+        面试官：很多前端初学者都有类似的困惑，你最好自己从头开始做一个项目，不管是自己瞎想的还是模仿的，在项目过程中去发现需要学习什么技术，在遇到问题的时候才知道去哪个方向发展和思考，只有在项目中才能持续的学习和提高，前端知识很碎，没有项目很难有一连串的经历
 
 
 **总体**
+
 总体来说，面试中有按照面试题出的，也有直接聊的，一般也会结合实际工作中会遇到的场景以及技术中的一些坑，回答时结合自己的项目经验会更好，大厂的面试官更侧重于面试者对深层原理的理解，对于实习生来说一般面基础，如果有深查原理的习惯，个人的可塑造性也会较高
 
 三厂体验对比：
@@ -1032,6 +1043,7 @@ js 如何解析后台返回的超大数据
 如何屏蔽
 
 ## 2. 阿里
+**一面**
 1. 简单介绍一下自己
 2. 问题
     * HTTP 相关
@@ -1054,9 +1066,41 @@ js 如何解析后台返回的超大数据
     * 是否还有其他的问题
     * 有什么问题想要问的
 
+**二面**
+
+* react 
+    多次调用 setstate 为什么不马上渲染
+* 解析 json ，手写 parse 函数
+* csrf 举例
+* 获取dom节点方式
+* 将给定节点子元素第一个和最后一个元素替换
+* 端口号的作用
 
 
-#### 2.1. 在线编程——编写一个 css 层级选择器
+#### 端口
+> IP地址让网络上的两个节点之间可以建立点对点的连接
+端口号则为端到端的连接提供了可能 (程序间通讯的接口)
+
+IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
+* TCP和UDP协议
+
+    主要用来做传输数据使用的
+    在TCP和UDP协议中，都有端口号的概念存在
+* 端口号的作用
+    
+    主要是区分**服务类别**和在**同一时间进行多个会话**
+    - 服务类别
+
+        - 举例来说，有主机A需要对外提供FTP和WWW两种服务，如果没有端口号存在的话，这两种服务是无法区分的。
+            实际上，当网络上某主机B需要访问A的FTP服务时，就要指定目的端口号为21；
+            当需要访问A的WWW服务时，则需要将目的端口号设为80，这时A根据B访问的端口号，就可以区分B的两种不同请求
+    - 多个会话
+        - 主机A需要同时下载网络上某FTP服务器B上的两个文件，那么A需要 与B同时建立两个会话，而这两个传输会话就是靠源端口号来区分的。在这种情况下如果没有源端口号的概念，那么A就无法区分B传回的数据究竟是属于哪个会话，属于哪个文件
+        - 通信过程是，A使用本机的1025号端口请求B的21号端口上的文件1，同时又使用1026号端口请求文件2。对于返回的数据，发现是传回给1025号端口的，就认为是属于文件1；传回给1026号端口的，则认为是属于文件2。这就是端口号区分多个会话的作用。
+
+![port](/img/in-post/post-web-interview/port.png)
+
+#### 在线编程——编写一个 css 层级选择器
 根据一个给定的元素生成一个css 选择器，函数名为genCssSelector ，
 点击某元素弹出该元素及其父元素，类似 querySelector
 ```html
@@ -1109,6 +1153,205 @@ js 如何解析后台返回的超大数据
 </body>
 </html>
 ```
+
+#### 获取 dom 元素
+**JS获取DOM元素的方法（8种）**
+
+* `getElementById`
+
+    只获取到一个元素，没有找到返回null
+* `getElementsByName`
+* `getElementsByTagName`
+* `getElementsByClassName`
+* `document.documentElement`
+
+    获取html
+* `document.body`
+
+    获取body
+* `querySelector`
+
+    获取一个元素
+* `querySelectorAll`
+
+    获取一组元素
+
+
+**获取子元素**
+* childNodes
+    `dom.childNodes` 返回一个nodeList（元素的所有子元素）
+    - nodeType
+        - 元素节点的nodeType属性值为1
+        - 属性节点的nodeType属性值为2
+        - 文本节点的nodeType属性值为3
+
+    - nodeValue属性 
+    
+        获得和改变文本节点的值
+* firstChild 第一个子元素
+* lastChild
+
+**获取父、兄**
+* `parentNode`
+* `nextSbliling`
+* `previousSbiling`
+
+**创建元素**
+* `createDocumentFragment`
+
+    创建一个dom片段
+* `createElement`
+
+    创建一个具体的元素
+* `createTextNode`
+
+    创建一个文本节点
+
+
+**增删改元素**
+* `appendChild`
+* `removeChild`
+* `replaceChild`
+* `insertBefore`
+
+#### 如何用 JS 实现 JSON.parse
+##### eval
+> 直接调用eval
+```js
+var json = '{"a":"1", "b":2}';
+var obj = eval("(" + json + ")");  // obj 就是 json 反序列化之后得到的对象
+
+```
+
+**原理**
+> JSON 脱胎于 JS，同时也是 JS 的子集，所以能够直接交给 eval 运行
+
+* 加上圆括号的目的是迫使eval函数在处理JavaScript代码的时候强制将括号内的表达式（expression）转化为对象，而不是作为语句（statement）来执行
+
+    例如对象字面量{}，如若不加外层的括号，那么eval会将大括号识别为JavaScript代码块的开始和结束标记，那么{}将会被认为是执行了一句空语句
+
+**问题**
+* XSS 漏洞
+
+    参数 json 并非真正的 JSON 数据，而是可执行的 JS 代码
+* 对参数 json 做校验，只有真正符合 JSON 格式，才能调用 eval
+    ```js
+    // 1. 用 4 个正则表达式分为两个阶段解决（包容ie 和safari 的regexp 引擎）
+    // 2. 将 json 反斜杠替换为 '@' （non-json字符）
+    // 3. 用 ']' 替换所有简单标记
+    // 4. 删除所有跟随冒号，逗号或文本开始的方括号
+    // 5. 如果只剩下 '] , { }' 则是安全的
+
+    var rx_one = /^[\],:{}\s]*$/;
+    var rx_two = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+    var rx_three = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+    var rx_four = /(?:^|:|,)(?:\s*\[)+/g;
+
+    if (
+        rx_one.test(
+            json
+                .replace(rx_two, "@")
+                .replace(rx_three, "]")
+                .replace(rx_four, "")
+        )
+    ) {
+        var obj = eval("(" +json + ")");
+    }
+    ```
+
+#### 递归
+> 第一种 eval 的方法，相当于一股脑儿把 JSON 字符串塞进去。其实我们还可以手动逐个字符地扫描，然后进行判断，这就是第二种方法：递归。
+
+```js
+// 所谓递归，就是重复调用value 函数
+value = function () {
+
+// Parse a JSON value. It could be an object, an array, a string, a number,
+// or a word.
+
+    white();
+    // 根据当前字符是什么，我们便能推导出后面应该接的是什么类型
+    switch (ch) {
+        case "{":
+            return object();
+        case "[":
+            return array();
+        case "\"":
+            return string();
+        case "-":
+            return number();
+        default:
+            return (ch >= "0" && ch <= "9")
+                ? number()
+                : word();
+    }
+};
+
+// 调用核心的 next 函数，逐个读取字符
+var next = function (c) {
+
+// If a c parameter is provided, verify that it matches the current character.
+
+    if (c && c !== ch) {
+        error("Expected '" + c + "' instead of '" + ch + "'");
+    }
+
+// Get the next character. When there are no more characters,
+// return the empty string.
+
+    ch = text.charAt(at);
+    at += 1;
+    return ch;
+};
+```
+
+* 对于常量token `false true null` 进行匹配，不匹配返回错误
+
+**xml 解析**
+* close tag 
+
+    使用一个nodeStack 栈，在opentag时推入节点，close tag 时检查当前节点是否和栈尾节点是否匹配，匹配则推出末尾节点
+* comment
+
+参考：[JSON.parse 三种实现方式](https://juejin.im/entry/5a98f1ef518825558001a859)
+
+
+#### react setState
+* setState 不保证同步
+ 
+    - 可能会为了性能收益批量执行
+    - `setState()` 不会立刻改变 `this.state`，而是创建一个即将处理的 state 转变。在调用该方法之后访问 `this.state` 可能会返回现有的值。
+
+    **解决方案**
+    - 使用回调函数
+
+        setState 方法接收一个 function 作为回调函数。这个回掉函数会在 setState 完成以后直接调用，这样就可以获取最新的 state 
+        ```js
+        this.setState({
+            selection: value
+        }, this.fireOnSelect)
+        ```
+
+    - `setTimeout`
+        在 setState 使用 setTimeout 来让 setState 先完成以后再执行里面内容
+        ```js
+        this.setState({
+            selection: value
+        });
+        setTimeout(this.fireOnSelect, 0);
+        ```
+
+* 造成不必要的渲染
+    - `shouldComponentUpdate` 解决
+
+        `setState()` 将总是触发一次重绘，除非在 `shouldComponentUpdate()` 中实现了条件渲染逻辑
+    - 和渲染无关的状态尽量不要放在 state 中来管理
+        
+        通常 state 中只来管理和渲染有关的状态 ，从而保证 setState 改变的状态都是和渲染有关的状态。这样子就可以避免不必要的重复渲染。其他和渲染无关的状态，可以直接以属性的形式保存在组件中，在需要的时候调用和改变，不会造成渲染。
+    
+* 不能很有效的管理所有的组件状态
+
+参考：[浅谈使用React.setState需要注意的三点](http://www.jb51.net/article/130828.htm)
 
 ## 百度
 1. 一面
@@ -1285,14 +1528,74 @@ js 单线程：
 > 也就是说如果某个microtask任务被推入到执行中，那么当主线程任务执行完成后，会循环调用该队列任务中的下一个任务来执行，直到该任务队列到最后一个任务为止。而事件循环每次只会入栈一个macrotask,主线程执行完成该任务后又会检查microtasks 队列并完成里面的所有任务后再执行macrotask的任务。
 
 执行过程如下：
-* JavaScript引擎首先从 macrotask queue 中取出第一个任务，
-* 执行完毕后，将 microtask queue 中的所有任务取出，按顺序全部执行；
-* 然后再从 macrotask queue 中取下一个，
-* 执行完毕后，再次将 microtask queue 中的全部取出；
-* 循环往复，直到两个queue中的任务都取完。
+* 主线程空闲时首先执行 micro
+* 之后从 macro 中提取一个 task 到主任务，完成后再次执行 micro queue（执行一个cycle）
+* 反复过程2， 每个周期为一个事件循环
 
-为啥要用 microtask？根据HTML Standard，在每个 task 运行完以后，UI 都会重渲染，那么在 microtask 中就完成数据更新，当前 task 结束就可以得到最新的 UI 了
+为啥要用 microtask？
+* micro 执行总在 macro 之前
+* micro 全部执行完毕后会更新 UI 和执行下一个macro
+根据HTML Standard，在每个 task 运行完以后，UI 都会重渲染，那么在 microtask 中就完成数据更新，当前 task 结束就可以得到最新的 UI 了
 
+```js
+// 验证
+(function () {
+    const $test = document.getElementById('test')
+    let counter = 0
+
+    function func1() {
+        $test.innerText = ++counter
+        alert('func1')
+    }
+
+    function func2() {
+        $test.innerText = ++counter
+        alert('func2')
+    }
+
+    function func3() {
+        $test.innerText = ++counter
+        alert('func3')
+    }
+
+    function func4() {
+        $test.innerText = ++counter
+        alert('func4')
+    }
+
+    (function () {
+        // main task
+        func1()
+
+        // macro task
+        setTimeout(() => {
+            func2()
+
+            // micro task
+            Promise.resolve().then(func4)
+        }, 0);
+
+        // macro task
+        setTimeout(func1, 0);
+
+        // micro task
+        Promise.resolve().then(func3)
+
+        // main task
+        func4()
+    })()
+
+    // alert func1
+    // alert func4
+    // alert func3
+    // UI update ---> counter = 3
+    // alert func2
+    // alert func4
+    // UI update ---> counter = 5
+    // alert func1
+    // UI update ---> counter = 6
+})()
+```
 #### 接收后台资源的方法（除了Ajax）
 * Ajax
 * fetch
@@ -1532,3 +1835,7 @@ emitter.emit('event1', "message for you");
 
 #### 计算机网络
 ![layer](/img/in-post/post-web-interview/layer.png)
+
+
+
+

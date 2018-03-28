@@ -1409,6 +1409,75 @@ setTimeout(function(){
         });
         ```
 
+#### 3.20. 立即执行表达式
+* 循环中定时输出数据项
+* 插件和模块话开发——避免变量污染
+
+```js
+for(var i = 0; i < 5; i++) {
+    (function(i) {
+      setTimeout(function() {
+        console.log(i);  
+      }, 1000);
+    })(i)
+}
+
+(function($) { 
+        //代码
+ } )(jQuery);
+ ```
+
+#### 浮点数
+js 中number 类型就是浮点型，采用 IEEE-754  64 位双精度浮点数，是二进制表示法，可以精确表示分数，每个浮点数 64 位
+**JavaScript提供的有效数字最长为53个二进制位（64位浮点的后52位+有效数字第一位的1）**
+
+最高的1位是符号位，接着的11位是指数，剩下的52位为有效数字，具体：
+
+* 第0位：符号位， s 表示 ，0表示正数，1表示负数；
+* 第1位到第11位：储存指数部分， e 表示 ；
+* 第12位到第63位：储存小数部分（即有效数字），f 表示，
+
+![bit](/img/in-post/post-web-nowcoder/bit.jpg)
+
+ 由于采用二进制
+ 不能有限表示分数
+ ```js
+ 0.1 + 0.2
+
+ // 先转成二进制 
+ // 0.1 ----> 0.0001 1001 1001...
+ // 0.2 ----> 0.0011 0011 0011...
+ // 双精度浮点数的小数部分最多支持 52 位，所以两者相加之后得到这么一串
+ // 0.0100110011001100110011001100110011001100...
+ ```
+
+ 准确计算：
+ * 一是先升幂再降幂：
+    ```js
+    function add(num1, num2){
+        let r1, r2, m;
+        r1 = (''+num1).split('.')[1].length;
+        r2 = (''+num2).split('.')[1].length;
+
+        m = Math.pow(10,Math.max(r1,r2));
+        return (num1 * m + num2 * m) / m;
+    }
+    console.log(add(0.1,0.2));   //0.3
+    console.log(add(0.15,0.2256)); //0.3756
+    ```
+
+* 二是是使用内置的 toPrecision() 和 toFixed() 方法，注意，方法的返回值字符串。
+    ```js
+    // toFixed() 返回一个数值的字符串表现形式。
+    parseFloat((数学表达式).toFixed(digits))
+
+    // toFixed() 精度参数须在 0 与20 之间
+    // 运行
+    parseFloat((1.0 - 0.9).toFixed(10)) // 结果为 0.1 
+    ```
+
+* 将浮点数转换字符串，分隔成为整数部分和小数部分，小数部分再转换为整数，计算结果后，再转换为浮点数
+
 ## 4. 其他
 [页面加载全解](https://www.cnblogs.com/jingwhale/p/4714082.html?utm_source=tuicool&utm_medium=referral)
 #### 4.1. GET 和 POST
