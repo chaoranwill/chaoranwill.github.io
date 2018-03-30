@@ -32,8 +32,9 @@ tags:
 * slice：slice(start,end)，返回选定元素
 * map,filter,forEach,some,every等不改变原数组
 
-## 2. 必知的数组方法
+#### 1.3. 必知的数组方法
 * `Array.forEach()`
+
     能够方便的遍历数组里的每个元素，可以在回调函数里对每个元素进行操作
     该方法**没有返回值**，不需要在回调函数里写return，这是无意义的
     ```js
@@ -59,6 +60,7 @@ tags:
     ```
 
 * `Array.filter()`
+
     .filter() 方法能够过滤掉数组中的某些元素，可以在回调函数里设定条件，不符合条件的元素都会排除在外
     ```js
     var scores = [3, 12, 5, 23, 19, 7];
@@ -75,6 +77,7 @@ tags:
     ```
 
 * `Array.indexOf()`
+
     indexOf() 能够告诉你 某个元素在数组中的位置，它返回的是索引值，如果数组里有重复的元素，它会返回第一个元素的位置
     ```js
     var a = [2, 9, 9, 18];
@@ -108,11 +111,10 @@ tags:
 * [每个JavaScript程序员都需要知道的5个数组方法](http://www.webhek.com/post/5-array-methods-all-javascript-beginners-should-know.html)
 * [是否改变原数组的常用方法归纳](http://blog.csdn.net/cristina_song/article/details/77917404)
 
-## 字符串
+## 2. 字符串
 > 属性 length
 
-#### 实例方法
-##### ---对象通用方法
+#### 2.1. 对象通用方法
 > String类型是与字符串对应的包装类型，继承了Object对象的通用方法
 作用：
 返回string 的原始字符串值
@@ -121,8 +123,8 @@ tags:
 * toLocaleString()
 * valueOf()
 
-##### ---访问字符
-* chartAt()
+#### 2.2. 访问字符
+* `chartAt()`
 
     charAt()方法涉及到Number()函数的隐式类型转换，如果转换为数值，则按照上述规则输出字符串；如果转换为NaN，则输出第0个字符
 * 中括号[]
@@ -135,7 +137,7 @@ tags:
     console.log(str[false]);//undefined
     ```
 
-* charCodeAt()
+* `charCodeAt()`
 
     类似 charAt
     指定位置的字符16位Unicode编码。返回值是一个16位的整数
@@ -145,7 +147,7 @@ tags:
     console.log(str.charCodeAt(0));//104
     ```
 
-* fromCharCode()
+* `fromCharCode()`
 
     接收一个或多个字符编码，然后把它们转换成一个字符串
     ```js
@@ -153,25 +155,23 @@ tags:
     console.log(String.fromCharCode(0x6211,0x662f,0x5c0f,0x706b,0x67f4));//'我是小火柴'
     ```
 
-##### ---查找
+#### 2.3. 查找
 > 同访问字符方法charAt()和中括号[]方法有相反的地方
 一个通过字符串查找位置
 一个则是通过位置查找字符
 
-* indexOf()
+* `indexOf(searchString,start)`
 
-    `indexOf(searchString,start)`
     - 返回searchString首次出现的位置，如果没有找到则返回-1
     - 隐式调用String()转型函数，将searchString非字符串值转换为字符串
 
-* lastIndexOf()
+* `lastIndexOf(searchString,start)`
 
-    `lastIndexOf(searchString,start)`
     - 返回searchString第一次出现的位置，如果没有找到则返回-1
     - 从右向左查找
 
-##### ---字符串拼接
-* concat()
+#### 2.4. 字符串拼接
+* `concat()`
 
     - 将一个或多个字符串拼接起来，返回拼接得到的新字符串，而原字符串不发生改变。
     - 若参数(第一个参数除外)不是字符串，则通过String()方法隐式转换为字符串，再进行字符串拼接
@@ -188,31 +188,28 @@ tags:
 
     当操作数其中一个是字符串，或者对象转换为字符串时，才进行字符串拼接
 
-##### ---创建子字符串
-* slice()
+#### 2.5. 创建子字符串
+* `slice(start,end)`
 
-    `slice(start,end)`
     返回子串
     为负数时从后往前数
-* substring()
+* `substring(start,end)`
 
-    `substring(start,end)`
     - 如果任一参数是NaN或负数，则被0取代
     - 如果任一参数大于字符串长度，则被字符串长度取代
     - 如果start 大于 end，则交换它们的值
-* substr()
+* `substr(start,length)`
 
-    `substr(start,length)`
     - start和end无法交换位置
     - [注意]该方法不是ECMAScript标准，已经被弃用
 
-##### ---大小写转换
-* toLowerCase()
-* toLocaleLowerCase()
+#### 2.6. 大小写转换
+* `toLowerCase()`
+* `toLocaleLowerCase()`
 
     (针对地区)
-* toUpperCase()
-* toLocaleUpperCase()
+* `toUpperCase()`
+* `toLocaleUpperCase()`
 
     (针对地区)
 
@@ -226,8 +223,8 @@ tags:
 ([]).toLocaleUpperCase();//报错
 ```
 
-##### ---匹配方法
-* match()
+#### 2.7. 匹配方法
+* `match()`
 
     - 只接受一个为正则或字符串的参数，并以数组的形式返回匹配的内容
     - 若不设置全局标志，match()方法和exec()方法结果相同
@@ -246,7 +243,7 @@ tags:
     str.match(reg).input //'ere333'
     ```
 
-* search()
+* `search()`
 
     - 返回匹配的内容在字符串中首次出现的位置
         
@@ -254,7 +251,7 @@ tags:
     - search()方法不执行全局匹配，忽略全局标志g
     - 也会忽略RegExp对象的lastIndex属性，总是从字符串的开始位置开始搜索
 
-* replace()
+* `replace()`
 
     - 替换一个或多个子字符串
     - 接收两个参数：第一个是正则表达式或字符串，表示待查找的内容；第二个是字符串或函数，表示替换内容
@@ -274,7 +271,7 @@ tags:
         console.log(string.replace(/(.)(at)/g,'$2'));//'at-at-at-at'
         ```
    
-    - replace()方法的第二个参数可以是函数
+    - `replace()` 方法的第二个参数可以是函数
 
         如果在只有一个匹配项的情况下，该方法会向这个函数传递3个参数：模式的匹配项、模式匹配项在字符串中的位置、原始字符串
         ```js
@@ -321,15 +318,15 @@ tags:
         console.log(maxLength,maxValue);//18 "f"
         ```
 
-* split()
+* `split()`
 
     - 基于指定的分隔符将一个字符串分割成多个字符串，并将结果放在一个数组中，分隔符可以是字符串，也可以是一个RegExp
     - 可以接受第二个参数(可选)用于指定数组的大小
     
         如果第二个参数为0-array.length范围内的值时按照指定参数输出，其他情况将所有结果都输出
 
-##### ---去除首尾空格
-* trim()
+#### 2.8. 去除首尾空格
+* `trim()`
 
     创建一个字符串的副本，删除前置及后缀的所有空白字符，然后返回结果
     ```js
@@ -341,15 +338,15 @@ tags:
     }
     ```
 
-##### ---字符串比较
-* localeCompare()
+#### 2.9. 字符串比较
+* `localeCompare()`
 
     - 如果字符串在字母表中应该排在字符串参数之前，则返回一个负数(大多数情况下为-1)
     - 如果字符串等于字符串参数，则返回0
     - 如果字符串在字母表中应该排在字符串参数之后，则返回一个正数(大多数情况下为1)
 
-## 正则
-#### 书写方式
+## 3. 正则
+#### 3.1. 书写方式
 * 构造器
 
     `var regex = /\w+/`
@@ -360,3 +357,10 @@ tags:
 
     // '\' 需要转义 ---> \\
     ```
+
+##### ---原意文本字符和元字符
+* 元字符
+
+    在正则表达式中含有特殊含义的非字母字符
+
+    `. * + ? $ ^ | \ ( ) { } [ ]`
