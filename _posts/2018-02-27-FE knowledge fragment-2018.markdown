@@ -14,6 +14,9 @@ tags:
 
 * 目录
 {:toc #toc}
+
+![mvvm](/img/in-post/post-web-fragment/summary.jpg)
+
 ## 1. ES6
 最重要特征
 * 箭头函数

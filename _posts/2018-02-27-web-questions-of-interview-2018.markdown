@@ -663,6 +663,49 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
 [CSS 单位](https://segmentfault.com/a/1190000004043937)
 [视区相关单位vw, vh..简介以及可实际应用场景](http://www.zhangxinxu.com/wordpress/2012/09/new-viewport-relative-units-vw-vh-vm-vmin/)
 
+#### 2.16. 响应式
+> 使网站在手机和平板电脑上有更好的浏览阅读体验
+
+* 设置 Meta 标签
+
+    使用设备的宽度作为视图宽度并禁止初始的缩放
+
+    ```html
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- user-scalable = no 属性能够解决 iPad 切换横屏之后触摸才能回到具体尺寸的问题 -->
+    ```
+
+* 通过媒介查询来设置样式 Media Queries
+
+    ```css
+    @media screen and (max-width: 980px) {
+        #head { … }
+        #content { … }
+        #footer { … }
+    }
+    ```
+
+* 设置多种视图宽度
+
+    假如我们要设定兼容 iPad 和 iphone 的视图，那么可以这样设置：
+    ```css
+    /** iPad **/
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {}
+    /** iPhone **/
+    @media only screen and (min-width: 320px) and (max-width: 767px) {}
+    ```
+
+* 响应式内容
+
+    - 百分比
+    - rem
+* 图片缩放
+
+    简单的解决方法可以使用百分比，但这样不友好，会放大或者缩小图片。那么可以尝试给图片指定的最大宽度为百分比。假如图片超过了，就缩小。假如图片小了，就原尺寸输出。
+    `img { width: auto; max-width: 100%; }`
+
+
 ## 3. JavaScript
 #### 3.1. JavaScript 的同源策略
 > 同源策略是客户端脚本（尤其是Javascript）的重要的安全度量标准。它最早出自Netscape Navigator2.0，其目的是防止某个文档或脚本从多个不同源装载
@@ -1057,7 +1100,10 @@ NodeJS的事件循环模型一般要注意下面几点：
     * 原型对象包含一个指向构造函数的指针
     * 实例都包含一个指向原型对象的内部指针。
     ```js
-    SubType.prototype = new SuperType();//继承了SuperType
+    SubType.prototype = new SuperType();// 继承了SuperType
+    
+    SubType.prototype.constructor = SubType;// 指回原来的构造函数
+    
     ```
 
 2. 构造函数

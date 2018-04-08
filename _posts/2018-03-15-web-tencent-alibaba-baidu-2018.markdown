@@ -1251,10 +1251,10 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
 #### 如何用 JS 实现 JSON.parse
 ##### ---eval
 > 直接调用eval
+
 ```js
 var json = '{"a":"1", "b":2}';
-var obj = eval("(" + json + ")");  // obj 就是 json 反序列化之后得到的对象
-
+var obj = eval("(" + json + ")");    // obj 就是 json 反序列化之后得到的对象
 ```
 
 **原理**
