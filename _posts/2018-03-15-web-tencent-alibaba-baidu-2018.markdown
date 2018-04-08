@@ -1441,38 +1441,40 @@ vue
 * float
     - 原理：增大父框的实际宽度后，使用CSS3属性box-sizing进行布局的辅助。
 
-    - 用法：先将父框设置为margin-left: -*px，再设置子框float: left、width: 25%、padding-left、box-sizing: border-box。
-    ```css
-    .parent{
-        margin-left: -20px;
-    }
+    - 用法：先将父框设置为 `margin-left: -*px`，再设置子框 `float: left、width: 25%、padding-left、box-sizing: border-box`
 
-    .column{
-        float: left;
-        width: 25%;
-        padding-left: 20px;
-        box-sizing: border-box;  /*包含padding区域 w+g*/
-    }
-    ```
+        ```css
+        .parent{
+            margin-left: -20px;
+        }
+
+        .column{
+            float: left;
+            width: 25%;
+            padding-left: 20px;
+            box-sizing: border-box;  /*包含padding区域 w+g*/
+        }
+        ```
 
 * table
-    - 原理：通过增加一个父框的修正框，增大其宽度，并将父框转换为table，将子框转换为tabel-cell进行布局。
+    - 原理：通过增加一个父框的修正框，增大其宽度，并将父框转换为 table，将子框转换为 tabel-cell 进行布局。
 
-    - 用法：先将父框的修正框设置为margin-left: -*px，再设置父框display: table、width:100%、table-layout: fixed，设置子框display: table-cell、padding-left。
-    ```css
-    .parent-fix{
-        margin-left: -20px;
-    }
-    .parent{
-        display: table;
-        width:100%;
-        table-layout: fixed;
-    }
-    .column{
-        display: table-cell;
-        padding-left: 20px;
-    }
-    ```
+    - 用法：先将父框的修正框设置为 `margin-left: -*px`，再设置父框 `display: table、width:100%、table-layout: fixed`，设置子框 `display: table-cell、padding-left`
+
+        ```css
+        .parent-fix{
+            margin-left: -20px;
+        }
+        .parent{
+            display: table;
+            width:100%;
+            table-layout: fixed;
+        }
+        .column{
+            display: table-cell;
+            padding-left: 20px;
+        }
+        ```
 
 * flex
     - 原理：通过设置CSS3布局利器flex中的flex属性以达到等分布局。
