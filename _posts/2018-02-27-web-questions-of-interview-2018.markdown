@@ -222,28 +222,29 @@ FireFox | gecko | -moz- |
     那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用 link 方式来加载 css ，而不是使用 @import 方式。
 
 #### 1.10. viewport
-```html
+```js
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<!--
-    width    设置viewport宽度，为一个正整数，或字符串‘device-width’
-    device-width  设备宽度
-    height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
-    initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
-    minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
-    maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
-    user-scalable    是否允许手动缩放
--->
+
+// width    设置viewport宽度，为一个正整数，或字符串‘device-width’
+// device-width  设备宽度
+// height   设置viewport高度，一般设置了宽度，会自动解析出高度，可以不用设置
+// initial-scale    默认缩放比例（初始缩放比例），为一个数字，可以带小数
+// minimum-scale    允许用户最小缩放比例，为一个数字，可以带小数
+// maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
+// user-scalable    是否允许手动缩放
 ```
 
 ## 2. CSS
 #### 2.1. CSS3有哪些新特性
-1. CSS3实现圆角（border-radius），阴影（box-shadow），
-2. 对文字加特效（text-shadow、），线性渐变（gradient），旋转（transform）
-3. transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);// 旋转,缩放,定位,倾斜
-4. 增加了更多的CSS选择器  多背景 rgba
-5. 在CSS3中唯一引入的伪类是 ::selection.
+1. CSS3实现圆角（`border-radius`），阴影（`box-shadow`），
+2. 对文字加特效（`text-shadow`），线性渐变（`gradient`），旋转（`transform`）
+3. `transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg)`
+    
+    旋转,缩放,定位,倾斜
+4. 增加了更多的CSS选择器  多背景 `rgba`
+5. 在CSS3中唯一引入的伪类是 `::selection`.
 6. 媒体查询，多栏布局
-7. border-image
+7. `border-image`
 
 #### 2.2. CSS中 使用方式及其区别？
 1. 内联式
@@ -310,14 +311,55 @@ FireFox | gecko | -moz- |
 3. !important >  id > class > tag  > *
 4. !important > 内嵌 > ID > 类 > 标签、 伪类、 属性选择 > 伪对象 > 继承 > 通配符
 
+**伪类与伪元素**
+* 伪类本质上是为了弥补常规CSS选择器的不足，以便获取到更多信息；
+* 伪元素本质上是创建了一个有内容的虚拟容器；
+
+    比如：document 接口不提供访问元素内容的第一个字或者第一行的机制，而伪元素可以使开发者可以提取到这些信息。并且，一些伪元素可以使开发者获取到不存在于源文档中的内容（比如常见的 `::before,::after`
+* CSS3中伪类和伪元素的语法不同；
+* 可以同时使用多个伪类，而只能同时使用一个伪元素；
+
+    一个选择器只能使用一个伪元素，并且伪元素必须处于选择器语句的最后
+    ```css
+    q:lang(en)::after{
+        content: " (English) ";
+    }
+    ```
+
+
 **CSS3新增伪类举例：**
-* [p:first-of-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type) 选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
-* p:last-of-type  选择属于其父元素的最后 <p> 元素的每个 <p> 元素。
-* p:only-of-type  选择属于其父元素唯一的 <p> 元素的每个 <p> 元素。
-* p:only-child    选择属于其父元素的唯一子元素的每个 <p> 元素。
-* p:nth-child(2)  选择属于其父元素的第二个子元素的每个 <p> 元素。
-* :enabled :disabled 控制表单控件的禁用状态。
-* :checked        单选框或复选框被选中。
+
+* `:nth-child()`
+
+    选择某个元素的一个或多个特定的子元素；    
+    - 父元素下的第n个子元素
+    - 并且这个子元素的标签名为elem
+
+* [p:first-of-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:first-of-type) 
+    
+    选择属于其父元素的首个 `<p>` 元素的每个 `<p>` 元素。
+
+* `p:last-of-type`
+      
+    选择属于其父元素的最后 `<p>` 元素的每个 `<p>` 元素。
+* `p:only-of-type`
+      
+    选择属于其父元素唯一的 `<p>` 元素的每个 `<p>` 元素。
+* `p:only-child`
+        
+    选择属于其父元素的唯一子元素的每个 `<p>` 元素。
+* `p:nth-child(2)`
+      
+    选择属于其父元素的第二个子元素的每个 `<p>` 元素。
+* `:enabled :disabled`
+     
+    控制表单控件的禁用状态。
+* `:checked`
+            
+    单选框或复选框被选中。
+* `:empty`
+    
+    选择的元素里面没有任何内容。
 
 #### 2.6. position的absolute与fixed
 **共同点：**
@@ -394,6 +436,10 @@ display 值的作用：
         height:0;
         line-height:0;
         visibility:hidden;
+    }
+    .clearfix {
+        /* 触发 hasLayout */ 
+        zoom: 1; 
     }
     ```
 
@@ -715,6 +761,11 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
 **为什么要有同源限制：**
 比如一个黑客程序，他利用Iframe把真正的银行登录页面嵌到他的页面上，当你使用真实的用户名，密码登录时，他的页面就可以通过Javascript读取到你的表单中input中的内容，这样用户名，密码就轻松到手了。
 
+**限制范围**
+* Cookie、LocalStorage 和 IndexDB 无法读取。
+* DOM 无法获得。
+* AJAX 请求不能发送。
+
 #### 3.2. use strict
 > ECMAscript 5添加了第二种运行模式："严格模式"（strict mode）。顾名思义，这种模式使得Javascript在更严格的条件下运行
 
@@ -723,7 +774,86 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
 2. 消除代码运行的一些不安全之处，保证代码运行的安全；
 3. 提高编译器效率，增加运行速度；
 4. 为未来新版本的Javascript做好铺垫。
+
 注：经过测试 IE6,7,8,9 均不支持严格模式。
+
+**使用方式**
+* 针对整个脚本文件
+
+    将"use strict"放在脚本文件的第一行，则整个脚本都将以"严格模式"运行
+
+    ```html
+    <script>
+        "use strict";
+        console.log("这是严格模式。");
+    </script>
+    ```
+
+* 针对单个函数
+    
+    将"use strict"放在函数体的第一行，则整个函数以"严格模式"运行。
+    ```js
+    function strict(){
+        "use strict";
+        return "这是严格模式。";
+    }
+    ```
+
+* 脚本文件的变通写法
+
+    因为第一种调用方法不利于文件合并，所以更好的做法是，借用第二种方法，将整个脚本文件放在一个立即执行的匿名函数之中。
+    ```js
+    (function (){
+
+        "use strict";
+        // some code here
+
+    })();
+    ```
+
+**限制**
+* 全局变量显式声明
+
+    严格模式下，变量都必须先用var命令声明，然后再使用
+* 静态绑定
+    - 禁止使用with语句
+    - 创设eval作用域
+
+        正常模式下，eval语句的作用域，取决于它处于全局作用域，还是处于函数作用域。严格模式下，eval语句本身就是一个作用域，不再能够生成全局变量了，它所生成的变量只能用于eval内部
+* 增强的安全措施
+
+    - 禁止this关键字指向全局对象
+    - 禁止在函数内部遍历调用栈
+
+        ```js
+        function f(){
+            "use strict";
+            this.a = 1;
+        };
+
+        f();// 报错，this未定义
+        ```
+
+    - 禁止在函数内部遍历调用栈
+
+* 禁止删除变量
+* 显式报错
+
+    正常模式下，对一个对象的只读属性进行赋值，不会报错，只会默默地失败。严格模式下，将报错
+
+* 重名错误
+    - 对象不能有重名的属性
+    - 函数不能有重名的参数
+
+* 禁止八进制表示法
+* arguments 对象的限制
+    - 不允许对arguments赋值
+    - arguments 不再追踪参数的变化
+    - 禁止使用arguments.callee
+
+        无法在匿名函数内部调用自身
+
+* 函数必须声明在顶层
 
 **缺点：**
 现在网站的 JS 都会进行压缩，一些文件用了严格模式，而另一些没有。这时这些本来是严格模式的文件，被 merge 后，这个串就到了文件的中间，不仅没有指示严格模式，反而在压缩后浪费了字节。
@@ -760,6 +890,8 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
         - 使用 ws 或者 wss 协议的客户端 socket
         - 能够实现真正意义上的推送功能
     - 缺点：少部分浏览器不支持，浏览器支持的程度与方式有区别。
+
+* Server-Sent Events
 
 **webSocket 特点：**
 * 服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于**服务器推送**技术的一种
@@ -1611,7 +1743,7 @@ JavaScript能够准确表示的整数范围在 -2^53 到 2^53 之间（不含两
 
 * 在 JavaScript，常见的 false 值：
     ```js
-    0, '0', +0, -0, false, '',null,undefined,null,NaN
+    0, '0', +0, -0, false, '', null, undefined, NaN
     // 要注意空数组([])和空对象({}):
 
     console.log([] == false) //true
@@ -1694,10 +1826,26 @@ for (var i = 0; i < 5; i++) {
 * 页面加载完毕。`window.onload`
 
 **涉及到的事件**
+
+**ready & load**
+![load](/img/in-post/post-web-nowcoder/load.png)
+* 一是ready，表示文档结构（DOM结构）已经加载完成（不包含图片等非文字媒体文件）
+
+* 二是onload，指示页面包含图片等文件在内的所有元素都加载完成。
+
+    (可以说：ready 在onload 前加载！！！)
+
+    一般样式控制的，比如图片大小控制放在onload 里面加载;而：jS事件触发的方法，可以在ready 里面加载;
+
+**load**
+
 * `document.onload: `
-    当整个html文档加载的时候就触发了，也就是在body元素加载之前就开始执行了
+
+    整个html文档加载的时候触发
 * `DOMContentLoaded:` 
+
     当页面的DOM树解析好并且需要等待JS执行完才触发 
+
     当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载
     ```js
     <script>
@@ -1715,16 +1863,18 @@ for (var i = 0; i < 5; i++) {
     ![support](/img/in-post/post-web-nowcoder/support.png)
     
 * `onreadytstatechange: `
-    当对象状态变更时触发这个事件，一旦 document 的 readyState 属性发生变化就会触发
+   
+    发生在Document对象和XMLHttpRequest对象，它们的readyState属性发生变化时触发
+    
     一个文档的 readyState 可以是以下之一：
-    - loading / 加载
-        document 仍在加载。
-    - interactive / 互动
-        文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载。
-    - complete / 完成
-        T文档和所有子资源已完成加载。状态表示 load 事件即将被触发。
+    - uninitialized(未初始化)：对象存在但尚未初始化 
+    - loading(正在加载)：对象正在加载数据
+    - loaded(加载完毕)：对象加载数据完成
+    - interactive(交互)：可以操作对象了，但还没有完全加载
+    - complete(完成)：对象已经加载完毕
 
 * `window.onload: `
+
     当页面全部加载完成（包括所有资源）
 
 **document.ready的实现**

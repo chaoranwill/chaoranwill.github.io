@@ -1643,8 +1643,9 @@ js 单线程：
 * Ajax
 * fetch
     返回一个Promise对象, 根据 Promise Api 的特性, fetch可以方便地使用then方法将各个处理逻辑串起来
-* Jsonp
+
     mode
+
     ```js
     // fetch可以设置不同的模式使得请求有效
     fetch(url, {mode: 'cors'});
@@ -1654,6 +1655,9 @@ js 单线程：
     - cors-with-forced-preflight
     - no-cors
     推荐阅读： [Fetch 进阶指南](http://web.jobbole.com/91161/)
+
+* Jsonp
+
 * websocket
     服务器推送技术之一
     全双工
@@ -1833,19 +1837,22 @@ emitter.emit('event1', "message for you");
 * Generator函数
     - 可以交出函数的执行权（暂停执行）
     - 整个Generator函数就是一个封装的异步任务，或者说是异步任务的容器。异步操作需要暂停的地方，都用yield语句注明。
-    ```js
-    function* gen(x){
-        var y = yield x + 2;
-        return y;
-    }
 
-    var g = gen(1);
-    var r1 = g.next(); // { value: 3, done: false }
-    console.log(r1);
-    var r2 = g.next() // { value: undefined, done: true }
-    console.log(r2);
-    ```
+        ```js
+        function* gen(x){
+            var y = yield x + 2;
+            return y;
+        }
+
+        var g = gen(1);
+        var r1 = g.next(); // { value: 3, done: false }
+        console.log(r1);
+        var r2 = g.next() // { value: undefined, done: true }
+        console.log(r2);
+        ```
+
     **Generator函数的函数名前面有一个"*"**
+    
     - 调用Generator函数，会返回一个内部指针(即遍历器)g，这是Generator函数和一般函数不同的地方，调用它不会返回结果，而是一个指针对象。
     - 调用指针g的next方法，会移动内部指针，指向第一个遇到的yield语句
         - next方法的作用是分阶段执行Generator函数。每次调用next方法，会返回一个对象，表示当前阶段的信息（value属性和done属性）

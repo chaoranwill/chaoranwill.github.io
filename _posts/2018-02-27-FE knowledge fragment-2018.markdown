@@ -250,10 +250,12 @@ JavaScript对异步编程的实现
 ## 2. 通信
 #### 2.1. JSONP 
 被包含在一个回调函数中的 json
-**核心是：** 动态添加script标签调用服务器提供的js脚本
+
+**核心：** 动态添加script标签调用服务器提供的js脚本
 #### 2.2. cors
 使用自定义的http头部让浏览器与服务器进行沟通，确定该请求是否成功
-**核心：**由服务器发送一个响应标头
+
+**核心：** 由服务器发送一个响应标头
 
 详细：[JSONP && CORS](http://www.cnblogs.com/chaoran/p/6579588.html)
 
@@ -364,10 +366,12 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 
 实现方式：
 * 发布者-订阅者模式（backbone.js）
+
     一般通过sub, pub的方式实现数据和视图的绑定监听，更新数据方式通常做法是 `vm.set('property', value)`
     这种方式现在毕竟太low了，我们更希望通过 `vm.property = value` 这种方式更新数据，同时自动更新视图，于是有了下面两种方式
 
 * 脏值检查（angular.js） 
+
     angular.js 是通过脏值检测的方式比对数据是否有变更，来决定是否更新视图，最简单的方式就是通过 setInterval() 定时轮询检测数据变动，当然Google不会这么low，angular只有在指定的事件触发时进入脏值检测，大致如下：
     - DOM事件，譬如用户输入文本，点击按钮等。( `ng-click `)
     - XHR响应事件 (` $http `)
@@ -376,6 +380,7 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
     - 执行` $digest()` 或` $apply()`
 
 * 数据劫持（vue.js）
+
     vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过 `Object.defineProperty()` 来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
     - `Object.defineProperty()` 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象
         ```js
@@ -384,10 +389,10 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 
         //例子
         Object.defineProperty(obj, "key", {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: "static"
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: "static"
         });
 
         var obj = {};
@@ -410,10 +415,13 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 
 **实现 MVVM 双向绑定**
 * 实现一个数据监听器Observer
+
     能够对数据对象的所有属性进行监听，如有变动可拿到最新值并通知订阅者
 * 实现一个指令解析器Compile
+
     对每个元素节点的指令进行扫描和解析，根据指令模板替换数据，以及绑定相应的更新函数
 * 实现一个Watcher
+
     作为连接Observer和Compile的桥梁，能够订阅并收到每个属性变动的通知，执行指令绑定的相应回调函数，从而更新视图
 * mvvm入口函数，整合以上三者
 ![mvvm](/img/in-post/post-web-fragment/mvvm-back.png)
@@ -486,22 +494,22 @@ Fielding将他对互联网软件的架构原则，定名为REST，即Representat
     跟踪记录每个值被引用的次数
     当声明了一个变量并将一个引用类型赋值给该变量时，则这个值的引用次数就是1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数就减1，释放那些引用次数为0的值所占的内存。
 
-```js
-function problem() {
-    var objA = new Object();
-    var objB = new Object();
+    ```js
+    function problem() {
+        var objA = new Object();
+        var objB = new Object();
 
-    objA.someOtherObject = objB;
-    objB.anotherObject = objA;
-}
-```
+        objA.someOtherObject = objB;
+        objB.anotherObject = objA;
+    }
+    ```
 
-这个方式存在一个比较大的问题就是循环引用
-可以手动切断他们的循环引用
-```js
-myObj.element = null;
-element.someObject =null;
-```
+    这个方式存在一个比较大的问题就是循环引用
+    可以手动切断他们的循环引用
+    ```js
+    myObj.element = null;
+    element.someObject =null;
+    ```
 
 ##### 4.1.2. 减少JavaScript中的垃圾回收
 * 在初始化的时候新建对象，然后在后续过程中尽量多的重用这些创建好的对象。
@@ -550,10 +558,13 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 
 **闭包的运用**
 * 匿名自执行函数
+
     有的函数只需要执行一次，其内部变量无需维护，执行后释放变量
 * 实现封装/模块化代码
+
     变量作用域为函数内部，外部无法访问  
 * 实现面向对象中的对象
+
     这样不同的对象(类的实例)拥有独立的成员及状态，互不干涉
 
 **优点：**
