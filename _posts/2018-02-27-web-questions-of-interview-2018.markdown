@@ -166,6 +166,11 @@ h5 新方法：`postMessage`
     // 通过 e.source == window.opener 可以判断发送消息的窗口与打开当前页面的窗口是否为同一个；data 属性标书传递过来的数据
     ```
 
+    **安全**
+
+    - 在必要时，可以在接收窗口验证Domian，甚至验证URL，以防止来自非法页面的消息。这实际上是在代码中实现一次同源策略的验证过程。
+    - 接收的消息写入textContent，但在实际应用中，如果将消息写入innerHtml，甚至直接写入script中，则可能会导致DOM based XSS的产生。在接受窗口不应该信任接收到的消息，而需要对信息进行安全检查。
+
 **特征**
 * Cookie
     - 每个域名存储量比较小（各浏览器不同，大致 4K ）
@@ -182,14 +187,24 @@ h5 新方法：`postMessage`
     - 只在 Session 内有效
     - 存储量更大（推荐没有限制，但是实际上各浏览器也不同）
 
-#### 1.7. `data-`属性的作用是什么
+#### 1.7. cookie & session
+>  由于HTTP协议是无状态的协议，所以服务端需要记录用户的状态时，就需要用某种机制来识具体的用户，这个机制就是Session
+
+* session 在服务器端，cookie 在客户端（浏览器）
+* session 默认被存在在服务器的一个文件里（不是内存）
+* session 的运行依赖 session id，而 session id 是存在 cookie 中的，也就是说，如果浏览器禁用了 cookie ，同时 session 也会失效（但是可以通过其它方式实现，比如在 url 中传递 session_id）
+* session 可以放在 文件、数据库、或内存中都可以。
+* 用户验证这种场合一般会用 session 因此，维持一个会话的核心就是客户端的唯一标识，即 session id
+* cookie 可以随HTTP请求发送给后端
+
+#### 1.8. `data-`属性的作用是什么
 `data-`为H5新增的为前端开发者提供自定义的属性，这些属性集可以通过对象的 `dataset` 属性获取，不支持该属性的浏览器可以通过 `getAttribute` 方法获取 :
 
 
 需要注意的是：`data-`之后的以连字符分割的多个单词组成的属性，获取的时候使用驼峰风格。 所有主流浏览器都支持 data-* 属性。
 即：当没有合适的属性和元素时，自定义的 data 属性是能够存储页面或 App 的私有的自定义数据。
 
-#### 1.8. 浏览器内核
+#### 1.9. 浏览器内核
 主要分成两部分：
 * 渲染引擎(layout engineer或 Rendering Engine)：
     负责取得网页的内容（HTML、 XML 、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
@@ -207,7 +222,7 @@ Safari | Webkit | -webkit- | Javascriptcore
 Opera | Presto | -o- | Carakan
 FireFox | gecko | -moz- |
 
-#### 1.9. src && href
+#### 1.10. src && href
 * src
     - 用于替换当前元素
     - src是 source 的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求 src 资源时会将其指向的资源下载并应用到文档内
@@ -221,7 +236,7 @@ FireFox | gecko | -moz- |
     如果我们在文档中添加 `<link href='common.css' rel='stylesheet'/>`
     那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用 link 方式来加载 css ，而不是使用 @import 方式。
 
-#### 1.10. viewport
+#### 1.11. viewport
 ```js
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 
@@ -233,6 +248,10 @@ FireFox | gecko | -moz- |
 // maximum-scale    允许用户最大缩放比例，为一个数字，可以带小数
 // user-scalable    是否允许手动缩放
 ```
+
+#### 1.12. BigPipe
+[bigpipe 实现原理](http://www.mamicode.com/info-detail-1115810.html)
+
 
 ## 2. CSS
 #### 2.1. CSS3有哪些新特性
