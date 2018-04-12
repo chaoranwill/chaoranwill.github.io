@@ -654,6 +654,31 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 * 因为闭包会携带包含它的函数的作用域，因此会比其他函数占用更多的内存
 * 引起内存泄露
 
+```js
+// 采用函数引用方式的setTimeout调用
+function callLater(paramA, paramB, paramC) {  
+    /*使用函数表达式创建并放回一个匿名内部函数的引用*/  
+    return (function () {  
+        /* 
+        这个内部函数将被setTimeout函数执行； 
+        并且当它被执行时， 
+        它能够访问并操作外部函数传递过来的参数 
+        */  
+        paramA[paramB] = paramC;  
+    });  
+}  
+
+/* 
+调用这个函数将在它的执行上下文中创建，并最终返回内部函数对象的引用 
+传递过来的参数，内部函数在最终被执行时，将使用外部函数的参数 
+返回的引用被赋予了一个变量 
+*/  
+var funcRef = callLater(elStyle, "display", "none");  
+/*调用setTimeout函数，传递内部函数的引用作为第一个参数*/  
+hideMenu = setTimeout(funcRef, 500);
+```
+
+
 #### 4.4. 事件委托和this
 ##### 4.4.1. 事件委托
 由其它元素而非事件目标元素来响应事件产生的行为的思想。如用ul元素来处理其子元素li的事件。

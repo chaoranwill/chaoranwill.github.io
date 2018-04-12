@@ -1343,7 +1343,13 @@ Function.prototype = {
 * [JS之理解原型和原型链](https://segmentfault.com/a/1190000010354583)
 * [最详尽的 JS 原型与原型链终极详解](https://www.jianshu.com/p/dee9f8b14771)
 
-#### 3.15. ajax 过程
+#### 3.15. ajax
+> Asynchronous JavaScript and XML
+
+通过Ajax可以使用Javascript语句来调用XMLHttpRequest对象，直接与服务器进行通讯，可以在不重载页面的情况下与服务器交换数据
+
+**过程**
+
 1. 创建XMLHttpRequest对象,也就是创建一个异步调用对象
 2. 创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息
 3. 设置响应HTTP请求状态变化的函数
@@ -1365,6 +1371,10 @@ function myAjax(url) {
             console.log(xml.responseText)
         }
     }
+
+    // post
+    xhr.setRequestHeader("Content-Type", "x-www-form-urlencoded")
+    xhr.send(data)
 }
 ```
 
