@@ -2182,6 +2182,120 @@ UDP适用于一次只传送少量数据、对可靠性要求不高的应用环�
 * [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
 * [HTTP,HTTP2.0,SPDY,HTTPS你应该知道的一些事](http://web.jobbole.com/87695/)
 
+#### 4.12. 页面加载优化
+* 懒加载（延迟加载）
+    - 延迟加载或符合某些条件时才加载某些资源
+    - 主要目的是作为服务器前端的优化，减少请求数或延迟请求数
+
+    实现方式：
+
+    - 第一种是纯粹的延迟加载，使用setTimeOut或setInterval进行加载延迟。
+    - 第二种是条件加载，符合某些条件，或触发了某些事件才开始异步下载。
+    - 第三种是可视区加载，即仅加载用户可以看到的区域，这个主要由监控滚动条时正好能看到图片
+* 预加载
+
+    - 牺牲服务器前端性能，换取更好的用户体验，这样可以使用户的操作得到最快的反映
+     
+    实现方式：
+
+    - 实现预载的方法非常多，可以用 CSS(background)、JS(Image)、HTML(`<img />`)都可以。
+    
+    - 常用的是 `new Image();` 设置其src来实现预载，再使用onload方法回调预载完成事件。只要浏览器把图片下载到本地，同样的src就会使用缓存，这是最基本也是最实用的预载方法。当Image下载完图片头后，会得到宽和高，因此可以在预载前得到图片的大小(方法是用记时器轮循宽高变化)
+
+    ```css
+    /* css */
+
+    #preload-01 { background: url(http://domain.tld/image-01.png) no-repeat -9999px -9999px; }  
+    #preload-02 { background: url(http://domain.tld/image-02.png) no-repeat -9999px -9999px; }  
+    #preload-03 { background: url(http://domain.tld/image-03.png) no-repeat -9999px -9999px; }
+    ```
+    将这三个ID选择器应用到(X)HTML元素中，我们便可通过CSS的background属性将图片预加载到屏幕外的背景上。只要这些图片的路径保持不变，当它们在Web页面的其他地方被调用时，浏览器就会在渲染过程中使用预加载（缓存）的图片。简单、高效，不需要任何 JavaScript
+
+    **不足：**
+    该法加载的图片会同页面的其他内容一起加载，增加了页面的整体加载时间
+
+    ```js
+    // 增加了一些JavaScript代码，来推迟预加载的时间，直到页面加载完毕
+
+    // 1. 获取使用类选择器的元素，并为其设置了background属性，以预加载不同的图片
+    // 2. 使用addLoadEvent()函数来延迟preloader()函数的加载时间，直到页面加载完毕
+
+    function preloader() {  
+        if (document.getElementById) {  
+            document.getElementById("preload-01").style.background = "url(http://domain.tld/image-01.png) no-repeat -9999px -9999px";  
+            document.getElementById("preload-02").style.background = "url(http://domain.tld/image-02.png) no-repeat -9999px -9999px";  
+            document.getElementById("preload-03").style.background = "url(http://domain.tld/image-03.png) no-repeat -9999px -9999px";  
+        }  
+    }  
+    function addLoadEvent(func) {  
+        var oldonload = window.onload;  
+        if (typeof window.onload != 'function') {  
+            window.onload = func;  
+        } else {  
+            window.onload = function() {  
+                if (oldonload) {  
+                    oldonload();  
+                }  
+                func();  
+            }  
+        }  
+    }  
+    addLoadEvent(preloader);
+    ```
+
+    ```js
+    // 使用Ajax实现预加载
+
+    // 利用DOM，不仅仅预加载图片，还会预加载CSS、JavaScript等相关的东西
+    // 使用Ajax，比直接使用JavaScript，优越之处在于JavaScript和CSS的加载不会影响到当前页面
+
+    window.onload = function() {  
+        setTimeout(function() {  
+            // XHR to request a JS and a CSS  
+            var xhr = new XMLHttpRequest();  
+            xhr.open('GET', 'http://domain.tld/preload.js');  
+            xhr.send('');  
+            xhr = new XMLHttpRequest();  
+            xhr.open('GET', 'http://domain.tld/preload.css');  
+            xhr.send('');  
+            // preload image  
+            new Image().src = "http://domain.tld/preload.png";  
+        }, 1000);  
+    };
+    ```
+
+- 京东优化（前端缓存和异步加载jd）
+
+    - jd.com已经将它们的页面结构放到了localstorage
+    - DOM lazyload
+    - 把需要请求的路径写在 dom 上
+    
+        （例如:data-tpl="elevator_tpl"）
+        ```html
+        <div class="J_f J_lazyload J_f_lift mod_lazyload need_ani chn" id="portal_8" data-backup="basic_8" data-source="cms:basic_8" data-tpl="portal_tpl">
+        ```
+        - 用户滚动时，一旦该模块进入了视窗，则请求 dom 上对应的 data-tpl 地址，拿到渲染这个模块所需要的脚本和数据，不过这中间还有一层本地缓存 localstorage
+        - 如果在本地缓存中匹配到了对应的 hash string 内容，则直接渲染，否则请求到数据之后更新本地缓存。
+        - localstorage中的 version 会在页面加载时候，与后端文件 hash相对比，hash不变直接取localstorage中的内容（当然也可以使用cookie判断版本）
+
+    - css静态文件
+
+        - 首页是没有css外链
+        - 页面切分为模块化加载，对应模块下的css交给js或jsonp请求返回
+    - js文件怎么加载
+
+        采用请求的方式减少了与服务器交互的时间
+        ```html
+        <script src="//misc.360buyimg.com/??/jdf/lib/jquery-1.6.4.js,/jdf/2.0.0/ui/ui/1.0.0/ui.js,/mtd/pc/index/gb/lib.min.js,/mtd/pc/base/1.0.0/base.js,/mtd/pc/common/js/o2_ua.js,/mtd/pc/index/home/index.min.js,/mtd/pc/index/home/init.min.js"></script>
+        ```
+
+    - 服务器
+
+        - 少量静态文件的域名，图片与iconfont均是放在同一个域下，减少DNS的解析事件，最好做到域名收敛
+        - 模块化接口的支持
+        - 首屏内容最好做到静态缓存
+
+
 ## 5. 代码
 #### 5.1. 通用的事件监听器
 ```js
