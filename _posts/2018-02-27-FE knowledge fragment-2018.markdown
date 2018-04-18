@@ -43,6 +43,71 @@ tags:
 * 简单，单行，不会复用的函数建议使箭头函数 
     复杂，行多，使用传统
 
+**应用于回调**
+* 闭包痛点
+
+    闭包的this默认绑定到 window 对象，但又常常需要访问嵌套函数的 this，所以常常在嵌套函数中使用 `var that = this`，然后在闭包中使用 that 替代 this，使用作用域查找的方法来找到嵌套函数的this值
+    ```js
+    var a = 0;
+    function foo(){
+        function test(){
+            console.log(this.a);
+        }
+        return test;
+    };
+    var obj = {
+        a : 2,
+        foo:foo
+    }
+    obj.foo()();//0
+    ```
+    ```js
+    var a = 0;
+    function foo(){
+        var that = this;
+        function test(){
+            console.log(that.a);
+        }
+        return test;
+    };
+    var obj = {
+        a : 2,
+        foo:foo
+    }
+    obj.foo()();//2
+    ```
+
+    箭头函数根据当前的词法作用域而不是根据this机制顺序来决定this，所以，箭头函数会继承外层函数调用的this绑定，而无论this绑定到什么
+
+    ```js
+    function foo() {  
+        setTimeout(function() {  
+            console.log('id:', this.id);  
+        }, 100);  
+    }  
+    var id = 21;  
+    foo.call({ id: 42 }); // 21
+
+    // 传统方法固定 this
+    function foo() {  
+        var that = this
+        setTimeout(function() {  
+            console.log('id:', that.id);  
+        }, 100);  
+    }  
+    var id = 21;  
+    foo.call({ id: 42 }); // 21
+
+    // 箭头函数
+    function foo() {  
+        setTimeout(() => {  
+            console.log('id:', this.id);  
+        }, 100);  
+    }  
+    var id = 21;  
+    foo.call({ id: 42 }); // 42
+    ```
+
 
 #### 1.2. promise
 > 解决异步回调多层嵌套的问题，使异步任务的处理方式变成线性
@@ -492,8 +557,21 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 * 如果应用时常要处理大量的动态数据集，并以相对简便和高性能的方式对大型数据表进行显示和变更，由于双向数据绑定需要监听每一个可变元素, 数据量变大就会带来显著的性能问题，React是相当不错的选择。但是React不像AngularJS那样包含完整的功能，举例来说，React没有负责数据展现的控制器
 
 **vue 与 angular**
-* AngularJS 使用双向绑定，Vue 在不同组件间强制使用单向数据流。这使应用中的数据流更加清晰易懂
+* 数据流
+    * AngularJS 使用双向绑定
+    * Vue 在不同组件间强制使用单向数据流。很好的处理了主模块中的数据没有被污染
+
+        - vue 组件间传递数据是单向的，即数据总是由父组件传递到子组件，子组件在其内部可以有自己维护的数据，但它无权修改父组件传递给它的数据
+        - 组件间更好的解耦
+
+            假如子组件可以修改父组件数据的话，一个子组件变化会引发所有依赖这个数据的子组件发生变化
+        
+    * 当你想要在子组件去修改 props 时，把这个子组件当成父组件那样用
+
+        - 定义一个局部变量，并用 prop 的值初始化它。
+        - 定义一个计算属性，处理 prop 的值并返回。
 * vue 运行时性能更好
+    - 很容易就可以进行优化，因为它不需要使用到脏查询 
     - 在 AngularJS 中，当 watcher 越来越多时会变得越来越慢
     
         因为作用域内的每一次变化，所有 watcher 都要重新计算。并且，如果一些 watcher 触发另一个更新，脏检查循环 (digest cycle) 可能要运行多次
@@ -539,9 +617,6 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 
     - React 配合 Redux 架构适合超大规模多人协作的复杂项目;
     - Vue 则适合小快灵的项目。对于需要对 DOM 进行很多自定义操作的项目，Vue 的灵活性优于 React；
-
-
-
 
 优化
 
@@ -642,6 +717,10 @@ Fielding将他对互联网软件的架构原则，定名为REST，即Representat
     ```
 
 #### 4.2. 闭包
+> 闭包的本质在于“闭”和“包”
+> * 即把一些变量封闭起来，使其它程序访问不到
+> * 同时把这个封闭的东西打成包甩出来，让大家可以直接用这个包（函数）
+
 **特点：**
 * 函数
 * 能访问另外一个函数作用域中的变量
@@ -672,13 +751,43 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 **闭包的运用**
 * 匿名自执行函数
 
-    有的函数只需要执行一次，其内部变量无需维护，执行后释放变量
+    有的函数只需要执行一次，其内部变量无需维护，执行后释放变量，可以保存闭包的状态
 * 实现封装/模块化代码
 
     变量作用域为函数内部，外部无法访问  
 * 实现面向对象中的对象
 
     这样不同的对象(类的实例)拥有独立的成员及状态，互不干涉
+
+匿名自执行函数保存闭包状态
+```js
+// 它的运行原理可能并不像你想的那样，因为`i`的值从来没有被锁定。
+// 相反的，每个链接，当被点击时（循环已经被很好的执行完毕），因此会弹出所有元素的总数，
+// 因为这是 `i` 此时的真实值。
+
+var elems = document.getElementsByTagName('a');
+for(var i = 0;i < elems.length; i++ ) {
+  elems[i].addEventListener('click',function(e){
+    e.preventDefault();
+    alert('I am link #' + i)
+    },false);
+}
+
+// 而像下面这样改写，便可以了，因为在IIFE里，`i`值被锁定在了`lockedInIndex`里。
+// 在循环结束执行时，尽管`i`值的数值是所有元素的总和，但每一次函数表达式被调用时，
+// IIFE 里的 `lockedInIndex` 值都是`i`传给它的值,所以当链接被点击时，正确的值被弹出。
+
+var elems = document.getElementsByTagName('a');
+for(var i = 0;i < elems.length;i++) {
+  (function(lockedInIndex){
+    elems[i].addEventListener('click',function(e){
+      e.preventDefault();
+      alert('I am link #' + lockedInIndex);
+      },false)
+  })(i);
+}
+```
+
 
 **优点：**
 * 可以让一个变量常驻内存 (如果用的多了就成了缺点
@@ -721,7 +830,9 @@ hideMenu = setTimeout(funcRef, 500);
 **事件冒泡：** `stopPropagation、stopImmediatePropagation、preventDefault`
 
 **订阅发布**
+
 优点：减少监听器数量，改善性能
+
 缺点：父容器的侦听器可能需要检查事件来选择正确的操作
 ##### 4.4.2. this
 > this 关键字在JavaScript中的一种常用方法是指代码当前上下文
