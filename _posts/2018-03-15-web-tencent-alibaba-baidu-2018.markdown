@@ -1198,12 +1198,14 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
             var objArr = []
 
             while (tar) {
-                if (tar.className) {
-                    objArr.push('.' + tar.className)
-                } else if (tar.id) {
-                    objArr.push('#' + tar.id)
-                } else {
-                    objArr.push(tar.nodeName.toLowerCase())
+                if (tar.id) { 
+                    objArr.push('#' + tar.id) 
+                    console.log('id')
+                    return objArr.reverse().join(' ')                // 考虑 id 的唯一性，如果有 id，则停止查找
+                }else if (tar.className) {
+                    objArr.push('.' + tar.className.split(' ')[0])   // 考虑如果有多个 class
+                }else {
+                    objArr.push(tar.nodeName.toLowerCase())          
                 }
                 tar = tar.parentNode
             }
@@ -1219,8 +1221,8 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
 </head>
 <body>
     <div id="page">
-        <div class="main">
-            <div class="reference">
+        <div class="main" id="main">
+            <div class="reference refer">
                 <ul>
                     <li></li>
                     <li></li>
@@ -1439,8 +1441,9 @@ var next = function (c) {
 
 参考：[浅谈使用React.setState需要注意的三点](http://www.jb51.net/article/130828.htm)
 
-## 百度
-1. 一面
+## 3. 百度
+**一面**
+
 jsonp cors
 
 css
@@ -1477,6 +1480,28 @@ vue
 
 数据结构
 * 有哪些线性存储空间（array 栈）
+
+**二面**
+
+> 面试官很和蔼，是唯一一个认真看了我博客的面试官，很荣幸，也很紧张
+
+* 如何做一个 css 选择器
+
+    见本文 阿里-在线编程
+* 链表操作
+    - 单向链表反转
+* 居中问题
+
+    没有详细问，我分了两个方面分别回答
+    - 水平居中
+    - 垂直水平
+
+    详细见 [CSS 居中](http://www.cnblogs.com/chaoran/p/7061932.html)
+* get & post
+
+    回答了大多数应聘者的 “标准答案”， 但经面试官指点，顿悟，大概这就叫高手吧
+
+
     
 
 #### 分栏布局
@@ -1912,6 +1937,39 @@ emitter.emit('event1', "message for you");
     - 替代浏览器原生的XMLHttpRequest异步请求
 
 来自[深入解析Javascript异步编程](https://www.cnblogs.com/nullcc/p/5841182.html)
+
+#### get & post 剖析
+##### 入门回答
+区别：
+* get
+    - 参数包含在 URL 中
+    - 大小有限制
+    - 使用Request.QueryString 获取变量的值
+    - 安全性差，直观显示
+
+* post
+    - 通过 request body 传递参数
+    - 通过 Request.Form 获取变量的值
+
+当我满心充满着自信和喜悦时，仿佛看到了面试官眉头一皱，So？
+
+#### “标准答案”
+aspect | GET | POST 
+- | :- | :-
+浏览器回退 | 无影响 | 回退会再次提交请求
+地址标记 | 产生的 URL 地址可以被 Bookmark | 提交地址不被标记
+cache | 该请求会被浏览器主动 cache | 该请求不会被缓存
+编码 | 只能进行url编码 | 支持多种编码方式
+参数保留 | 请求参数会被完整保留在浏览器历史记录里 | POST中的参数不会被保留
+长度限制 | 有（浏览器限制,IE-2083个字符) | 无（限制作用的是服务器的处理程序的处理能力）
+参数类型 | 只接受ASCII字符 | 没有限制
+参数传递 | 通过URL传递 | 放在Request body中
+
+#### 裸奔剖析
+
+[99%的人都理解错了HTTP中GET与POST的区别](http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml)
+
+
 #### 数据结构
 ![data-structor](/img/in-post/post-web-interview/data-stru.png)
 
