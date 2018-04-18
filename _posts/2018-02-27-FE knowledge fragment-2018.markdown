@@ -500,16 +500,51 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 
 **vue 与 react**
 * 使用 Virtual DOM
-* 提供了响应式 (Reactive) 和组件化 (Composable) 的视图组件。
-* 将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库。
+* 提供了响应式 (Reactive) 和组件化 (Composable) 的视图组件
+* 将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库
+
+不同
+* react 社区庞大
+* 开发模式：
+
+    - React 在 view 层侵入性还是要比 Vue 大很多的,React 严格上只针对 MVC 的 view 层
+    - Vue 则是 MVVM 模式的一种实现
+
+* 数据绑定：
+
+    - Vue有实现了双向数据绑定
+    - React数据流动是单向的
+* 数据渲染：
+
+    对于大规模数据渲染，React要比Vue更快，渲染机制启动时候要做的工作比较多；
+* 数据更新方面：
+
+    - React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树
+
+        - 需要在所有可能的地方使用 PureComponent，或是手动实现 shouldComponentUpdate 方法
+        - 需要保证该组件的整个子树的渲染输出都是由该组件的 props 所决定的。如果不符合这个情况，那么此类优化就会导致难以察觉的渲染结果不一致
+
+    - Vue 应用中，组件的依赖是在渲染过程中自动追踪的，所以系统能精确知晓哪个组件确实需要被重渲染
+        - 可以理解为每一个组件都已经自动获得了 shouldComponentUpdate，并且没有上述的子树问题限制。
+    - Vue 由于采用依赖追踪/数据劫持，默认就是优化状态：你动了多少数据，就触发多少更新，不多也不少。
+        
+        React在复杂的应用里有两个选择:
+        - 手动添加 shouldComponentUpdate 来避免不需要的 vdom re-render。  
+        - Components 尽可能都用 pureRenderMixin，然后采用 redux 结构 + Immutable.js；
+* 开发风格的偏好：
+
+    - React 推荐的做法是 JSX + inline style，也就是把 HTML 和 CSS 全都写进 JavaScript 了，即”all in js”
+    - Vue 进阶之后推荐的是使用 webpack + vue-loader 的单文件组件格式，即 html, css, js 写在同一个文件
+* 使用场景：
+
+    - React 配合 Redux 架构适合超大规模多人协作的复杂项目;
+    - Vue 则适合小快灵的项目。对于需要对 DOM 进行很多自定义操作的项目，Vue 的灵活性优于 React；
+
+
+
 
 优化
-* React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树
 
-    - 需要在所有可能的地方使用 PureComponent，或是手动实现 shouldComponentUpdate 方法
-    - 需要保证该组件的整个子树的渲染输出都是由该组件的 props 所决定的。如果不符合这个情况，那么此类优化就会导致难以察觉的渲染结果不一致
-* Vue 应用中，组件的依赖是在渲染过程中自动追踪的，所以系统能精确知晓哪个组件确实需要被重渲染
-    - 可以理解为每一个组件都已经自动获得了 shouldComponentUpdate，并且没有上述的子树问题限制。
 
 #### 3.6. 软件架构
 > 模式之间不同  主要是  M与V  的数据传递的流程不同
