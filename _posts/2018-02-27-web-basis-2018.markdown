@@ -319,16 +319,30 @@ JS将新对象的原型链指向了构造函数的原型对象，于是就在新
 因此，闭包可以形成一个独立的执行过程
 
 **应用场景**
-* 模拟块级作用域
+* 结合立即执行函数
+
+    点击每一个 li 的时候弹出其下标
+    ```html
+    <ul>
+        <li>index  00000</li>
+        <li>index  11111</li>
+        <li>index  22222</li>
+    </ul>
+    ```
     ```js
-    function outputNumbers(count){
-        (function(){
-            for(var i = 0; i < count; i++){
-            alert(i);
-            }
-        })();
-        alert(i); //导致一个错误！
-    }
+    <script type="text/javascript">
+        window.onload = function(){
+            var oLi = document.getElementsByTagName('ul')[0].children;
+            for (var i = 0; i < oLi.length; i++){
+                (function(index){
+                    oLi[index].onclick = function(){
+                        console.log(index);
+                    };
+                })(i);
+            }        
+        }
+    </script>
+    // 事件监听为全局异步函数
     ```
 * 创建私有变量
     ```js
@@ -354,6 +368,7 @@ JS将新对象的原型链指向了构造函数的原型对象，于是就在新
 #### 1.7. 单线程和异步
 JavaScript
 * 单线程语言，在浏览器中，当JS代码被加载时，浏览器会为其分配一个主线程来执行任务(函数)
+
     主线程会形成一个全局执行环境，执行环境在栈中采用后进先出(LIFO)的顺序来执行代码块，以保证所有的函数能按照正确的顺序被执行
 * 执行环境中维护了一个异步队列(也叫工作线程)，并将这些耗时任务放入队列中进行等待
     - 如ajax请求、定时器、事件等
@@ -380,6 +395,7 @@ JavaScript
 
 **status**
 - 1xx（临时响应）表示临时响应并需要请求者继续执行操作的状态码。
+- 2xx（成功）
     - 2xx（成功）表示成功处理了请求的状态码。
     - 200（成功）：服务器已成功处理了请求。通常，这表示服务器提供了请求的网页。
 - 3xx（重定向）要完成请求，需要进一步操作。
