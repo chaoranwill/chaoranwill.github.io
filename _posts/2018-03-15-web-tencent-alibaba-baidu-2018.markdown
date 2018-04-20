@@ -24,7 +24,7 @@ tags:
 * [Web basis summary](https://chaoranwill.github.io/2018/02/27/web-basis-2018/)
 * [FE knowledge fragment](https://chaoranwill.github.io/2018/02/27/FE-knowledge-fragment-2018/)
 
-每位面试官的面试时间基本都在 40-80 分钟
+每位面试官的面试时间基本都在 40-80 分钟，下面先简要介绍各个面试流程，问题详情见具体公司分类
 
 **腾讯内推&校招 offer got**
 
