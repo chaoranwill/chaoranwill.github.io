@@ -53,13 +53,13 @@ tags:
 * 新增作者
 
 ## 论文
-#### Embedding of Embedding (EOE) : Joint Embedding for Coupled Heterogeneous Networks
+#### 1. Embedding of Embedding (EOE) : Joint Embedding for Coupled Heterogeneous Networks
 1. 不同类型的相关信息可以融合在一起形成异构网络
 2. 网络间的边缘可以作为网络内部边缘的互补信息（使得潜在的特征更加全面和准确——冷启动问题）
 3. 使用一个联合嵌入矩阵将两个异构网络的潜在特征从一个空间变换到另一个空间
 
 
-#### Name Disambiguation in Anonymized Graphs using Network Embedding
+#### 2. Name Disambiguation in Anonymized Graphs using Network Embedding
 1. 以匿名图的形式利用关系数据
 2. 学习方法：将每个文档嵌入到低维向量空间，可通过凝聚层次聚类算法消岐
 3.利用 人-人、人-文、文-文、三个图（用唯一的伪随机标识符表示），将三个图中的累计特征结构编码，到一个网络嵌入模型，为每一个文档生成一个K维向量表示
@@ -67,7 +67,7 @@ tags:
 
 
 
-#### Modeling Mention, Context and Entity with Neural Networks for Entity Disambiguation
+#### 3. Modeling Mention, Context and Entity with Neural Networks for Entity Disambiguation
 **目标：**
 
 给定词：president obama  和文档：After campaigning on the promise of health care reform, President Obama 
@@ -111,9 +111,9 @@ input ： 提及向量+上下文向量
 **实体消岐**：计算上下文提及对每个候选实体间的相似度，选择最接近的
 损失函数思想：正确的实体输出评分>随机选择的候选实体评分
 
-#### Deep Neural Networks for Matching Online Social Networking Profiles
+#### 4. Deep Neural Networks for Matching Online Social Networking Profiles
 
-#### Author name disambiguation using a graph model with node splitting and merging based on bibliographic information
+#### 5. Author name disambiguation using a graph model with node splitting and merging based on bibliographic information
 
 * 基于图的姓名消岐方法
 
