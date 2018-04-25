@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "About name disambiguation"
-subtitle:   "Ideas and basic knowledge"
-date:       2018-04-27 19:55:00
+title:      "A Unified Probabilistic Framework for Name Disambiguation in Digital Library"
+subtitle:   "Ideas and process"
+date:       2018-04-27 22:00:00
 author:     "Chaoran"
 header-img: "img/post-bg-name-dis.jpg"
 noToc:      true
@@ -10,7 +10,7 @@ tags:
     - 论文阅读
 ---
 
-> “To be is to be perceived. ”
+> “To be a better girl ”
 
 * 目录
 {:toc #toc}
