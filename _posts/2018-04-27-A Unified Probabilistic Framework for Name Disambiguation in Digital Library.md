@@ -21,7 +21,7 @@ tags:
 综述——前人工作——建模——实验——结论——其他
 
 #### 1. 综述
-**Q：**
+**Question：**
 >致力于解决数字图书馆中检索过程中的重名消歧问题
 
 * prev
@@ -33,7 +33,7 @@ tags:
     * 两步模型参数估算算法
     * 动态准确的方法发现number K
 
-**Q:**
+**Question：**
 * 什么叫统一的概率框架？
 * 什么叫Number K
 
@@ -98,24 +98,30 @@ tags:
 
 --
 ![fk](/img/in-post/post-paper-aupnd/fk.png)
-* fl(yi, xi)
-
-    节点的特征函数
-* fk(yi, yj)
-
-    边的特征函数
-* \lambda \arfa
-
-    边特征函数和节点特征函数的权重
-* Z1   &  Z2
-
-    归一化因子
 * X
 
     发表集合 P
 * xi
 
     论文 pi 的向量 v(pi) 
+* fl(yi, xi)
+
+    - 节点的特征函数，捕捉 paper xi 的特征信息
+    - 如果该论文与一个簇中其他的论文都相似，则很有可能属于该簇
+
+* fk(yi, yj)
+
+    边的特征函数
+* K()
+
+    xi 和聚类中心的相似度
+* \lambda \arfa
+
+    边特征函数和节点特征函数的权重
+* Z1   &  Z2
+
+    归一化因子
+
 
 -消歧目标函数-
 ![fl](/img/in-post/post-paper-aupnd/fl.png)
@@ -132,9 +138,24 @@ tags:
 ![bys](/img/in-post/post-paper-aupnd/bys.png)
 ![bic](/img/in-post/post-paper-aupnd/bic.png)
 
+##### 参数估计
+![parameter](/img/in-post/post-paper-aupnd/parameter.png)
 
 
+#### 4. 实验
+![res1](/img/in-post/post-paper-aupnd/res1.png)
+![res2](/img/in-post/post-paper-aupnd/res2.png)
+![res3](/img/in-post/post-paper-aupnd/res3.png)
 
 
+#### 5. 结论
+> 该论文主要是为了解决重名消歧问题。
 
+* 作者综合考虑到了文章的内容（node属性）和文章之间的关系的类型。
+* 在隐马尔可夫模型的基础上，基于上述的特征属性进行消歧。
+* 该文章的创新之处还在于发明了一个参数估计的二步法
+* 以及一个动态发现K的算法
 
+**future work**
+* time
+* topic
