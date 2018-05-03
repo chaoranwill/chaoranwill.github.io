@@ -103,5 +103,7 @@ Influence
 
 
 ## 3. Group and Structure [slides]
-Group Lyfecyle
-Structural Hole in Diffusion
+* Group Lyfecyle
+* Structural Hole in Diffusion
+
+[Computational Models for Social Network Analysis](http://keg.cs.tsinghua.edu.cn/jietang/www17tutorial-sna.html)
