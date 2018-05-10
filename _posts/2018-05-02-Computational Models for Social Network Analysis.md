@@ -73,7 +73,7 @@ two ways
 **solutions**
 * exponential-linear functions
 * Log-Likelihood of labeled Data
-![Log-Likelihood](/img/in-post/post-paper-cm-sna/Log-Likelihood.png)
+![Log-Likelihood](/img/in-post/post-paper-cm-sna/log-likelihood.png)
 
 **challenge**
 * 更有效的训练数据
@@ -90,7 +90,7 @@ two ways
 ![Transfer Factor Graph Model](/img/in-post/post-paper-cm-sna/graph-model.png)
 
 
-####2.3. Peer Influence
+#### 2.3. Peer Influence
 * Formulation: Topic-based Social Influence Analysis
     - The Solution: Topical Affinity Propagation
 ![Transfer Factor Graph Model](/img/in-post/post-paper-cm-sna/tfgm.png)
@@ -102,7 +102,7 @@ Influence
 * Individual influence
 
 
-## 3. Group and Structure [slides]
+## 3. Group and Structure
 * Group Lyfecyle
 * Structural Hole in Diffusion
 
