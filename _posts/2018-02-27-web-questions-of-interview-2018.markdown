@@ -1805,9 +1805,93 @@ for (var i = 0; i < 5; i++) {
 解决方案：IIFE
 
 
+#### 3.23. JavaScript 防篡改对象
+> 防篡改对象有三个级别，分别是不可拓展对象、密封对象和冻结对象
+
+* 默认
+    - 所有对象可扩展--无论什么时候都可以向对象中添加属性和方法
+
+* 一级保护 —— 不可拓展对象
+    * Object.preventExtensions()
+        - 不能向对象中新添加属性和方法
+
+        ```js
+        var obj = {
+            name: "Tom"
+        }
+        Object.preventExtensions(obj); //阻止篡改对象
+        obj.age = 21;
+        console.log(obj.age); //undefined
+        
+        
+        //修改原有的属性
+        obj.name = "Bob";
+        console.log(obj.name); //Bob
+        ```
+    * Object.isExtensible() —— 鉴定对象是否为可篡改
+    ```js
+    var obj = {
+        name: "Tom"
+    }
+    
+    console.log(Object.isExtensible(obj)); //true
+    
+    Object.preventExtensions(obj); //阻止篡改对象
+    console.log(Object.isExtensible(obj)); //false
+    ```
+
+* 二级保护 —— 密封对象
+    - Object.seal()
+        - 不可扩展➕对象的属性和方法不能通过delete操作符删除
+
+    ```js
+    var obj = {
+        name: "Tom"
+    }
+    
+    //密封对象
+    Object.seal(obj);
+    
+    obj.age = 21;
+    console.log(obj.age); //undefined 不能新添加属性
+    
+    delete obj.name;
+    console.log(obj.name); //Tom 不能删除对象的属性
+    ```
+
+    - Object.isSealed()
+        - 鉴定对象是否是密封对象
+
+* 三级保护 —— 冻结对象
+    - Object.freeze()
+        - 不可扩展的+密封+属性值也不能修改
+
+    ```js
+    var obj = {
+        name: "Tom"
+    }
+    
+    Object.freeze(obj); //冻结对象
+    
+    obj.age = 21;
+    console.log(obj.age); //undefined 不可扩展
+    
+    delete obj.name;
+    console.log(obj.name); //Tom 不可删除
+    
+    obj.name = "Bob";
+    console.log(obj.name); //Tom 不可修改
+    ```
+    - Object.isFrozen()
+
+* 进阶保护
+    - freeze 如果属性是一个对象值的, 那么这个属性还是可以被修改的, 除非再次让这个属性为 freeze
+    - Object.defineProperty 分别设置其 configurable 和 writable 为 false.
 
 
-
+[JavaScript之防篡改对象（高级技巧）](https://blog.csdn.net/h15882065951/article/details/72229056)
+[让 JavaScript 对象完全只读不可以被修改](https://www.douban.com/note/602809588/)
+[深入理解javascript之防篡改对象](https://www.2cto.com/kf/201508/428682.html)
 
 ## 4. 其他
 [页面加载全解](https://www.cnblogs.com/jingwhale/p/4714082.html?utm_source=tuicool&utm_medium=referral)
@@ -2222,6 +2306,8 @@ UDP适用于一次只传送少量数据、对可靠性要求不高的应用环�
 
 
 **HTTP2.0的新特性**
+> 预先加载，合并请求，缩小数据，提升性能
+
 * 新的二进制格式（Binary Format）
     - HTTP1.x的解析是基于文本。基于文本协议的格式解析存在天然缺陷，文本的表现形式有多样性，要做到健壮性考虑的场景必然很多
     - 二进制则不同，只认0和1的组合。基于这种考虑HTTP2.0的协议解析决定采用二进制格式，实现方便且健壮。
@@ -2236,9 +2322,34 @@ UDP适用于一次只传送少量数据、对可靠性要求不高的应用环�
     HTTP1.x的header带有大量信息，而且每次都要重复发送，HTTP2.0使用encoder来减少需要传输的header大小，通讯双方各自cache一份header fields表，既避免了重复header的传输，又减小了需要传输的大小。
 * 服务端推送（server push）
 
+> 产生背景：
+
+HTTP 1.1时代，每个TCP连接一次只能下载一个资源，比如浏览器发送一个请求获取index.html的数据，服务端收到后只会返回index.html，随后浏览器会解析index.html，如果里面含有 `<link rel="stylesheet"href="xxx.css">或<scriptsrc="app.js"></script>` ，则会再次向服务器发送请求，获取xxx.css和app.js的数据。 这一过程会产生 三个性能问题：
+如果index.html里含有多个js和css文件，请求数则随之增加，从而导致在TCP往返连接所耗费的时间增多。
+每次发送的请求，HTTP头部信息基本是一样的，从而导致一定的头部信息冗余，耗费了不必要的流量。
+index.html与内部的资源文件之间会产生了一个延时，而非同步获取。
+
+![http2](/img/in-post/post-web-nowcoder/http2.0.png)
+* 因为是同一个请求，因此 HTTP头信息 只需要有一个就足够，下图可看出，HTTP/2中一个请求头中允许有多个方法，既可以GET，也可以PUT，在切换到下一个方法时，只需要获取数据即可，而不用再次获取头信息
+* HTTP/2 新加入了 PUSH 方法，该方法的主要作用就是让服务器试探性的去推送信息给客户端，如问题3 中所述情况，当请求index.html时，服务器在返回index.html的同时，会主动把xxx.css和app.js一同发送给浏览器。这样当浏览器解析DOM，准备发送请求获取xxx.css和app.js的时候，也许两个资源已经下载完了，只需要从缓存中获取即可。这样就大大减少了网络请求的时间。
+
+**对前端的影响**
+* 减少HTTP请求不一定提升性能
+    - 使用HTTP/2后，合并为一个大文件的加载时间反而会比不合并更长
+* 压缩仍然需要
+* 如何使用 HTTP/2
+    - 如何使用 HTTP/2
+    
+    虽然目前规范中并没有达成一致意见来决定HTTP/2 是否需要加密（ Encryption ），但目前主流的实施方案都是需要加密的（如SSL/TLS），因此，如同 HTTPS，HTTP/2 同样需要创建公私密钥，来搭建站点
+    - 搭建服务
+
+![http2-support](/img/in-post/post-web-nowcoder/http2-support.png)
+
+
 更多了解：
 * [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
 * [HTTP,HTTP2.0,SPDY,HTTPS你应该知道的一些事](http://web.jobbole.com/87695/)
+* [谈谈HTTP/2对前端的影响](https://mp.weixin.qq.com/s/aFGMPhL3PpjGS4ZKtypeSQ)
 
 #### 4.12. 页面加载优化
 * 懒加载（延迟加载）
@@ -2357,7 +2468,42 @@ UDP适用于一次只传送少量数据、对可靠性要求不高的应用环�
 * [详解HTTP缓存](https://www.cnblogs.com/isLiu/p/8335235.html)
 * [彻底弄懂HTTP缓存机制及原理](https://www.cnblogs.com/chenqf/p/6386163.html)
 
+#### 4.14. 前端存储方式
+* cookie
+    - 随请求发送，只能字符串， 大小< 4k，一个浏览器下的个数< 20 , 主domain 污染
+* localstorage
+    - 键值对方式存储，数据为字符串格式，如需存储对象需要JSON.stringfy()，永不失效，手动删除，同域共享，本页操作时会触发其他页面的storage事件，受同源策略限制
 
+    
+* sessionStorage
+    - 相同：在本地（浏览器端）存储数据
+    - 不同：
+        - localStorage、sessionStorage
+
+        - localStorage只要在相同的协议、相同的主机名、相同的端口下，就能读取/修改到同一份localStorage数据。
+
+        - sessionStorage比localStorage更严苛一点，除了协议、主机名、端口外，还要求在同一窗口（也就是浏览器的标签页）下。
+
+        - localStorage是永久存储，除非手动删除。
+
+        - sessionStorage当会话结束（当前页面关闭的时候，自动销毁）
+
+        - cookie的数据会在每一次发送http请求的时候，同时发送给服务器而localStorage、sessionStorage不会
+
+* web SQL database--（关系型）
+* indexedDB
+    - 对象仓库 objectStore， 可存放多种类型的数据
+    - 可以使用每条记录中的某个指定字段作为键值（keyPath），也可以使用自动生成的递增数字作为键值（keyGenerator），也可以不指定。选择键的类型不同，objectStore可以存储的数据结构也有差异
+
+* 离线缓存（application cache）
+    - manifest
+    - 离线缓存与传统浏览器缓存区别：
+        - 离线缓存是针对整个应用，浏览器缓存是单个文件
+        - 离线缓存断网了还是可以打开页面，浏览器缓存不行
+        - 离线缓存可以主动通知浏览器更新资源
+
+[关于前端存储](https://www.cnblogs.com/youngGao/p/8127321.html)
+[前端HTML5几种存储方式的总结](https://www.cnblogs.com/LuckyWinty/p/5699117.html)
 ## 5. 代码
 #### 5.1. 通用的事件监听器
 ```js
