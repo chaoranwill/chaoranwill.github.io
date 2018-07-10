@@ -2,13 +2,14 @@
 layout:     post
 title:      "mpvue study"
 subtitle:   "basic knowledge"
-date:       2018-05-17 22:00:00
+date:       2018-07-09 22:00:00
 author:     "Chaoran"
 header-img: "img/post-bg-php-basic.jpg"
 noToc:      true
 tags:
     - 前端开发
     - 小程序
+    - mpvue
 ---
 
 > “To be a better girl ”
