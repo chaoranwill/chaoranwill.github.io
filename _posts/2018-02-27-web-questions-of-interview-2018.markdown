@@ -1888,10 +1888,27 @@ for (var i = 0; i < 5; i++) {
     - freeze 如果属性是一个对象值的, 那么这个属性还是可以被修改的, 除非再次让这个属性为 freeze
     - Object.defineProperty 分别设置其 configurable 和 writable 为 false.
 
+**参考**
+* [JavaScript之防篡改对象（高级技巧）](https://blog.csdn.net/h15882065951/article/details/72229056)
+* [让 JavaScript 对象完全只读不可以被修改](https://www.douban.com/note/602809588/)
+* [深入理解javascript之防篡改对象](https://www.2cto.com/kf/201508/428682.html)
 
-[JavaScript之防篡改对象（高级技巧）](https://blog.csdn.net/h15882065951/article/details/72229056)
-[让 JavaScript 对象完全只读不可以被修改](https://www.douban.com/note/602809588/)
-[深入理解javascript之防篡改对象](https://www.2cto.com/kf/201508/428682.html)
+#### 3.24. 前端编码
+* `escape()`
+    - 不能直接用于URL编码，它的真正作用是返回一个字符的Unicode编码值
+    - 比如"春节"的返回结果是%u6625%u8282，，escape()不对"+"编码 主要用于汉字编码，现在已经不提倡使用。
+
+* `encodeURI()`
+    - 是Javascript中真正用来对URL编码的函数。 编码整个url地址，但对特殊含义的符号 `; / ? : @ & = + $ , #` ，也不进行编码
+    - 对应的解码函数是：decodeURI()。
+
+* `encodeURIComponent()`
+    - 能编码 `; / ? : @ & = + $ , #` 这些特殊字符
+    - 对应的解码函数是 decodeURIComponent()。
+
+假如要传递带&符号的网址，所以用encodeURIComponent()
+
+
 
 ## 4. 其他
 [页面加载全解](https://www.cnblogs.com/jingwhale/p/4714082.html?utm_source=tuicool&utm_medium=referral)
