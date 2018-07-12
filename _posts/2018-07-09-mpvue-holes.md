@@ -30,7 +30,12 @@ tags:
     - 字符串运算 （+连接等）
 
 * 过滤器
-* template 中使用methods 中的函数
+* template 中使用 methods 中的函数
+* vuex mapState、mapGetters
+  - vuex辅助函数mapState、mapGetters不可用
+  - `Vue.prototype.$store = store`
+    子组件可通过 `this.$store` 使用
+
 
 ## 2. 规范
 #### 2.1. 变量绑定
