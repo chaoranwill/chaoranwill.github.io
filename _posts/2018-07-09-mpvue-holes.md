@@ -76,7 +76,7 @@ tags:
 * class
 * style
 
-#### 3.2. 小程序组件
+#### 3.2. 小程序组件使用
 * 原生组件的事件绑定需用vue语法
 
 ## 4.0. 参数获取
@@ -87,7 +87,7 @@ tags:
 * app onLaunch/onShow 的参数
   - `this.$root.$mp.appOptions`
 
-## 5. 小程序 & mpvue 项目踩坑记
+## 5. 小程序踩坑记
 #### 5.1. 组件
 `input, map, canvas, video, live-player,camera , textarea` 是由客户端创建的原生组件，层级最高，z-index 没用
 而其它组件都是基于Web Component规范实现的Custom Element，而诸如picker弹出选择器行为，navigator跳转行为，都是基于微信原生提供的能力，理解为调用wx.xxxApi
@@ -134,19 +134,83 @@ mpvue 组件名大写会提示，统一小写，警告信息如下：
       
     - 使用 image 组件，去掉背景图（可以使用相对路径）
 
-#### 5.5. wx.request post 方法参数传输失败
+#### 5.5. wx.request post 方法失败
 
-`wx.request` post 的 `content-type` 默认为 `application/json`
-如果服务器没有用到 json 解析，可以更改 `content-type` 为 `urlencoded`
-```js
-wx.request({
-  ...
-  method: 'post',
-  header: {
-    'content-type': 'application/x-www-form-urlencoded'
-  },
-  ...
-})
-```
+* `wx.request` post 方法参数传输失败
+
+  `wx.request` post 的 `content-type` 默认为 `application/json`
+  如果服务器没有用到 json 解析，可以更改 `content-type` 为 `urlencoded`
+  ```js
+  wx.request({
+    ...
+    method: 'post',
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    ...
+  })
+  ```
+
+#### 5.6. 录音管理相关
+##### 5.6.1 onPause
+> 录音暂停事件
+
+监听情况：
+* pause 事件--手动
+
+不能监听：
+* 自然播放结束
+* stop 事件--手动
+
+#### 5.6.2. 小程序实现语音流式识别
+见博文-目前未更新： [mp - Voice stream processing](https://chaoranwill.github.io/2018/07/06/mp-Audio-stream-processing/)
+
+#### 5.7. 开发工具相关
+##### 5.7.1. 调试与非调试模式
+
+假如工具内开启不校验域名选项
+此时，调试模式下，可以不校验域名问题；http或者不合规范的请求地址将被允许，比如带有端口的地址（正常情况下url是不允许带端口的）
+
+![uncheck](/img/in-post/post-mp-vue-holes/uncheck.jpg)
+
+主要用途：
+* 使用本地服务
+* 使用未配置的域名
+* 使用非 https 域名
+* 在域名不合规范时，使用必须appid才可以使用的部分调试
+
+##### 5.7.1. 真机预览问题
+* 调试模式下可用，而非调试模式下不可用的情况：
+  - 检查下是否没有配置好合法域名
+  - 假如配置好了域名，**排查https**问题
+
+* `request fail` 问题排查
+  - 后台域名没有配置配置完毕请点击刷新按钮
+  - 重启开发者工具，检查配置信息是否更新
+  - 域名没有备案或或是备案后不足24小时；备案未生效
+    ![域名](/img/in-post/post-mp-vue-holes/yuming.png)
+
+  - ssl 协议有问题
+    ![ssl](/img/in-post/post-mp-vue-holes/ssl.png)
+
+* 同时测试ios和安卓，假如有一方可以，一方不行，则是证书问题，请选用受认可的证书
+
+其他可参考：[https 解决方案](http://www.wxapp-union.com/forum.php?mod=viewthread&tid=648&highlight=https)
+
+#### 5.8. 视频相关
+--待续
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
