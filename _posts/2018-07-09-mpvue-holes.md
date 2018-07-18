@@ -201,7 +201,10 @@ mpvue 组件名大写会提示，统一小写，警告信息如下：
 见博文-目前未更新： [mp - Voice stream processing](https://chaoranwill.github.io/2018/07/06/mp-Audio-stream-processing/)
 
 #### 7. 视频相关
---待续
+![scroll-view](/img/in-post/post-mp-vue-holes/scroll-view.png)
+
+如果需要实现视频列表点击播放，建议新建页面播放
+
 
 #### 8. 地图相关
 地图上覆盖层——可实现
@@ -215,6 +218,15 @@ mpvue 组件名大写会提示，统一小写，警告信息如下：
 * 不支持 touchmove，touchend
 * 不会冒泡到 map组件
 
+#### 9. 嵌套 h5
+**支持**
+* 小程序的跳转、导航、重定向、获取环境信息
+* 触发小程序页面事件——后退、销毁、分享时响应
+* 图像、音频等接口
+
+**限制：**
+* 默认铺满整个页面，不能嵌套在其他组件中
+* 不支持除JSSDK接口之外的通信
 
 
 ## 工具相关
