@@ -35,9 +35,10 @@ class       //类
 ##### ---数据类型
 ###### -- 类型介绍
 ES5:
-`String、Number、Boolean、Null、Undefined、Object`
+`String、Number、Boolean、Null、Undefined、Object、Array`
 ES6增:
 `Symbol`
+
 **其中，object为引用，其他为基本类型**
 * 基本类型
 
@@ -129,7 +130,7 @@ var expression = function (a,b){
 
 
 
-更多了解：[](https://www.2cto.com/kf/201705/636871.html)
+更多了解：[javascript中函数声明、函数表达式以及匿名函数和自执行函数](https://www.2cto.com/kf/201705/636871.html)
 
 ##### ---内置对象
 * window
@@ -785,6 +786,11 @@ cookie作用是与服务器交互，作为HTTP规范的一部分，web storage�
 
 #### 3.7. 浏览器缓存机制
 > 浏览器缓存机制是指通过 HTTP 协议头里的 Cache-Control (或 Expires) 和 Last-Modified (或 Etag) 等字段来控制文件缓存的机制。
+
+强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：
+
+![缓存](/img/in-post/post-web-basic/缓存.jpg)
+
 
 * Cache-Control 
     - 用于控制文件在本地缓存有效时长

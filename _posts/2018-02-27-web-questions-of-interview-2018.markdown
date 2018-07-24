@@ -955,6 +955,7 @@ vmax | 1% 视口（浏览器可视区域）的宽度和高度中较大的尺寸
 * 协议标识符是ws（如果加密，则为wss），服务器网址就是 URL。
 
 **webSocket.readyState**
+
 readyState属性返回实例对象的当前状态，共有四种:
 * CONNECTING：值为0，表示正在连接。
 * OPEN：值为1，表示连接成功，可以通信了。
@@ -1015,6 +1016,20 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。它�
 {"age":"12", "name":"back"}
 ```
 
+* JSON很像XML
+
+    - 他们都“自我描述”，这意味着值都是可列举的，是“人类可读”的 都是有层级的。(例如你可以在值里再存放值) 
+    - 都能被多种的编程语言解析和使用 
+    - 都能使用AJAX方法来传递(例如httpWebRequest) 
+
+* JSON跟XML不一样
+
+    - XML里在元素的开始和结尾处有尖括号和标签名：JSON使用花括号，而且只在数据的开始和结束时使用。 
+    - JSON更简练，毫无疑问更适合人类书写，也许也能让我们更快速的阅读。 
+    - JSON可以在JavaScript里简单的传递到eval()方法里使用 
+    - JSON里有数组{每个元素没有自己的名称} 
+    - 在XML里你可以对一个元素使用任意想要的名称，在JSON里你不能使用Javascript里的保留字 
+
 #### 3.7. js延迟加载
 方法：
 1. defer和async
@@ -1022,7 +1037,7 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。它�
     * async
         加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步），不考虑依赖关系
     * **defer**--常用
-        `<script async src="script.js"></script>`
+        `<script defer src="script.js"></script>`
         加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在**所有元素解析完成**之后，DOMContentLoaded 事件触发之前完成。
         **按照加载顺序执行脚本**
 2. 动态创建DOM方式（创建script，插入到DOM中，加载完毕后callBack）
@@ -1059,8 +1074,10 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。它�
 
 垃圾回收器定期扫描对象，并计算引用了每个对象的其他对象的数量。如果一个对象的引用数量为 0（没有其他对象引用过该对象），或对该对象的惟一引用是循环的，那么该对象的内存即可回收。
 
-js 常用的垃圾回收策略时标记清除
-IE7-8 的 DOM 的回收方式时引用计数
+js 常用的垃圾回收策略是标记清除
+* 内存中的所有变量都加上标记（当然，可以使用任何标记方式）。然后，它会去掉环境中的变量以及被环境中的变量引用的变量的标记。而在此之后再被加上标记的变量将被视为准备删除的变量
+
+IE7-8 的 DOM 的回收方式是引用计数
 所以，在 ie 中有dom 的循环引用会导致内存泄漏，ie9 已修复
 ```js
 window.onload=function outerFunction(){
@@ -1145,6 +1162,7 @@ window.onload=function outerFunction(){
 > 在Node中，除了代码，一切都是并行的！
 
 特点：单线程、异步I/O、事件驱动
+
 事件驱动：
 * 通过事件或状态的变化来进行应用程序的流程控制
 * 当执行过程中遇到I/O阻塞(读取文件、查询数据库、请求套接字、访问远程服务等)时，事件循环线程不会停下等待结果,转而继续执行队列中的下一个任务,不会在事件循环线程中执行
@@ -1929,6 +1947,16 @@ for (var i = 0; i < 5; i++) {
 * [深入理解javascript之防篡改对象](https://www.2cto.com/kf/201508/428682.html)
 
 #### 3.24. 前端编码
+#### --转义场景
+* 使用URL
+    - 标准URL只能使用英文、数字、某些部分标点符号，包含汉字的URL是无法直接使用的
+    - 假如我们请求了上述包含汉字的地址，浏览器会帮我们做些转义工作。然而，不同浏览器在不同的操作系统，不同的网页编码，不同的请求方式下，使用的编码方式大相径庭，我们必须赶在浏览器之前对URL进行统一编码
+* 表单提交或本地数据存储
+    - 永远不要相信用户输入的内容。为了防止XSS攻击，我们需要对用户提交的表单进行HTML标签转义处理
+* 使用JavaScript渲染页面
+    - 页面上的一些功能经常会异步渲染，当用户点击时，才会通过Ajax异步获取数据，然后经JavaScript解析后渲染成HTML片段，最后拼接在页面上。假如返回的数据内容不可控，则需要尽可能的转义以保证渲染正确。
+
+#### --编码函数
 * `escape()`
     - 不能直接用于URL编码，它的真正作用是返回一个字符的Unicode编码值
     - 比如"春节"的返回结果是%u6625%u8282，，escape()不对"+"编码 主要用于汉字编码，现在已经不提倡使用。
@@ -1943,7 +1971,18 @@ for (var i = 0; i < 5; i++) {
 
 假如要传递带&符号的网址，所以用encodeURIComponent()
 
+#### 3.25. JS 设计模式
+##### 发布订阅模式
 
+#### 3.26. 状态码
+
+* 301 永久重定向 & 302
+    - 从搜索引擎优化角度出发，301重定向是网址重定向最为可行的一种办法。当网站的域名发生变更后，搜索引擎只对新网址进行索引，同时又会把旧地址下原有的外部链接如数转移到新地址下，从而不会让网站的排名因为网址变更而收到丝毫影响。同样，在使用301永久性重定向命令让多个域名指向网站主域时，亦不会对网站的排名产生任何负面影响。
+    - 302重定向可影响搜索引擎优化效果
+    - 迄今为止，能够对302重定向具备优异处理能力的只有Google。也就是说，在网站使用302重定向命令将其它域名指向主域时，只有Google会把其它域名的链接成绩计入主域，而其它搜索引擎只会把链接成绩向多个域名分摊，从而削弱主站的链接总量。既然作为网站排名关键因素之一的外链数量受到了影响，网站排名降低也是很自然的事情了。
+    - 综上所述，在众多重定向技术中，301永久性重定向是最为安全的一种途径，也是极为理想的一款解决方案。
+
+[面试必考之http状态码有哪些](http://hpoenixf.com/%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E4%B9%8Bhttp%E7%8A%B6%E6%80%81%E7%A0%81%E6%9C%89%E5%93%AA%E4%BA%9B.html)
 
 ## 4. 其他
 [页面加载全解](https://www.cnblogs.com/jingwhale/p/4714082.html?utm_source=tuicool&utm_medium=referral)
@@ -1973,7 +2012,7 @@ for (var i = 0; i < 5; i++) {
 2. 向服务器发送大量数据（POST 没有数据量限制）
 3. 发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
 
-**为什么get比post更快 **
+**为什么get比post更快**
 * post请求包含更多的请求头 
     
     因为post需要在请求的body部分包含数据，所以会多了几个数据描述部分的首部字段（如：content-type）,这其实是微乎其微的。
@@ -1999,6 +2038,7 @@ for (var i = 0; i < 5; i++) {
 
 更多：[学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
 [http GET 和 POST 请求的优缺点和误区 --前端优化](https://blog.csdn.net/zzk220106/article/details/78595108/)
+[99%的人都理解错了HTTP中GET与POST的区别](http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml)
 
 #### 4.2. 页面从输入 URL 到页面加载过程
 分为4个步骤：
@@ -2595,6 +2635,132 @@ index.html与内部的资源文件之间会产生了一个延时，而非同步�
 
 [大公司里怎样开发和部署前端代码](https://github.com/fouber/blog/issues/6)
 
+#### 4.15. 前端防抖与节流
+> 假设网站有个搜索框, 用户输入文本我们会自动联想匹配出一些结果供用户选择,我们可能首先想到的做法就是监听keypress事件, 然后异步查询结果. 但是如果用户快速的输入了一串字符, 假设是10个字符, 那么就会在瞬间触发10次请求 —— 想要的是用户停止输入的时候才去触发查询的请求
+
+##### 函数防抖
+> 通过限制需要经过的时间，直到再次调用函数
+
+让某个函数在上一次执行后, 满足等待某个时间内不再触发此函数后再执行, 而在这个等待时间内再次触发此函数, 等待时间会重新计算.
+
+* 原生实现
+
+    ```js
+    // debounce函数用来包裹我们的事件
+    function debounce(fn, delay) {
+    // 持久化一个定时器 timer
+    let timer = null;
+    // 闭包函数可以访问 timer
+    return function() {
+        // 通过 'this' 和 'arguments'
+        // 获得函数的作用域和参数
+        let context = this;
+        let args = arguments;
+        // 如果事件被触发，清除 timer 并重新开始计时
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+        fn.apply(context, args);
+        }, delay);
+    }
+    }
+    ```
+
+    ```js
+    // 使用
+    // 当用户滚动时函数会被调用
+    function foo() {
+    console.log('You are scrolling!');
+    }
+    
+    // 在事件触发的两秒后，我们包裹在debounce中的函数才会被触发
+    let elem = document.getElementById('container');
+    elem.addEventListener('scroll', debounce(foo, 2000));
+    ```
+
+
+* underscore.js的函数防抖定义: `_.debounce(fn, wait, [immediate]);`
+
+    ```js
+    debounce接收三个参数:
+    @params fn: 需要进行函数防抖的函数;
+    @params wait: 需要等待的时间, 单位为毫秒;
+    @params immediate: 如果为true, 则debounce会在调用时立刻执行一次fn,
+                    而不需要等到wait结束后.
+
+    _.debounce = function(fn, wait, immediate) {
+        var timeout,
+            args,
+            context,
+            timestamp,
+            result;
+
+        var later = function() {
+            var last = _.now() - timestamp;
+
+            if(last < wait && last >= 0) {
+                timeout = setTimeout(later, wait - last);
+            } else {
+                timeout = null;
+                if(!immediate) {
+                    result = fn.apply(context, args);
+
+                    if(!timeout) {
+                        context = args = null;
+                    }
+                }
+            }
+        };
+
+        return function() {
+            context = this;
+            args = arguments;
+            timestamp = _.now();
+            var callNow = immediate && !timeout;
+
+            if(!timeout) {
+                timeout = setTimeout(later, wait);
+            }
+
+            if(callNow) {
+                result = fn.apply(context, args);
+                context = args = null;
+            }
+
+            return result;
+        }
+    };
+
+    // demo:
+    $('#input').keypress(_.debounce(function() {
+        //异步调用查询
+    }, 300));
+    ```
+
+##### 函数节流
+> 是另一个类似函数防抖的技巧，除了使用等待一段时间再调用函数的方法，函数节流还限制固定时间内只能调用一次。所以一个事件如果在100毫秒内发生10次，函数节流会每2秒调用一次函数，而不是100毫秒内全部调用。
+
+* `_.throttle`
+* `requestAnimationFrame（rAF）`
+    - 优点
+        - 动画保持 60fps（每一帧 16 ms），浏览器内部决定渲染的最佳时机
+        - 简洁标准的 API，后期维护成本低
+    - 缺点
+        - 动画的开始/取消需要开发者自己控制，不像 ‘.debounce’ 或 ‘.throttle’由函数内部处理。
+        - 浏览器标签未激活时，一切都不会执行。
+        - 尽管所有的现代浏览器都支持 rAF，IE9，Opera Mini 和 老的 Android 还是需要打补丁。
+        - Node.js 不支持，无法在服务器端用于文件系统事件。
+
+* 如果 JavaScript 方法需要绘制或者直接改变属性，我会选择 requestAnimationFrame，只要涉及到重新计算元素位置，就可以使用它。
+
+* 涉及到 AJAX 请求，添加/移除 class （可以触发 CSS 动画），我会选择 _.debounce 或者 _.throttle ，可以设置更低的执行频率（例子中的200ms 换成16ms）
+
+**总结**
+* debounce：把触发非常频繁的事件（比如按键）合并成一次执行。
+* throttle：保证每 X 毫秒恒定的执行次数，比如每200ms检查下滚动位置，并触发 CSS 动画。
+* requestAnimationFrame：可替代 throttle ，函数需要重新计算和渲染屏幕上的元素时，想保证动画或变化的平滑性，可以用它。注意：IE9 不支持
+
+
+
 ## 5. 代码
 #### 5.1. 通用的事件监听器
 ```js
@@ -2676,6 +2842,7 @@ markyun.Event = {
     }
 };
 ```
+
 
 #### 5.2. 实现事件模型（发布-订阅）
 **【实现事件模型】**
@@ -2813,7 +2980,7 @@ function getQueryObject(url) {
 建一个空对象和空数组，循环遍历需要去重的数组，判断对象有没有此属性，没有的话就给对象添加此属性，并向空数组中push这个值。
 ```js
 //es5
-functionunique(arr){
+function unique(arr){
     var obj = {}
     var result = []
     for(var i in arr){
