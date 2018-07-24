@@ -15,7 +15,7 @@ tags:
 
 * 目录
 {:toc #toc}
-## 小程序语音流
+#### 1. 小程序语音流获取
 **小程序录音处理 api**
 
 使用 `wx.getRecorderManager()` ，获取全剧唯一的录音管理器`recorderManager`，可以对录音设备做操作
@@ -40,9 +40,44 @@ tags:
     利用这个回调函数，微信小程序可以使用帧大小间隔，发送请求，实现流式识别
     - 返回格式 —— ArrayBuffer
 
+#### 2. base64 转码
 *小程序不支持Blob，发送请求无法兼带ArrayBuffer与其他类型的字段，需要将语音片段转换成base64*
 
 * [wx.arrayBufferToBase64(arrayBuffer)](https://developers.weixin.qq.com/miniprogram/dev/api/api-util.html)
 * [wx.base64ToArrayBuffer(base64)](https://developers.weixin.qq.com/miniprogram/dev/api/api-util.html)
+
 ![base64](/img/in-post/post-mp-audio/base64.png)
+
+#### 3. onFrameRecorded 最后一帧监听
+* onFrameRecorded
+
+    取到指定的帧大小后就会被调用
+* duration
+
+    如果设置 30s
+![duration](/img/in-post/post-mp-audio/duration.jpg)
+
+**问题**
+
+到达30秒自动结束的时候并不会触发onFrameRecorded，就会造成最后一个onFrame丢失
+
+**解决**
+
+将duration设为31s，并在开始录音时，引入一个30秒的倒计时，到30s时手动触发stop()方法，因为手动触发stop()方法，onFrameRecorded是会自动被调用的
+
+#### 4. 最后一帧
+> 请求顺序问题
+
+**需求**
+
+判断当前响应是否为最后一个到达，响应包中的is_end字段
+
+**问题**
+
+由于手动停止了录音，最后一个语音包小于等于其他语音包，有可能我们收到最后一个请求的响应包时，上一个请求还在发送的路上或者解析中，这时候isend字段无法准确判断
+
+**解决**
+
+通过对比请求量与返回值的量 `reqNum == respNum && is_end == 1`
+
 
