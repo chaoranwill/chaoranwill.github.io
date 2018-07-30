@@ -16,7 +16,7 @@ tags:
 * 目录
 {:toc #toc}
 
-#### 最简单的 http 服务器
+#### 1. 最简单的 http 服务器
 ```js
 // server.js
 
@@ -36,7 +36,7 @@ http.createServer(function(request, response) {
 > oh，no
 you too young, too simple
 
-#### 肢解代码
+#### 2. 肢解代码
 * `var http = require("http")`
   - 请求（require）Node.js自带的 http 模块，并且把它赋值给 http 变量
 
@@ -61,7 +61,7 @@ you too young, too simple
     response.end();
     ```
 
-#### 模块封装
+#### 3. 模块封装
 > 这一步我们把server.js变成一个真正的Node.js模块
 
 1. 函数封装
@@ -93,11 +93,11 @@ you too young, too simple
     ```
     执行 `node index.js`
 
-#### 路由
+#### 4. 路由
 所有请求数据都在 request对象中，数据解析，还需要 url， querystring模块
 
 来，我们试一试找出浏览器的请求路径~
-##### 获取路由
+##### 4.1 获取路由
 ```js
 var http = require("http");
 var url = require('url')
@@ -118,7 +118,7 @@ exports.start = start
 request.url参数打印：
 ![request](/img/in-post/post-node-7/request.png)
 
-##### 有路可寻
+##### 4.2 有路可寻
 > 引入路由处理
 
 ```js
@@ -137,6 +137,8 @@ function start(route){
 }
 
 exports.start = start
+```
+```js
 
 // route.js
 function route(pathname){
@@ -170,8 +172,8 @@ function start(route, manager){
 }
 
 exports.start = start
-
-
+```
+```js
 // route.js
 function route(pathname, managers){
   console.log('rrr', pathname)
@@ -185,8 +187,8 @@ function route(pathname, managers){
 }
 
 exports.route = route
-
-
+```
+```js
 // requestManager.js
 function start(){
   console.log('route-----start')
@@ -198,8 +200,8 @@ function next(){
 }
 exports.start = start
 exports.next = next
-
-
+```
+```js
 // index.js
 var server = require('./readfile')
 var router = require('./route')
@@ -219,8 +221,84 @@ server.start(router.route, managers)
 
 好啦，用是能用的，就是偶尔会挂 ( ﹁ ﹁ ) ~→
 
-#### 实现非阻塞
-之前的实现中，页面渲染同步，如果中间不小心堵一下，有点小尴尬
+#### 5. 非阻塞
+之前的实现中，页面渲染同步，如果中间不小心堵一下，有点小尴尬。*比如，在start中添加一个定时器，会阻塞next的*执行
 
 刚才的实现逻辑： 请求处理程序 -> 请求路由 -> 服务器
+##### 5.1. node 中的并行
+**据说：在node中除了代码，所有一切都是并行执行的**
+> Node.js可以在不新增额外线程的情况下，依然可以对任务进行并行处理 —— Node.js是单线程的
+* 通过事件轮询（event loop）来实现并行操作
+  - 对此，我们应该要充分利用这一点 —— 尽可能的避免阻塞操作
+* 取而代之，多使用非阻塞操作——回调
 
+##### 5.2. 实现非阻塞
+此处我们使用一个新模块，child_process ——实现一个简单的非阻塞
+
+```js
+// server.js
+var http = require("http");
+var url = require('url')
+
+function start(route, manager){
+  function onRequest(req, res){
+    var pathname = url.parse(req.url).pathname
+    console.log('server request for', pathname)
+    route(pathname, manager, res)
+  }
+  http.createServer(onRequest).listen(8888)
+}
+
+exports.start = start
+```
+```js
+// requestManager.js
+var exec = require('child_process').exec
+
+function start(res){
+  console.log('route-----start')
+
+  exec("find /", {timeout: 10000,maxBuffer: 20000*1024}, function(error, stdout, stderr){
+    res.writeHead(200, {"content-type": "text/plain"})
+    res.write(stdout)
+    res.end()
+  })
+}
+function next(res){
+  console.log('route-----next')
+  res.writeHead(200, {"content-type": "text/plain"})
+  res.write('hello next')
+  res.end()
+}
+exports.start = start
+exports.next = next
+```
+```js
+// route.js
+function route(pathname, managers, res){
+  console.log('rrr', pathname)
+  if(typeof managers[pathname] == 'function'){
+    managers[pathname](res)
+
+  }else {
+    console.log('managers no found')
+    console.log('404')
+  }
+}
+
+exports.route = route
+```
+```js
+// index.js
+var server = require('./server')
+var router = require('./route')
+var requestManager = require('./requestManager')
+
+var managers = []
+managers['/'] = requestManager.start
+managers['/start'] = requestManager.start
+managers['/next'] = requestManager.next
+
+server.start(router.route, managers)
+```
+这时：当我们打开http://localhost:8888/start时，会花10秒钟的时间才载入，而当请求http://localhost:8888/next 的时候，会立即响应，纵然这个时候/start响应还在处理中。
