@@ -157,12 +157,13 @@ server.start(router.route)
 var http = require("http");
 var url = require('url')
 
-function start(route, managers){
+function start(route, manager){
   function onRequest(req, res){
     var pathname = url.parse(req.url).pathname
     console.log('server request for', pathname)
-    route(pathname, managers)
+    var content = route(pathname, manager)
     res.writeHead(200, {"content-type": "text/plain"})
+    res.write(content)
     res.end()
   }
   http.createServer(onRequest).listen(8888)
@@ -175,33 +176,51 @@ exports.start = start
 function route(pathname, managers){
   console.log('rrr', pathname)
   if(typeof managers[pathname] == 'function'){
-    managers[pathname]()
+    return managers[pathname]()
+
   }else {
     console.log('managers no found')
+    return ''
   }
 }
 
 exports.route = route
 
+
 // requestManager.js
 function start(){
   console.log('route-----start')
+  return 'hello start'
 }
 function next(){
   console.log('route-----next')
+  return 'hello next'
 }
 exports.start = start
 exports.next = next
 
+
 // index.js
-var server = require('./server')
+var server = require('./readfile')
 var router = require('./route')
 var requestManager = require('./requestManager')
 
 var managers = []
 managers['/'] = requestManager.start
-managers['start'] = requestManager.start
-managers['next'] = requestManager.next
+managers['/start'] = requestManager.start
+managers['/next'] = requestManager.next
 
 server.start(router.route, managers)
+
+// http://localhost:8888/start, 浏览器会输出“hello start”
+// http://localhost:8888/next 会输出“hello next”
+// http://localhost:8888/chaoran 会输出“404”。
 ```
+
+好啦，用是能用的，就是偶尔会挂 ( ﹁ ﹁ ) ~→
+
+#### 实现非阻塞
+之前的实现中，页面渲染同步，如果中间不小心堵一下，有点小尴尬
+
+刚才的实现逻辑： 请求处理程序 -> 请求路由 -> 服务器
+
