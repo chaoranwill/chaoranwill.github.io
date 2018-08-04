@@ -104,8 +104,9 @@ var url = require('url')
 
 function start(){
   function onRequest(req, res){
-    var pathname = url.parse(req.url).pathname
-    console.log('server request for', pathname)
+    var url = url.parse(req.url)
+    // 打印 url 信息
+    console.log('server start url', url)
     res.writeHead(200, {"content-type": "text/plain"})
     res.end()
   }
@@ -120,6 +121,9 @@ request.url参数打印：
 
 ##### 4.2 有路可寻
 > 引入路由处理
+
+* 创建route.js，处理路由信息，在index页面引入该模块，并作为 server 中start 函数的参数执行，
+* 解析每一个request，获取其url 路径进行处理
 
 ```js
 // server.js
@@ -152,72 +156,85 @@ var server = require('./server')
 var router = require('./route')
 server.start(router.route)
 ```
+以上代码我们实现了有路可寻
+
+
 
 为了避免多重的 if..else..，我们通过对象传递一系列请求 
-```js
-// server.js
-var http = require("http");
-var url = require('url')
+* 首先创建一个 requestManager 模块，导出多个处理函数
+* 创建 managers 对象：映射不同路由的处理方法
+* 将路由与函数的映射关系作为参数传递给 server
+* server 中调用 route 的处理结果
 
-function start(route, manager){
-  function onRequest(req, res){
-    var pathname = url.parse(req.url).pathname
-    console.log('server request for', pathname)
-    var content = route(pathname, manager)
-    res.writeHead(200, {"content-type": "text/plain"})
-    res.write(content)
-    res.end()
+  ```js
+  // requestManager.js
+  function start(){
+    console.log('route-----start')
+    return 'hello start'
   }
-  http.createServer(onRequest).listen(8888)
-}
-
-exports.start = start
-```
-```js
-// route.js
-function route(pathname, managers){
-  console.log('rrr', pathname)
-  if(typeof managers[pathname] == 'function'){
-    return managers[pathname]()
-
-  }else {
-    console.log('managers no found')
-    return ''
+  function next(){
+    console.log('route-----next')
+    return 'hello next'
   }
-}
+  exports.start = start
+  exports.next = next
+  ```
+  ```js
+  // index.js
+  var server = require('./readfile')
+  var router = require('./route')
+  var requestManager = require('./requestManager')
 
-exports.route = route
-```
-```js
-// requestManager.js
-function start(){
-  console.log('route-----start')
-  return 'hello start'
-}
-function next(){
-  console.log('route-----next')
-  return 'hello next'
-}
-exports.start = start
-exports.next = next
-```
-```js
-// index.js
-var server = require('./readfile')
-var router = require('./route')
-var requestManager = require('./requestManager')
+  var managers = []
+  managers['/'] = requestManager.start
+  managers['/start'] = requestManager.start
+  managers['/next'] = requestManager.next
 
-var managers = []
-managers['/'] = requestManager.start
-managers['/start'] = requestManager.start
-managers['/next'] = requestManager.next
+  server.start(router.route, managers)
 
-server.start(router.route, managers)
+  // http://localhost:8888/start, 浏览器会输出“hello start”
+  // http://localhost:8888/next 会输出“hello next”
+  // http://localhost:8888/chaoran 会输出“404”。
+  ```
 
-// http://localhost:8888/start, 浏览器会输出“hello start”
-// http://localhost:8888/next 会输出“hello next”
-// http://localhost:8888/chaoran 会输出“404”。
-```
+* manager ：每一个路由提供对应的处理函数
+  ```js
+  // server.js
+  var http = require("http");
+  var url = require('url')
+
+  function start(route, manager){
+    function onRequest(req, res){
+      var pathname = url.parse(req.url).pathname
+      console.log('server request for', pathname)
+      var content = route(pathname, manager)
+      res.writeHead(200, {"content-type": "text/plain"})
+      res.write(content)
+      res.end()
+    }
+    http.createServer(onRequest).listen(8888)
+  }
+
+  exports.start = start
+  ```
+
+* 取出managers 中的路由事件进行处理
+  ```js
+  // route.js
+  function route(pathname, managers){
+    console.log('rrr', pathname)
+    if(typeof managers[pathname] == 'function'){
+      return managers[pathname]()
+
+    }else {
+      console.log('managers no found')
+      return ''
+    }
+  }
+
+  exports.route = route
+  ```
+
 
 好啦，用是能用的，就是偶尔会挂 ( ﹁ ﹁ ) ~→
 
