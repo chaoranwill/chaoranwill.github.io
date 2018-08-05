@@ -239,7 +239,10 @@ server.start(router.route)
 好啦，用是能用的，就是偶尔会挂 ( ﹁ ﹁ ) ~→
 
 #### 5. 非阻塞
-之前的实现中，页面渲染同步，如果中间不小心堵一下，有点小尴尬。*比如，在start中添加一个定时器，会阻塞next的*执行
+之前的实现中，页面渲染同步，如果中间不小心堵一下，有点小尴尬。
+
+* 比如，在start中添加一个定时器，会阻塞next的执行
+* 若服务器接收请求时需要做大量的数值计算，也可能导致无法响应其他的请求
 
 刚才的实现逻辑： 请求处理程序 -> 请求路由 -> 服务器
 ##### 5.1. node 中的并行
@@ -247,10 +250,13 @@ server.start(router.route)
 > Node.js可以在不新增额外线程的情况下，依然可以对任务进行并行处理 —— Node.js是单线程的
 * 通过事件轮询（event loop）来实现并行操作
   - 对此，我们应该要充分利用这一点 —— 尽可能的避免阻塞操作
-* 取而代之，多使用非阻塞操作——回调
+* 多使用非阻塞操作——回调
+* 创建一个子进程执行密集的cpu计算任务
 
 ##### 5.2. 实现非阻塞
 此处我们使用一个新模块，child_process ——实现一个简单的非阻塞
+
+[Node.js中的child_process模块详解](https://www.jb51.net/article/141698.htm)
 
 ```js
 // server.js
@@ -319,3 +325,205 @@ managers['/next'] = requestManager.next
 server.start(router.route, managers)
 ```
 这时：当我们打开http://localhost:8888/start时，会花10秒钟的时间才载入，而当请求http://localhost:8888/next 的时候，会立即响应，纵然这个时候/start响应还在处理中。
+
+此时，我们做到了路由处理，请求内容渲染，及非阻塞，下面尝试一下交互~
+
+#### 操刀实践
+> 场景： 用户上传文件，页面进行显示
+
+##### 页面跳转响应
+> 简单实现提交后页面跳转
+
+* index 逻辑
+  ```js
+  // index.js
+  var server = require('./server')
+  var router = require('./route')
+  var requestManager = require('./requestManager')
+
+  var managers = []
+  managers['/'] = requestManager.start
+  managers['/start'] = requestManager.start
+  managers['/upload'] = requestManager.upload
+
+  server.start(router.route, managers)
+  ```
+
+* 执行 server 中的函数——监听各个请求，传入 managers 处理对象
+  ```js
+  // server.js
+  var http = require("http");
+  var url = require('url')
+
+  function start(route, managers){
+    function onRequest(req, res){
+      var pathname = url.parse(req.url).pathname
+      console.log('server request for', pathname)
+      route(pathname, managers, res)
+    }
+    http.createServer(onRequest).listen(8888)
+  }
+
+
+  exports.start = start
+  ```
+  下面是 requestManager 中封装的我们对应各个处理函数
+  ```js
+  // requestManager.js
+  function start(res){
+    console.log('start')
+    var body = '<html>' +
+              '<head>' +
+              '<meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>' +
+              '</head>' +
+              '<body>' +
+              '<form action="/upload" method="post">' +
+              '<textarea name="text" rows="20" cols="60"></textarea>' +
+              '<input type="submit" value="上传"/>' +
+              '</form>' +
+              '</body>' +
+              '</html>'
+
+    res.writeHead(200, {'content-type':"text/html"})
+    res.write(body)
+    res.end()
+  }
+
+  function upload(res){
+    console.log('upload')
+    res.writeHead(200, {"content-type": "text/html"})
+    var content = '<html><head><meta charset="UTF-8" /></head><body>上传啦</body></html>'
+    res.write(content)
+    res.end()
+  }
+
+  exports.start = start
+  exports.upload = upload
+  ```
+
+* 在 router.js 中通过 manager 对象中的对应关系进行路由分发
+
+  ```js
+  // router.js
+  function route(pathname, managers, res){
+    console.log('rrr', pathname)
+    if(typeof managers[pathname] == 'function'){
+      console.log('yoyoyo:', pathname)
+      managers[pathname](res)
+    }else {
+      console.log('managers no found')
+      console.log('404')
+    }
+  }
+
+  exports.route = route
+  ```
+
+好了，我们现在实现了一个简单的页面跳转与显示，下面我们尝试一下用之前学习的非阻塞方式处理
+
+##### 非阻塞处理 post 请求
+> 如果 post 时需要传输大量数据，node 会将post 的数据进行拆分，当触发特定的事件时，通过事件监听传输每次的数据
+
+目前我们只是在 router.js 中操作了 respose 对象，所有的处理放在了HTTP服务器处理请求的过程中
+对服务器中的 onRequest 中的 request 对象的 data 和 end 事件进行数据监听，
+```js
+request.addListener('data', function(chunk){
+  // 收到新的 chunk 时触发
+  console.log('receive', chunk)
+})
+
+request.addListener('end', functhon(){
+  // 传输结束时触发
+  console.log('end')
+})
+```
+
+* 创建服务器后，监听请求中的 request 对象
+  - 设置接收数据的编码格式为UTF-8
+  - 注册“data”事件的监听器
+  - end 事件中触发
+
+  ```js
+  // server.js
+
+  var http = require("http");
+  var url = require('url')
+
+  function start(route, managers){
+    function onRequest(req, res){
+      var pathname = url.parse(req.url).pathname
+      req.setEncoding('utf8')
+      var chunkData = ''
+      // 注册 data事件的监听器 接收 data 
+      req.addListener('data', function(chunk){
+        chunkData += chunk
+        console.log('此刻接收到了：', chunk)
+      })
+
+      // request 信息传输结束，保证只触发一次
+      req.addListener('end', function(){
+        route(pathname, managers, res, chunkData)
+      })
+    }
+
+    http.createServer(onRequest).listen(8888)
+    console.log('start server')
+  }
+
+
+  exports.start = start
+  ```
+
+* 在路由处理 requestManager 中将数据呈现在路由 upload 中
+  ```js
+  function start(res, data){
+    console.log('start')
+    var body = '<html>' +
+              '<head>' +
+              '<meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>' +
+              '</head>' +
+              '<body>' +
+              '<form action="/upload" method="post">' +
+              '<textarea name="text" rows="20" cols="60"></textarea>' +
+              '<input type="submit" value="上传"/>' +
+              '</form>' +
+              '</body>' +
+              '</html>'
+
+    res.writeHead(200, {'content-type':"text/html"})
+    res.write(body)
+    res.end()
+  }
+
+  function upload(res, data){
+    console.log('upload')
+    res.writeHead(200, {"content-type": "text/html"})
+    var content = '<html><head><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/></head><body>received----'+ data + '</body></html>'
+    res.write(content)
+    res.end()
+  }
+
+  exports.start = start
+  exports.upload = upload
+  ```
+
+现在我们可以获取到提交的内容，但如何对表单里的数据进行筛选或处理呢
+querystring 模块
+> 一般是对 http 请求所带的数据进行解析：
+ `querystring.parse, querystring.stringify, querystring.escape, querystring.unescape`
+
+ 为了分离出form 中的参数对象，我们试一下 parse 方法
+ ```js
+// 引入 querystring 模块
+const querystring = require('querystring')
+
+function upload(res, data){
+  console.log('upload')
+  // 将 data 序列化为一个对象
+  data = querystring.parse(data)
+  res.writeHead(200, {"content-type": "text/html"})
+  var content = '<html><head><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/></head><body>received----'+ data.text + '</body></html>'
+  res.write(content)
+  res.end()
+}
+
