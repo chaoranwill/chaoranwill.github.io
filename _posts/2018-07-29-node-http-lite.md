@@ -512,8 +512,9 @@ querystring 模块
 > 一般是对 http 请求所带的数据进行解析：
  `querystring.parse, querystring.stringify, querystring.escape, querystring.unescape`
 
- 为了分离出form 中的参数对象，我们试一下 parse 方法
- ```js
+为了分离出form 中的参数对象，我们试一下 parse 方法
+
+```js
 // 引入 querystring 模块
 const querystring = require('querystring')
 
@@ -526,4 +527,6 @@ function upload(res, data){
   res.write(content)
   res.end()
 }
+```
 
+上述过程就是如何处理 post 数据
