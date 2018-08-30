@@ -28,7 +28,7 @@ tags:
 
 #### 用户信息安全
 
-#### 代码泄露
+## 代码安全防范
 ##### 代码混淆
 [微信小程序安全浅析](https://mp.weixin.qq.com/s/1Qm2Sfny_kKx3GdODGVyyg)
 [小程序端JS加密，传输PHP端解密](http://www.wxapp-union.com/thread-5159-1-1.html)
