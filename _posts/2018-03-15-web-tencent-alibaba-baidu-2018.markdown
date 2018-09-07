@@ -1645,14 +1645,13 @@ js 单线程：
     
     task queue 就是 macrotask queue
 * 每一个 event loop 都有一个 microtask queue
-* task queue == macrotask queue != microtask queue
-* 一个任务 task 可以放入 macrotask queue 也可以放入 microtask queue 中
-* 当一个 task 被放入队列 queue(macro或micro) 那这个 task 就可以被立即执行了
+
+* 当一个 task 被放入队列 queue(macro或micro) 表示这个 task 可以被执行了
 
 
 **Micro Task**
 
-当我们想以同步的方式来处理异步任务时候就用 microtask（比如我们需要直接在某段代码后就去执行某个任务，就像Promise一样）
+总是发生在所有异步任务之前
 * process.nextTick
 * promise
 * Object.observe
@@ -1663,12 +1662,6 @@ js 单线程：
 * setInterval
 * setImmediate
 * I/O
-
-
-
-任务队列中，在每一次事件循环中，从 macrotask 队列开始执行，macrotask只会提取一个执行，而microtask会一直提取，直到microsoft队列为空为止。
-
-> 也就是说如果某个microtask任务被推入到执行中，那么当主线程任务执行完成后，会循环调用该队列任务中的下一个任务来执行，直到该任务队列到最后一个任务为止。而事件循环每次只会入栈一个macrotask,主线程执行完成该任务后又会检查microtasks 队列并完成里面的所有任务后再执行macrotask的任务。
 
 执行过程如下：
 * 主线程空闲时首先执行 micro
@@ -1770,10 +1763,9 @@ ES 6以前：
 
 * 回调函数
 * 事件监听(事件发布/订阅)
-* Promise对象
 
 ES 6：
-
+* Promise对象
 * Generator函数(协程coroutine)
 
 ES 7:

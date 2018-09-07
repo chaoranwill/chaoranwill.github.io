@@ -19,6 +19,8 @@ tags:
 
 ## 1. HTML
 #### 1.1. html5
+> Html5是指的一系列新的API，或者说新规范，新技术
+
 > HTML5指的是包括 HTML 、 CSS 和 JavaScript 在内的一套技术组合。它希望能够减少网页浏览器对于需要插件的丰富性网络应用服务（ Plug-in-Based Rich Internet Application ， RIA ），例如： AdobeFlash 、 Microsoft Silverlight 与 Oracle JavaFX 的需求，并且提供更多能有效加强网络应用的标准集。
 
 **对WEB标准以及W3C的理解与认识**
@@ -331,6 +333,14 @@ FireFox | gecko | -moz- |
 4. !important > 内嵌 > ID > 类 > 标签、 伪类、 属性选择 > 伪对象 > 继承 > 通配符
 
 **伪类与伪元素**
+> 伪类的效果可以通过添加一个实际的类来达到，而伪元素的效果则需要通过添加一个实际的元素才能达到，这也是为什么他们一个称为伪类，一个称为伪元素的原因。
+```css
+// 伪类
+p>i:first-child { color: red; }
+// 伪元素
+p:first-leter { color: red; }
+```
+
 * 伪类本质上是为了弥补常规CSS选择器的不足，以便获取到更多信息；
 * 伪元素本质上是创建了一个有内容的虚拟容器；
 
@@ -1428,6 +1438,35 @@ function myAjax(url) {
     xhr.setRequestHeader("Content-Type", "x-www-form-urlencoded")
     xhr.send(data)
 }
+```
+
+用原生 ajax 与 promise
+```js
+// 封装一个get请求的方法
+function getJSON(url) {
+    return new Promise(function(resolve, reject){
+        var XHR = new XMLHttpRequest();
+        XHR.open('GET', url, true);
+        XHR.send();
+ 
+        XHR.onreadystatechange = function() {
+            if (XHR.readyState == 4) {
+                if (XHR.status == 200) {
+                    try {
+                        var response = JSON.parse(XHR.responseText);
+                        resolve(response);
+                    } catch (e) {
+                        reject(e);
+                    }
+                } else {
+                    reject(new Error(XHR.statusText));
+                }
+            }
+        }
+    })
+}
+ 
+getJSON(url).then(res => console.log(res));
 ```
 
 #### 3.16. `setTimeout` & `this` & `setInterval`
