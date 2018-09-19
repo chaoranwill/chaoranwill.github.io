@@ -1139,6 +1139,22 @@ js 如何解析后台返回的超大数据
     * 谈谈闭包
     * 谈谈作用域链
     * 常用的跨域方式
+    * 如何防止自己的网站嵌套在 iframe
+        - js，判断顶层窗口跳转：
+            ```js
+            (function () {
+                if (window != window.top) {
+                    window.top.location.replace(window.location); //或者干别的事情
+                }
+            })();
+            ```
+        - 服务器添加
+            ```js
+            X-Frame-Options
+            // DENY 该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许
+            // SAMEORIGIN 该页面可以在相同域名页面的 frame 中展示
+            // ALLOW-FROM uri 该页面可以在指定来源的 frame 中展示
+            
     * vue
         - 特点
         - 生命周期
@@ -1247,6 +1263,59 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
 </body>
 </html>
 ```
+
+#### 编程-检查对象中是否存在环
+* `JSON.stringify`
+    如果有环，该方法抛出异常
+    ```js
+    function cycleDetector (obj) {
+    // 请添加代码
+        let result = true;
+        try {
+            JSON.stringify(obj);
+        } catch (e) {
+            result = false;
+        } finally {
+            return result;
+        }
+    }
+    ```
+
+* 递归检查任意父子关系的地址引用是否相同
+    ```js
+    function cycleDetector(obj) {
+        let hasCircle = false, //用一个变量去标记是否有环
+            cache = []; //保存值为对象的属性值
+
+        (function(obj) {
+            Object.keys(obj).forEach(key => {
+                const value = obj[key]
+                if (typeof value == 'object' && value !== null) {
+                    const index = cache.indexOf(value)
+                    if (index !== -1) { //如果cache中存在这个value，则表示有环
+                        hasCircle = true
+                        return
+                    } else {
+                        cache.push(value)
+                        arguments.callee(value)
+                    }
+                }
+            })
+        })(obj)
+        return hasCircle
+    }
+    ```
+
+#### 编程-字符串去重
+* 正则
+    ```js
+        str.replace(/(.)(\1)+/g,function($1,$2,$3){
+        return $2;
+    })
+    ```
+
+* 数组遍历
+
 
 #### 获取 dom 元素
 **JS获取DOM元素的方法（8种）**
@@ -1453,6 +1522,7 @@ var next = function (c) {
 * 不能很有效的管理所有的组件状态
 
 参考：[浅谈使用React.setState需要注意的三点](http://www.jb51.net/article/130828.htm)
+
 
 ## 3. 百度
 **一面**

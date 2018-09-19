@@ -758,7 +758,7 @@ parentEle.addEventListener("click", parentDoSomething, true);
 * 直到 html 结束标签为止，页面解析完毕。
 
 #### 3.5. 重绘 和 回流
-* 回流
+* 回流 / 重排
     当渲染树中的一部分(或全部)因为元素的规模尺寸，布局，隐藏等改变而需要**重新构建**
     如上面的img文件加载完成后就会引起回流，每个页面至少需要一次回流，就是在页面第一次加载的时候
 * 重绘
@@ -773,6 +773,21 @@ parentEle.addEventListener("click", parentDoSomething, true);
 * 对style的操作(对不同的属性操作，影响不一样)
 * 还有一种是用户的操作，比如改变浏览器大小，改变浏览器的字体大小等(回流+重绘) 
 * 另外，transform操作不会引起重绘和回流，是一种高效率的渲染。这是因为transform属于合成属性，对合成属性进行 transition/animation 动画时将会创建一个合成层，这使得动画元素在一个独立的层中进行渲染，当元素的内容没有发生改变，就没必要进行重绘，浏览器会通过重新复合来创建动画帧。
+
+**最小化重绘和回流**
+* 需要要对元素进行复杂的操作时
+    - 可以先隐藏(display:"none")，操作完成后再显示
+* 需要创建多个DOM节点时
+    - 使用DocumentFragment创建完后一次性的加入document
+* 缓存Layout属性值
+    - 如：var left = elem.offsetLeft; 这样，多次使用 left 只产生一次回流
+* 尽量避免用table布局
+    - （table元素一旦触发回流就会导致table里所有的其它元素回流）
+* 避免使用css表达式(expression)
+    - 因为每次调用都会重新计算值（包括加载页面）
+* 尽量使用 css 属性简写
+    - 如：用 border 代替 border-width, border-style, border-color
+* 批量修改元素样式：elem.className 和 elem.style.cssText 代替 elem.style.xxx
 
 #### 3.6. 本地存储
 > 避免取回数据前页面空白，减少请求服务器次数

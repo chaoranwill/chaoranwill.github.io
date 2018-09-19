@@ -15,8 +15,6 @@ tags:
 * 目录
 {:toc #toc}
 
-![mvvm](/img/in-post/post-web-fragment/summary.jpg)
-
 ## 1. ES6
 最重要特征
 * 箭头函数
@@ -311,6 +309,39 @@ JavaScript对异步编程的实现
 * 克隆对象
 * 合并对象
 * 为属性指定默认值
+
+#### 1.10. Object.is()
+
+比较两个值是否严格相等，与严格比较运算符===基本一致
+```js
+Object.is('Clearlove', 'Clearlove') // true
+Object.is({}, {}) // false
+```
+差异：
+* +0 不等于 -0
+* NaN等于自身
+
+#### 1.11. 新增数据类型
+* Map 对象
+    与 object 类型区别：
+    - 在Object对象中， 只能把String和Symbol作为key值
+    - Map中，key值可以是任何基本类型(String, Number, Boolean, undefined, NaN....)，或者对象(Map, Set, Object, Function , Symbol , null....)
+    - Map中的size属性
+        - 很方便地获取到Map长度（Object的长度， 只能用别的方法了）
+
+    - Map对象实例中数据的排序是根据用户push的顺序进行排序的 
+    - 新增方法：`clear, delete, get, has, set`
+    - `entries, keys` 返回迭代器
+
+* WeakMap 对象
+    
+    弱引用的Map 对象，如果对象在js 执行环境中不被引用则会被回收
+    - 方法较少 `delete, get, has, set`
+
+* Set 对象
+    - 一组key的集合，但不存储value（key 不重复）
+
+    
 
 ## 2. 通信
 #### 2.1. JSONP 
@@ -751,7 +782,7 @@ Javascript中有一个执行环境(execution context)的概念，它定义了变
 **闭包的运用**
 * 匿名自执行函数
 
-    有的函数只需要执行一次，其内部变量无需维护，执行后释放变量，可以保存闭包的状态
+    有的函数只需要执行一次，由于外部无法引用它内部的变量，执行后释放变量，可以保存闭包的状态，不会污染全局对象
 * 实现封装/模块化代码
 
     变量作用域为函数内部，外部无法访问  
@@ -849,4 +880,13 @@ hideMenu = setTimeout(funcRef, 500);
 * 默认指向在定义它时所处的对象(宿主对象),而不是执行时的对象, 定义它的时候,可能环境是window
 * 箭头函数可以方便地让我们在 setTimeout ,setInterval中方便的使用this
 
+#### 4.5. 回调函数、拦截器、注入、控制反转
+* 回调函数
+    - 将一个函数作为参数传递给另一个函数，作为参数的这个函数就是回调函数
+* 拦截器
+    - 原理和回调函数很像，也是把部分的控制权交给了外部，而内部只是调用包含外部控制权的函数
+
+* 控制反转和依赖注入
+    - 依赖注入是控制反转的实现
+    - 如果需要调用另一个对象协助时,无须在代码中创建被调用者,而是依赖于外部的注入（需要什么对象，自己不去创建，而是把创建的过程放在了自己的外部）
 
