@@ -473,7 +473,7 @@ React 为每个状态都提供了两种处理函数，will 函数在进入状态
 * 它可以转换请求数据和响应数据，并对响应回来的内容自动转换成 JSON类型的数据
 * 安全性更高，客户端支持防御 XSRF
 
-**Vuex**
+##### 3.4.1. Vuex
 > 大型单页应用（SPA），会出现多个视图组件依赖同一个状态，来自不同视图的行为需要变更同一个状态
 
 > 一个应用可以看作是由上面三部分组成: View, Actions,State,数据的流动也是从 View => Actions => State =>View 以此达到数据的单向流动. 但是项目较大的, 组件嵌套过多的时候, 多组件共享同一个State会在数据传递时出现很多问题.
@@ -486,8 +486,29 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 * 改变state中的数据有且只有通过mutations中的方法,且mutations中的方法必须是同步的
 * 如果要写异步的方法,需要些在actions中, 并通过commit到mutations中进行state中数据的更改.
 
+**vuex有哪几种属性**
+* 有五种，分别是 State、 Getter、Mutation 、Action、 Module
 
-##### 3.4.1. 双向绑定
+**vuex的State特性是**
+* Vuex就是一个仓库，仓库里面放了很多对象。其中state就是数据源存放地，对应于与一般Vue对象里面的data
+* state里面存放的数据是响应式的，Vue组件从store中读取数据，若是store中的数据发生改变，依赖这个数据的组件也会发生更新
+* 它通过mapState把全局的 state 和 getters 映射到当前组件的 computed 计算属性中
+
+**vuex的Getter特性是**
+- getters 可以对State进行计算操作，它就是Store的计算属性
+- 虽然在组件内也可以做计算属性，但是getters 可以在多组件之间复用
+- 如果一个状态只在一个组件内使用，是可以不用getters
+
+**vuex的Mutation特性是**
+* Action 类似于 mutation，不同在于：
+* Action 提交的是 mutation，而不是直接变更状态。
+* Action 可以包含任意异步操作
+
+**Vue.js中ajax请求代码应该写在组件的methods中还是vuex的actions中**
+* 如果请求来的数据是不是要被其他组件公用，仅仅在请求的组件内使用，就不需要放入vuex 的state里。
+* 如果被其他地方复用，这个很大几率上是需要的，如果需要，请将请求放入action里，方便复用，并包装成promise返回，在调用处用async await处理返回的数据。如果不要复用这个请求，那么直接写在vue文件里很方便
+
+##### 3.4.2. 双向绑定
 > 将对象属性变化绑定到UI
 简单理解：在单向绑定的基础上给可输入元素（input、textare等）添加了change(input)事件，来动态修改model和 view
 
@@ -562,20 +583,16 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 * mvvm入口函数，整合以上三者
 ![mvvm](/img/in-post/post-web-fragment/mvvm-back.png)
 
-* 第一步：需要observe的数据对象进行递归遍历，包括子属性对象的属性，都加上 setter和getter
-这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
-* 第二步：compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
-* 第三步：Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是:
-    - 在自身实例化时往属性订阅器(dep)里面添加自己
-    - 自身必须有一个update()方法
-    - 待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
+* mvvm 对象
+    - 负责将数据交给observer 进行劫持监听，将 DOM 结点交给编译器 Compiler 进行解析
+* observer 对象
+    - 数据的观察者对象，监听 data，每个 data 对应一个发布器 Dep， dep 是保存所有订阅该参数 watcher 的数组，当参数变化时 observer 通知发布器 dep， 遍历所有订阅，通知订阅的 watcher 将修改发布给它们
+* compiler 对象
+    - 解析 DOM 元素，找到 html 模板中的指令和 {{}} 并将模板替换成对应的参数数据。每解析出一个指令或 {{}} 就生成一个新的 watcher
 
-* 第四步：MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者
-    - Observer来监听自己的model数据变化
-    - Compile来解析编译模板指令
-    - Watcher搭起Observer和Compile之间的通信桥梁
-    
-    达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果。
+* watcher 对象
+    - 连接 compiler 和 observer 的桥梁，每新生成一个 watcher 就触发视图绑定参数的getter 方法将当前 watcher 添加到该参数的发布器 dep 中（订阅事件过程）， 当 watcher 接收到dep 发送的参数改变事件，则触发 watcher 的 update 方法
+
 
 参考：
 * [剖析Vue原理&实现双向绑定MVVM](https://segmentfault.com/a/1190000006599500)
@@ -694,6 +711,43 @@ Fielding将他对互联网软件的架构原则，定名为REST，即Representat
 * 客户端和服务器之间，传递这种资源的某种表现层；
 
 * 客户端通过四个HTTP动词，对服务器端资源进行操作，实现"表现层状态转化"。
+
+#### 3.8. virtual DOM
+Virtual DOM 算法。包括几个步骤：
+
+* 用JS对象模拟DOM树
+    - 只需要记录它的节点类型、属性，还有子节点
+* 比较两棵虚拟DOM树的差异
+    - 深度优先遍历，记录差异
+        - 每遍历到一个节点就把该节点和新的的树进行对比。如果有差异的话就记录到一个对象里面
+* 把差异应用到真正的DOM树上
+
+**diff 策略（—为具体比对）**
+* tree diff
+    - Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计
+    - React 通过 updateDepth 对 Virtual DOM 树进行层级控制，只对比相同层级的 DOM 节点进行比较，即同一个父节点下的所有子节点。当发现节点已经不存在，则该节点及其子节点会被完全删除掉，不会用于进一步的比较
+* component diff
+    - 拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结构
+    - React 是基于组件构建应用的，对于组件间的比较所采取的策略也是简洁高效。
+        - 如果是同一类型的组件，按照原策略继续比较 virtual DOM tree。
+        - 如果不是，则将该组件判断为 dirty component，从而替换整个组件下的所有子节点。
+        - 对于同一类型的组件，有可能其 Virtual DOM 没有任何变化，如果能够确切的知道这点那可以节省大量的 diff 运算时间，因此 React 允许用户通过 shouldComponentUpdate() 来判断该组件是否需要进行 diff。
+* element diff
+    - 对于同一层级的一组子节点，它们可以通过唯一 id 进行区分
+    - 当节点处于同一层级时，React diff 提供了三种节点操作，分别为：INSERT_MARKUP（插入）、MOVE_EXISTING（移动）和 REMOVE_NODE（删除）
+
+**Virtual DOM 本质上就是在 JS 和 DOM 之间做了一个缓存。**
+
+**提升在哪里**
+* 每当你想对视图进行一次更新，那些本该直接作用于真实DOM的改动，都会先作用于Virtual DOM，然后再将要改动的部分通知到真实DOM。这样可以大幅减少DOM操作带来的重计算步骤。
+
+> DOM 操作 真正的问题在于每次操作都会触发布局的改变、DOM树的修改和渲染。所以，当你一个接一个地去修改30个节点的时候，就会引起30次（潜在的）布局重算，30次（潜在的）重绘，等等
+
+> virtual dom 将之前所有的改动就会整合成一次DOM操作。这一次DOM操作引起的布局计算和重绘可能会更大，但是相比而言，整合起来的改动只做一次，减少了（多次）计算
+
+参考
+* [深度剖析：如何实现一个 Virtual DOM 算法](https://github.com/livoras/blog/issues/13)
+* [React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)
 
 ## 4. js
 #### 4.1. js垃圾回收与内存管理

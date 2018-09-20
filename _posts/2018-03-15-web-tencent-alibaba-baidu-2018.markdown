@@ -1316,67 +1316,6 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
 
 * 数组遍历
 
-
-#### 获取 dom 元素
-**JS获取DOM元素的方法（8种）**
-
-* `getElementById`
-
-    只获取到一个元素，没有找到返回null
-* `getElementsByName`
-* `getElementsByTagName`
-* `getElementsByClassName`
-* `document.documentElement`
-
-    获取html
-* `document.body`
-
-    获取body
-* `querySelector`
-
-    获取一个元素
-* `querySelectorAll`
-
-    获取一组元素
-
-
-**获取子元素**
-* childNodes
-    `dom.childNodes` 返回一个nodeList（元素的所有子元素）
-    - nodeType
-        - 元素节点的nodeType属性值为1
-        - 属性节点的nodeType属性值为2
-        - 文本节点的nodeType属性值为3
-
-    - nodeValue属性 
-    
-        获得和改变文本节点的值
-* firstChild 第一个子元素
-* lastChild
-
-**获取父、兄**
-* `parentNode`
-* `nextSibling`
-* `previousSbiling`
-
-**创建元素**
-* `createDocumentFragment`
-
-    创建一个dom片段
-* `createElement`
-
-    创建一个具体的元素
-* `createTextNode`
-
-    创建一个文本节点
-
-
-**增删改元素**
-* `appendChild`
-* `removeChild`
-* `replaceChild`
-* `insertBefore`
-
 #### 如何用 JS 实现 JSON.parse
 ##### ---eval
 > 直接调用eval
@@ -1523,6 +1462,117 @@ var next = function (c) {
 
 参考：[浅谈使用React.setState需要注意的三点](http://www.jb51.net/article/130828.htm)
 
+
+#### 获取 dom 元素
+**JS获取DOM元素的方法（8种）**
+
+* `getElementById`
+
+    只获取到一个元素，没有找到返回null
+* `getElementsByName`
+* `getElementsByTagName`
+* `getElementsByClassName`
+* `document.documentElement`
+
+    获取html
+* `document.body`
+
+    获取body
+* `querySelector`
+
+    获取一个元素
+* `querySelectorAll`
+
+    获取一组元素
+
+
+**获取子元素**
+* childNodes
+    `dom.childNodes` 返回一个nodeList（元素的所有子元素）
+    - nodeType
+        - 元素节点的nodeType属性值为1
+        - 属性节点的nodeType属性值为2
+        - 文本节点的nodeType属性值为3
+
+    - nodeValue属性 
+    
+        获得和改变文本节点的值
+* firstChild 第一个子元素
+* lastChild
+
+**获取父、兄**
+* `parentNode`
+* `nextSibling`
+* `previousSbiling`
+
+**创建元素**
+* `createDocumentFragment`
+
+    创建一个dom片段
+* `createElement`
+
+    创建一个具体的元素
+* `createTextNode`
+
+    创建一个文本节点
+
+
+**增删改元素**
+* `appendChild`
+* `removeChild`
+* `replaceChild`
+* `insertBefore`
+
+#### css 还是 js 阻塞
+
+**解析算法**
+> HTML 无法用常规的自上而下或自下而上的解析器进行解析。
+
+* 语言的宽容本质。
+    
+    浏览器历来对一些常见的无效 HTML 用法采取包容态度。
+* 解析过程需要不断地反复
+    
+    源内容在解析过程中通常不会改变，但是在 HTML 中，脚本标记如果包含 document.write，就会添加额外的标记，这样解析过程实际上就更改了输入内容。
+
+**处理脚本和样式表的顺序**
+* 脚本
+    - 遇到 `<script>` 标记时立即解析并执行脚本
+    - 如果脚本是外部的，那么解析过程会停止，直到从网络同步抓取资源完成后再继续
+        - defer / async 就不会停止文档解析，而是等到解析结束才执行
+* 预解析
+    - 执行脚本时并行解析其他外部资源
+
+* 样式表
+    - 脚本在文档解析阶段会请求样式信息。如果当时还没有加载和解析样式，脚本就会获得错误的回复
+    - Firefox 在样式表加载和解析的过程中，会禁止所有脚本。WebKit，仅当脚本尝试访问的样式属性可能受尚未加载的样式表影响时，它才会禁止该脚本
+
+**阻塞**
+* css文件不会阻塞HTML解析，但是会阻塞渲染，导致css文件未下载完成之前已经解析好html也无法先显示出来
+* 图片既不阻塞解析，也不阻塞渲染
+* js 执行阻塞后面的解析，导致不能很快的显示
+
+**参考**
+* [聊聊浏览器的渲染机制](https://segmentfault.com/a/1190000007766425)
+* [CSS/JS 阻塞 DOM 解析和渲染](https://harttle.land/2016/11/26/static-dom-render-blocking.html)
+
+#### 改善动画渲染性能
+**setTimeout**
+* setTimeout的执行时间并不是确定的
+    - 实际执行时间一般要比其设定的时间晚一些
+
+* 刷新频率受屏幕分辨率和屏幕尺寸的影响，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同
+    - 导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象
+
+* requestAnimationFrame
+    - 由系统来决定回调函数的执行时机
+        - 保证回调函数在屏幕每一次的刷新间隔中只被执行一次
+
+    - CPU节能
+        - 当页面隐藏，该页面的屏幕刷新任务也会被系统暂停
+    - 函数节流
+        - 保证每个刷新间隔内，函数只被执行一次
+        - 一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来
 
 ## 3. 百度
 **一面**

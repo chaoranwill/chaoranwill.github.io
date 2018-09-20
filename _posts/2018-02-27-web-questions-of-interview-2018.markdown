@@ -2118,7 +2118,7 @@ for (var i = 0; i < 5; i++) {
 * 参数获取方式
     - 对于 get 方式，服务器端用 Request.QueryString 获取变量的值
     - 对于 post 方式，服务器端用 Request.Form 获取提交的数据。
-
+* post能发送更多的数据类型（get只能发送ASCII字符）
 * 参数
     - get 传送的数据量较小，不能大于 2KB
     - post 传送的数据量较大，一般被默认为不受限制。但理论上， IIS4 中最大量为 80KB ， IIS5 中为 100KB 。
@@ -2139,39 +2139,49 @@ for (var i = 0; i < 5; i++) {
 * 最重要的一条，post在真正接收数据之前会先将请求头发送给服务器进行确认，然后才真正发送数据 
     - post请求的过程： 
 
-        - （1）浏览器请求tcp连接（第一次握手） 
-        - （2）服务器答应进行tcp连接（第二次握手） 
-        - （3）浏览器确认，并发送post请求头（第三次握手，这个报文比较小，所以http会在此时进行第一次数据发送） 
-        - （4）服务器返回100 Continue响应 
-        - （5）浏览器发送数据 
-        - （6）服务器返回200 OK响应 
+        - 浏览器请求tcp连接（第一次握手） 
+        - 服务器答应进行tcp连接（第二次握手） 
+        - 浏览器确认，并发送post请求头（第三次握手，这个报文比较小，所以http会在此时进行第一次数据发送） 
+        - 服务器返回100 Continue响应 
+        - 浏览器发送数据 
+        - 服务器返回200 OK响应 
     - get请求的过程： 
+        - 浏览器请求tcp连接（第一次握手） 
+        - 服务器答应进行tcp连接（第二次握手） 
+        - 浏览器确认，并发送get请求头和数据（第三次握手，这个报文比较小，所以http会在此时进行第一次数据发送） 
+        - 服务器返回200 OK响应 
 
-    （1）浏览器请求tcp连接（第一次握手） 
-    （2）服务器答应进行tcp连接（第二次握手） 
-    （3）浏览器确认，并发送get请求头和数据（第三次握手，这个报文比较小，所以http会在此时进行第一次数据发送） 
-    （4）服务器返回200 OK响应 
-
+对于跨域中的复杂请求（请求的是 json），发送数据前发送一个 opstions 请求试探
+* 检查请求是否是可靠安全的，如果options获得的回应是拒绝性质的，比如404\403\500等http状态，就会停止post、put等请求的发出
 
 也就是说，目测get的总耗是post的2/3左右
 
-更多：[学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
-[http GET 和 POST 请求的优缺点和误区 --前端优化](https://blog.csdn.net/zzk220106/article/details/78595108/)
-[99%的人都理解错了HTTP中GET与POST的区别](http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml)
+更多：
+* [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html)
+* [http GET 和 POST 请求的优缺点和误区 --前端优化](https://blog.csdn.net/zzk220106/article/details/78595108/)
+* [99%的人都理解错了HTTP中GET与POST的区别](http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml)
 
 #### 4.2. 页面从输入 URL 到页面加载过程
 ![web请求](/img/in-post/post-php-study/web请求1.png)
 ![web请求](/img/in-post/post-php-study/web请求2.png)
 
-* 检查浏览器缓存
-* 检查操作系统缓存，常见的如hosts文件
-* 检查路由器缓存
+* 浏览器缓存
+    -  当用户通过浏览器访问某域名时，浏览器首先会在自己的缓存中查找是否有该域名对应的IP地址（若曾经访问过该域名且没有清空缓存便存在)
+* 系统缓存
+    - 常见的如hosts文件
+* 路由器缓存
+    - 以上均无域名对应IP则进入路由器缓存中检查
 * 如果前几步都没没找到，会向ISP(网络服务提供商)的LDNS服务器查询
-* 如果LDNS服务器没找到，会向跟域名服务器(Root Server)请求解析，分为以下几步：
-
-    - 跟服务器返回顶级域名(TLD)服务器如.com，.cn，.org等的地址，全球只有13台，该例子中会返回.com的地址
-    - 接着向TLD发送请求，然后会返回次级域名(SLD)服务器的地址，本例子会返回.example的地址
-    - 接着向SLD域名服务器通过域名查询目标IP，Local DNS Server会缓存结果，并返回给用户，缓存在系统中。
+* ISP（互联网服务提供商）DNS缓存
+    - 当在用户客服端查找不到域名对应IP地址，则将进入ISP DNS缓存中进行查询。比如你用的是电信的网络，则会进入电信的DNS缓存服务器中进行查找
+* 根域名服务器:
+    - 当以上均未完成，则进入根服务器进行查询。全球仅有13台根域名服务器，1个主根域名服务器，其余12为辅根域名服务器
+* 顶级域名服务器
+    - 顶级域名服务器收到请求后查看区域文件记录，若无则将其管辖范围内主域名服务器的IP地址告诉本地DNS服务器
+* 主域名服务器:
+    - 主域名服务器接受到请求后查询自己的缓存，如果没有则进入下一级域名服务器进行查找，并重复该步骤直至找到正确记录
+* 保存结果至缓存
+    - 本地域名服务器把返回的结果保存到缓存，以备下一次使用，同时将该结果反馈给客户端，客户端通过这个IP地址与web服务器建立链接
 
 **页面请求过程**
 
@@ -2352,7 +2362,18 @@ document.ready = function(callback) {
     * 如用户当前已经登录了bbs，同时用户又在使用另外一个钓鱼网站。这个网站上面可能因为某个图片吸引你，你去点击一下，此时可能就会触发一个js的点击事件，构造一个发帖的请求，去往你的bbs发帖，由于当前你的浏览器状态已经是登陆状态，所以session登陆cookie信息都会跟正常的请求一样，纯天然的利用当前的登陆状态，让用户在不知情的情况下，帮你发帖或干其他事情
 
     **防范：**
-    * 验证码、验证Refer、以及验证token，对特殊参数进行加密
+    * 对特殊参数进行加密
+    * 验证 HTTP Referer 字段
+
+        标明来源
+        - HTTP  请求header 的一部分，当浏览器（或者模拟浏览器行为）向web 服务器发送请求的时候，头信息里有包含  Referer 
+    * 在请求地址中添加 token 并验证
+        - 可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求
+        - 对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 http://url?csrftoken=tokenvalue。
+        - 对于 POST 请求来说，要在 form 的最后加上 `<input type=”hidden” name=”csrftoken” value=”tokenvalue”/>`
+
+    * 在 HTTP 头中自定义属性并验证
+        - 这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中
     * 杜绝用户的一切外链资源。需要站外图片，可以抓回后保存在站内服务器里。
     * 对于富文本内容，使用白名单策略，只允许特定的 CSS 属性。
     * 尽可能开启 Content Security Policy 配置，让浏览器底层来实现站外资源的拦截。
@@ -2917,6 +2938,69 @@ index.html与内部的资源文件之间会产生了一个延时，而非同步�
 * 从被所有浏览器支持的基本功能开始，逐步地添加那些只有新版本浏览器才支持的功能,向页面增加不影响基础浏览器的额外样式和功能的。当浏览器支持时，它们会自动地呈现出来并发挥作用。 
     - 如：默认使用flash上传，但如果浏览器支持 HTML5 的文件上传功能，则使用HTML5实现更好的体验
 
+#### 4.17. 海量数据优化加载
+> 10w 条记录的数组，一次性渲染到页面，如何处理不冻结 UI
+
+页面上有个空的无序列表节点 ul ，其 id 为 list-with-big-data ，现需要往列表插入 10w 个 li ，每个列表项的文本内容可自行定义，且要求当每个 li 被单击时，通过 alert 显示列表项内的文本内容。
+
+* 获取 ul 元素，然后新建 li 元素，并设置好 li 的文本内容和监听器绑定，然后在循环里对 ul 进行 append 操作
+    - 卡顿感严重
+        - 主要原因是，每次循环中，都会修改 DOM 结构，并且由于数据量大，导致循环执行时间过长，浏览器的渲染帧率过低
+        - 可通过减少 DOM 操作次数 和 缩短循环时间两方面改进
+* `DocumentFragment & requestAniminationFrame`
+    - 将 100000 个 li 分批插入到页面中，并且我们通过 requestAniminationFrame 在页面重绘前插入新节点
+    - 事件委托
+
+        ```js
+        (function() {
+            const ulContainer = document.getElementById("list-with-big-data");
+
+            // 防御性编程
+            if (!ulContainer) {
+                return;
+            }
+
+            const total = 100000; // 插入数据的总数
+            const batchSize = 4; // 每次批量插入的节点个数，个数越多，界面越卡顿
+            const batchCount = total / batchSize; // 批处理的次数
+            let batchDone = 0; // 已完成的批处理个数
+
+            function appendItems() {
+                // 使用 DocumentFragment 减少 DOM 操作次数，对已有元素不进行回流
+                const fragment = document.createDocumentFragment();
+
+                for (let i = 0; i < batchSize; i++) {
+                    const liItem = document.createElement("li");
+                    liItem.innerText = batchDone * batchSize + i + 1;
+                    fragment.appendChild(liItem);
+                }
+
+                // 每次批处理只修改 1 次 DOM
+                ulContainer.appendChild(fragment);
+                batchDone++;
+                doAppendBatch();
+            }
+
+            function doAppendBatch() {
+                if (batchDone < batchCount) {
+                    // 在重绘之前，分批插入新节点
+                    window.requestAnimationFrame(appendItems);
+                }
+            }
+
+            // kickoff
+            doAppendBatch();
+
+            // 使用 事件委托 ，利用 JavaScript 的事件机制，实现对海量元素的监听，有效减少事件注册的数量
+            ulContainer.addEventListener("click", function(e) {
+                const target = e.target;
+
+                if (target.tagName === "LI") {
+                    alert(target.innerText);
+                }
+            });
+        })();
+        ```
 
 ## 5. 代码
 #### 5.1. 通用的事件监听器

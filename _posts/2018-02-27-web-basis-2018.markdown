@@ -416,7 +416,7 @@ JavaScript
 HTTP 相关请见：
 * [学习前端前必知的——HTTP协议详解](http://www.cnblogs.com/chaoran/p/4783633.html?_blank)
 
-##### 1.8.2. JSONP && XSS
+##### 1.8.2. JSONP && CORS
 浏览器设置了安全限制——JavaScript或Cookie只能访问同域下的内容——同源策略
 
 只允许请求和当前地址同域的服务器资源。但不限制脚本和标签发送跨域请求，比如script 和 img 标签，因此可以利用脚本跨域能力来实现跨域请求，即JSONP 的原理。
@@ -871,6 +871,14 @@ manifest 文件是简单的文本文件，它告知浏览器被缓存的内容�
 * 速度 - 已缓存资源加载得更快
 * 减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。
 
+#### 3.10. 前端 SEO
+* 合理的title、description、keywords：搜索对着三项的权重逐个减小，title值强调重点即可，重要关键词出现不要超过2次，而且要靠前，不同页面title要有所不同；description把页面内容高度概括，长度合适，不可过分堆砌关键词，不同页面description有所不同；keywords列举出重要关键词即可
+* 语义化的HTML代码，符合W3C规范：语义化代码让搜索引擎容易理解网页
+* 重要内容HTML代码放在最前：搜索引擎抓取HTML顺序是从上到下，有的搜索引擎对抓取长度有限制，保证重要内容一定会被抓取
+* 重要内容不要用js输出：爬虫不会执行js获取内容（目前chrome浏览器可以了）
+* 少用iframe：搜索引擎不会抓取iframe中的内容
+* 非装饰性图片必须加alt
+* 提高网站速度：网站速度是搜索引擎排序的一个重要指标
 
 参考：
 * [javascript中的深拷贝和浅拷贝](https://www.zhihu.com/question/23031215/answer/124017500?_blank)
