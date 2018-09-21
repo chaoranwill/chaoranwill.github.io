@@ -159,13 +159,13 @@ tags:
 **头条 offer got**
 
 * 技术面：4面，面试形式一样
-* 面试形式：牛客网视频面试，面试官出题，面试官可看到前面的面试题目及回答情况，应该不会问同样的问题
+* 面试形式：牛客网视频面试，面试官出题，面试官可看到前面的面试题目及* 回答情况，应该不会问同样的问题
 * 面试时长：30-50min
 * 面试内容：
-  - 前端基础，项目中遇到的问题及解决方案，前沿发展技术的了解，安全等常见面试题
-  - 在线出题内容：
-    - js 基础，给出一些代码进行分析，或者写出执行结果（如考察点event loop）
-    - 在线编程为算法实现，不会太难，主要考察严谨性和思路
+    - 前端基础，项目中遇到的问题及解决方案，前沿发展技术的了解，安全等常见面试题
+    - 在线出题内容：
+        - js 基础，给出一些代码进行分析，或者写出执行结果（如考察点event loop）
+        - 在线编程为算法实现，不会太难，主要考察严谨性和思路
 
 
 **总体**
@@ -936,37 +936,6 @@ Event.trigger("color",42);
 * 代理对象可以代替本体被实例化，并使其可以被远程访问；
 * 它还可以把本体实例化推迟到真正需要的时候；对于实例化比较费时的本体对象，或者因为尺寸比较大以至于不用时不适于保存在内存中的本体，我们可以推迟实例化该对象；
 
-```js
-// 先申明一个奶茶妹对象
-var TeaAndMilkGirl = function(name) {
-    this.name = name;
-};
-// 这是京东ceo先生
-var Ceo = function(girl) {
-    this.girl = girl;
-    // 送结婚礼物 给奶茶妹
-    this.sendMarriageRing = function(ring) {
-        console.log("Hi " + this.girl.name + ", ceo送你一个礼物：" + ring);
-    }
-};
-// 京东ceo的经纪人是代理，来代替送
-var ProxyObj = function(girl){
-    this.girl = girl;
-    // 经纪人代理送礼物给奶茶妹
-    this.sendGift = function(gift) {
-        // 代理模式负责本体对象实例化
-        (new Ceo(this.girl)).sendMarriageRing(gift);
-    }
-};
-// 初始化
-var proxy = new ProxyObj(new TeaAndMilkGirl("奶茶妹"));
-proxy.sendGift("结婚戒"); // Hi 奶茶妹, ceo送你一个礼物：结婚戒
-```
-
-* TeaAndMilkGirl 是一个被送的对象(这里是奶茶妹)；
-* Ceo 是送礼物的对象，他保存了奶茶妹这个属性，及有一个自己的特权方法sendMarriageRing 就是送礼物给奶茶妹这么一个方法；
-* 然后呢他是想通过他的经纪人去把这件事完成，于是需要创建一个经济人的代理模式，名字叫ProxyObj ；
-* 他的主要做的事情是，把ceo交给他的礼物送给ceo的情人，因此该对象同样需要保存ceo情人的对象作为自己的属性，同时也需要一个特权方法sendGift ，该方法是送礼物，因此在该方法内可以实例化本体对象，这里的本体对象是ceo送花这件事情，因此需要实例化该本体对象后及调用本体对象的方法(sendMarriageRing).
 
 理解使用虚拟代理实现图片的预加载
 
@@ -1584,6 +1553,45 @@ var next = function (c) {
     - 函数节流
         - 保证每个刷新间隔内，函数只被执行一次
         - 一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来
+
+#### 防止 iframe 嵌套
+* js判断
+    ```js
+    //方式一
+    if (self.frameElement && self.frameElement.tagName == "IFRAME") {
+        alert('在iframe中');
+    }
+    //方式二
+    if (window.frames.length != parent.frames.length) {
+        alert('在iframe中');
+    }
+    //方式三
+    if (self != top) {
+        alert('在iframe中');
+    }
+
+    // 比较可靠的方式
+
+    if(top != self){
+        location.href = "about:blank";
+    }
+    ```
+
+* meta 设置
+    ```html
+    <meta http-equiv="X-FRAME-OPTIONS" content="DENY">
+    ```
+
+* 服务器设置 http header
+    ```
+    header(‘X-Frame-Options:Deny');
+    header("X-XSS-Protection: 0");
+    ```
+
+* 在Apache、IIS、Nginc主机中设置
+    ```
+    X-Frame-Options "SAMEORIGIN";
+    ```
 
 ## 3. 百度
 **一面**
