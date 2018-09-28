@@ -1289,7 +1289,7 @@ IP协议是由TCP、UDP、ARP、ICMP等一系列子协议组成的。其中
 #### 编程-字符串去重
 * 正则
     ```js
-        str.replace(/(.)(\1)+/g,function($1,$2,$3){
+    str.replace(/(.)(\1)+/g,function($1,$2,$3){
         return $2;
     })
     ```
