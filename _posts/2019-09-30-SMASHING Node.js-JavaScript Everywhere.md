@@ -16,6 +16,7 @@ tags:
 * 目录
 {:toc #toc}
 
+本文仅用于大致了解node 所涉及的技术
 本博客的示例代码：[github 地址](https://github.com/chaoranwill/amazing-nodejs)
 
 ## V8
@@ -282,6 +283,62 @@ stream
     - 监听文件的改动
 * watch
     - 监听整个目录
-    
 
+## TCP
 
+> 传输层协议：保证计算机间数据传输的可靠性和顺序
+
+* node HTTP 服务器构建与 node TCP 服务器之上
+* 编程角度：http.server 继承 net.server(net 是TCP 模块)
+* 其他如邮件客户端（SMTP/IMAP/POP)、聊天程序（IRC/XMPP)、shell（SSH）等都基于 TCP 协议
+
+#### 特性
+* 面向连接
+    - TCP 将客户端服务端看作一个连接/数据流，易理解和抽象（所基于的 IP 是面向无连接的）
+    - IP 基于数据报的传输，送达无序
+    - TCP 如何保证有序
+        - 发送的 IP 数据报+标识连接、数据流顺序的信息
+    - 用node 写TCP 服务器，就不需要考虑这些，，只需要连接和写数据就行 
+* 面向字节
+    - TCP 对字符编码无感知（不同编码--传输字节不同）
+* 可靠性
+    - 由于底层不可靠，+ 确认和超时 = 一系列机制达到可靠
+* [流控制](https://www.cnblogs.com/iou123lg/p/9017044.html)
+    - 通过流控制确保通信的计算机间传输数据的平衡
+* 阻塞控制
+    - 控制数据包的延迟率和丢包率
+
+```js
+// 创建一个tcp连接
+var net = require('net');
+
+var server = net.createServer(function (conn) {
+  // handle connection
+  console.log(' new connection !')
+  conn.on('data', function(data) {
+
+  });
+  conn.on('close', function(data){
+
+  })
+});
+
+server.listen(3000, function () {
+  console.log('server listening on 3000')
+})
+``` 
+#### HTTP
+> 目的：进行文档交换，通过头信息（header）描述不同消息内容
+
+* content-type 类型
+* connection  keep-alive 默认
+* Transfer-Encoding chunked 默认，node 异步的特性
+* 。。。。
+
+与 TCP 服务的差异性
+* 回调函数中对象的类型
+    - net connection
+    - request， response
+* 原因
+    - http 服务器是更高层的api，提供了控制和http 协议相关功能
+    - 可能同时打开多个连接，导致不容易区分是connection 还是 请求，node 为我们提供了请求、响应的抽象
