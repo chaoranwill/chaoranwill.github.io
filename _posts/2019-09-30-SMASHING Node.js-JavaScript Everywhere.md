@@ -284,7 +284,8 @@ stream
 * watch
     - 监听整个目录
 
-## TCP
+## node 中的协议
+#### TCP
 
 > 传输层协议：保证计算机间数据传输的可靠性和顺序
 
@@ -342,3 +343,55 @@ server.listen(3000, function () {
 * 原因
     - http 服务器是更高层的api，提供了控制和http 协议相关功能
     - 可能同时打开多个连接，导致不容易区分是connection 还是 请求，node 为我们提供了请求、响应的抽象
+
+##### 简易tweeter web 客户端
+```js
+// server.js
+const qs = require('querystring'),
+  http = require('http');
+
+http.createServer(function (req, res) {
+  let data = '';
+  req.on('data', function (chunck) {
+    data += chunck;
+  })
+  req.on('end', function () {
+    res.writeHead(200);
+    res.end('done') // 完成请求发送，若暂未发送将被刷新到流
+    console.log('got name ' + qs.parse(data).name);
+  })
+}).listen(3000)
+```
+
+```js
+// client.js
+// 通过 querystring 模块的 stringfy 方法，将对象转化为url 编码过的数据
+const http = require('http'),
+  qs = require('querystring');
+
+function send(name) {
+  http.request({
+    host: '127.0.0.1',
+    port: 3000,
+    url: '/',
+    method: 'post',
+  }, function (res) {
+    // res.setEncoding('utf-8');
+    // res.on('end', function () {
+    //   console.log('request complete');
+    //   process.stdout.write('\n received your name: ');
+
+    // })
+  }).end(qs.stringify({   // 通过stringfy 方法将对象转化为url 编码过的数据
+    name: name
+  }))
+}
+
+process.stdout.write('your name：')
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+process.stdin.on('data', function (name) {
+  console.log('--- ', name)
+  send(name.replace('\n', ''))
+})
+```
