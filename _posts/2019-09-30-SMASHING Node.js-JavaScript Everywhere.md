@@ -17,7 +17,6 @@ tags:
 {:toc #toc}
 
 本文仅用于大致了解node 所涉及的技术
-本博客的示例代码：[github 地址](https://github.com/chaoranwill/amazing-nodejs)
 
 ## V8
 > v8 做了一件很酷的事情：始终坚定不移的实现最新版本的 ECMA 标准。node 核心团队也是如此，只要安装了最新版本的 node， 总能使用到最新版本的 V8.
@@ -395,3 +394,40 @@ process.stdin.on('data', function (name) {
   send(name.replace('\n', ''))
 })
 ```
+
+## websocket
+发展：
+* ajax
+    - 提高用户体验，用户再也不用每次都通过交互操作才能从服务器获取新的 html 文件
+    - 避免了额外的数据传递和渲染开销
+    - 发送的头信息过多（很多不必要）
+    - 解决： 从TCP 而非 HTTP 入手
+* websocket
+    - web 下的 TCP
+    - 底层的双向socket，允许用户对消息传递进行控制
+
+#### HTML5 websocket
+常说的 [websocket](https://www.liaoxuefeng.com/wiki/1022910821149312/1103327377678688) 包含两个部分：
+* 浏览器实现的 websocket API
+* 服务端实现的 websocket 协议
+
+```js
+// 浏览器端实现的 API
+var ws = new Websocket('ws//host/path');
+ws.onopen = function () {
+    ws.send('data')
+}
+
+ws.onclose = function() {
+
+}
+ws.ondata = function(ev) {
+    console.log(ev.data)
+}
+``` 
+可以看出
+* 非面向请求和响应（通过send 方法进行消息传递），open & close 监听打开关闭状态
+* 必须通过握手建立
+    - 与http 请求类似，但服务端响应后，收发数据时数据本身之外的信息很少
+
+* 还是建立在 HTTP 之上，主要区别时，握手后，客户端和服务端就建立了类似 TCP socket 的通道
